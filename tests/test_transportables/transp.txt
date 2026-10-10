@@ -1,0 +1,449 @@
+
+##########################################################################
+
+Input Chords:
+-------------
+>  F/C         [None, 3, 3, 2, 1, 1]               ['x', '3', '4', '2', '1', '1']      4       major
+>  Bb          [None, 1, 3, 3, 3, 1]               ['x', '1', '2', '3', '4', '1']      5       major
+>  D           [None, 5, 4, 2, 3, 2]               ['x', '4', '3', '1', '2', '1']      5       major
+>  F           [1, 3, 3, 2, 1, 1]                  ['1', '3', '4', '2', '1', '1']      6       major
+
+##########################################################################
+
+* Txt Latin Output
+FA/DO	x,3,3,2,1,1	x,3,4,2,1,1	%	%	%	FA/Major
+
+* Ods Output
+F	Major			/C		x	3	3	2	1	1	x	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+SOLb/REb	x,4,4,3,2,2	x,3,4,2,1,1	%	%	%	SOLb/Major
+
+* Ods Output
+Gb	Major			/Db		x	4	4	3	2	2	x	3	4	2	1	1
+
+* Txt Latin Enharm Output
+FA#/DO#	x,4,4,3,2,2	x,3,4,2,1,1	%	%	%	FA#/Major
+
+* Ods Enharm Output
+F#	Major			/C#		x	4	4	3	2	2	x	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+SOL/RE	x,5,5,4,3,3	x,3,4,2,1,1	%	%	%	SOL/Major
+
+* Ods Output
+G	Major			/D		x	5	5	4	3	3	x	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+LAb/MIb	x,6,6,5,4,4	x,3,4,2,1,1	%	%	%	LAb/Major
+
+* Ods Output
+Ab	Major			/Eb		x	6	6	5	4	4	x	3	4	2	1	1
+
+* Txt Latin Enharm Output
+SOL#/RE#	x,6,6,5,4,4	x,3,4,2,1,1	%	%	%	SOL#/Major
+
+* Ods Enharm Output
+G#	Major			/D#		x	6	6	5	4	4	x	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+LA/MI	x,7,7,6,5,5	x,3,4,2,1,1	%	%	%	LA/Major
+
+* Ods Output
+A	Major			/E		x	7	7	6	5	5	x	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+SIb/FA	x,8,8,7,6,6	x,3,4,2,1,1	%	%	%	SIb/Major
+
+* Ods Output
+Bb	Major			/F		x	8	8	7	6	6	x	3	4	2	1	1
+
+* Txt Latin Enharm Output
+LA#/FA	x,8,8,7,6,6	x,3,4,2,1,1	%	%	%	LA#/Major
+
+* Ods Enharm Output
+A#	Major			/F		x	8	8	7	6	6	x	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+SI/FA#	x,9,9,8,7,7	x,3,4,2,1,1	%	%	%	SI/Major
+
+* Ods Output
+B	Major			/F#		x	9	9	8	7	7	x	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+DO/SOL	x,10,10,9,8,8	x,3,4,2,1,1	%	%	%	DO/Major
+
+* Ods Output
+C	Major			/G		x	10	10	9	8	8	x	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+REb/LAb	x,11,11,10,9,9	x,3,4,2,1,1	%	%	%	REb/Major
+
+* Ods Output
+Db	Major			/Ab		x	11	11	10	9	9	x	3	4	2	1	1
+
+* Txt Latin Enharm Output
+DO#/SOL#	x,11,11,10,9,9	x,3,4,2,1,1	%	%	%	DO#/Major
+
+* Ods Enharm Output
+C#	Major			/G#		x	11	11	10	9	9	x	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+RE/LA	x,12,12,11,10,10	x,3,4,2,1,1	%	%	%	RE/Major
+
+* Ods Output
+D	Major			/A		x	12	12	11	10	10	x	3	4	2	1	1
+
+##########################################################################
+
+* Txt Latin Output
+SIb	x,1,3,3,3,1	x,1,2,3,4,1	%	%	%	SIb/Major
+
+* Ods Output
+Bb	Major				x	1	3	3	3	1	x	1	2	3	4	1
+
+* Txt Latin Enharm Output
+LA#	x,1,3,3,3,1	x,1,2,3,4,1	%	%	%	LA#/Major
+
+* Ods Enharm Output
+A#	Major				x	1	3	3	3	1	x	1	2	3	4	1
+
+===================================
+
+* Txt Latin Output
+SI	x,2,4,4,4,2	x,1,2,3,4,1	%	%	%	SI/Major
+
+* Ods Output
+B	Major				x	2	4	4	4	2	x	1	2	3	4	1
+
+===================================
+
+* Txt Latin Output
+DO	x,3,5,5,5,3	x,1,2,3,4,1	%	%	%	DO/Major
+
+* Ods Output
+C	Major				x	3	5	5	5	3	x	1	2	3	4	1
+
+===================================
+
+* Txt Latin Output
+REb	x,4,6,6,6,4	x,1,2,3,4,1	%	%	%	REb/Major
+
+* Ods Output
+Db	Major				x	4	6	6	6	4	x	1	2	3	4	1
+
+* Txt Latin Enharm Output
+DO#	x,4,6,6,6,4	x,1,2,3,4,1	%	%	%	DO#/Major
+
+* Ods Enharm Output
+C#	Major				x	4	6	6	6	4	x	1	2	3	4	1
+
+===================================
+
+* Txt Latin Output
+RE	x,5,7,7,7,5	x,1,2,3,4,1	%	%	%	RE/Major
+
+* Ods Output
+D	Major				x	5	7	7	7	5	x	1	2	3	4	1
+
+===================================
+
+* Txt Latin Output
+MIb	x,6,8,8,8,6	x,1,2,3,4,1	%	%	%	MIb/Major
+
+* Ods Output
+Eb	Major				x	6	8	8	8	6	x	1	2	3	4	1
+
+* Txt Latin Enharm Output
+RE#	x,6,8,8,8,6	x,1,2,3,4,1	%	%	%	RE#/Major
+
+* Ods Enharm Output
+D#	Major				x	6	8	8	8	6	x	1	2	3	4	1
+
+===================================
+
+* Txt Latin Output
+MI	x,7,9,9,9,7	x,1,2,3,4,1	%	%	%	MI/Major
+
+* Ods Output
+E	Major				x	7	9	9	9	7	x	1	2	3	4	1
+
+===================================
+
+* Txt Latin Output
+FA	x,8,10,10,10,8	x,1,2,3,4,1	%	%	%	FA/Major
+
+* Ods Output
+F	Major				x	8	10	10	10	8	x	1	2	3	4	1
+
+===================================
+
+* Txt Latin Output
+SOLb	x,9,11,11,11,9	x,1,2,3,4,1	%	%	%	SOLb/Major
+
+* Ods Output
+Gb	Major				x	9	11	11	11	9	x	1	2	3	4	1
+
+* Txt Latin Enharm Output
+FA#	x,9,11,11,11,9	x,1,2,3,4,1	%	%	%	FA#/Major
+
+* Ods Enharm Output
+F#	Major				x	9	11	11	11	9	x	1	2	3	4	1
+
+===================================
+
+* Txt Latin Output
+SOL	x,10,12,12,12,10	x,1,2,3,4,1	%	%	%	SOL/Major
+
+* Ods Output
+G	Major				x	10	12	12	12	10	x	1	2	3	4	1
+
+===================================
+
+* Txt Latin Output
+LAb	x,11,13,13,13,11	x,1,2,3,4,1	%	%	%	LAb/Major
+
+* Ods Output
+Ab	Major				x	11	13	13	13	11	x	1	2	3	4	1
+
+* Txt Latin Enharm Output
+SOL#	x,11,13,13,13,11	x,1,2,3,4,1	%	%	%	SOL#/Major
+
+* Ods Enharm Output
+G#	Major				x	11	13	13	13	11	x	1	2	3	4	1
+
+===================================
+
+* Txt Latin Output
+LA	x,12,14,14,14,12	x,1,2,3,4,1	%	%	%	LA/Major
+
+* Ods Output
+A	Major				x	12	14	14	14	12	x	1	2	3	4	1
+
+##########################################################################
+
+* Txt Latin Output
+RE	x,5,4,2,3,2	x,4,3,1,2,1	%	%	%	RE/Major
+
+* Ods Output
+D	Major				x	5	4	2	3	2	x	4	3	1	2	1
+
+===================================
+
+* Txt Latin Output
+RE#	x,6,5,3,4,3	x,4,3,1,2,1	%	%	%	RE#/Major
+
+* Ods Output
+D#	Major				x	6	5	3	4	3	x	4	3	1	2	1
+
+* Txt Latin Enharm Output
+MIb	x,6,5,3,4,3	x,4,3,1,2,1	%	%	%	MIb/Major
+
+* Ods Enharm Output
+Eb	Major				x	6	5	3	4	3	x	4	3	1	2	1
+
+===================================
+
+* Txt Latin Output
+MI	x,7,6,4,5,4	x,4,3,1,2,1	%	%	%	MI/Major
+
+* Ods Output
+E	Major				x	7	6	4	5	4	x	4	3	1	2	1
+
+===================================
+
+* Txt Latin Output
+FA	x,8,7,5,6,5	x,4,3,1,2,1	%	%	%	FA/Major
+
+* Ods Output
+F	Major				x	8	7	5	6	5	x	4	3	1	2	1
+
+===================================
+
+* Txt Latin Output
+FA#	x,9,8,6,7,6	x,4,3,1,2,1	%	%	%	FA#/Major
+
+* Ods Output
+F#	Major				x	9	8	6	7	6	x	4	3	1	2	1
+
+* Txt Latin Enharm Output
+SOLb	x,9,8,6,7,6	x,4,3,1,2,1	%	%	%	SOLb/Major
+
+* Ods Enharm Output
+Gb	Major				x	9	8	6	7	6	x	4	3	1	2	1
+
+===================================
+
+* Txt Latin Output
+SOL	x,10,9,7,8,7	x,4,3,1,2,1	%	%	%	SOL/Major
+
+* Ods Output
+G	Major				x	10	9	7	8	7	x	4	3	1	2	1
+
+===================================
+
+* Txt Latin Output
+SOL#	x,11,10,8,9,8	x,4,3,1,2,1	%	%	%	SOL#/Major
+
+* Ods Output
+G#	Major				x	11	10	8	9	8	x	4	3	1	2	1
+
+* Txt Latin Enharm Output
+LAb	x,11,10,8,9,8	x,4,3,1,2,1	%	%	%	LAb/Major
+
+* Ods Enharm Output
+Ab	Major				x	11	10	8	9	8	x	4	3	1	2	1
+
+===================================
+
+* Txt Latin Output
+LA	x,12,11,9,10,9	x,4,3,1,2,1	%	%	%	LA/Major
+
+* Ods Output
+A	Major				x	12	11	9	10	9	x	4	3	1	2	1
+
+##########################################################################
+
+* Txt Latin Output
+FA	1,3,3,2,1,1	1,3,4,2,1,1	%	%	%	FA/Major
+
+* Ods Output
+F	Major				1	3	3	2	1	1	1	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+SOLb	2,4,4,3,2,2	1,3,4,2,1,1	%	%	%	SOLb/Major
+
+* Ods Output
+Gb	Major				2	4	4	3	2	2	1	3	4	2	1	1
+
+* Txt Latin Enharm Output
+FA#	2,4,4,3,2,2	1,3,4,2,1,1	%	%	%	FA#/Major
+
+* Ods Enharm Output
+F#	Major				2	4	4	3	2	2	1	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+SOL	3,5,5,4,3,3	1,3,4,2,1,1	%	%	%	SOL/Major
+
+* Ods Output
+G	Major				3	5	5	4	3	3	1	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+LAb	4,6,6,5,4,4	1,3,4,2,1,1	%	%	%	LAb/Major
+
+* Ods Output
+Ab	Major				4	6	6	5	4	4	1	3	4	2	1	1
+
+* Txt Latin Enharm Output
+SOL#	4,6,6,5,4,4	1,3,4,2,1,1	%	%	%	SOL#/Major
+
+* Ods Enharm Output
+G#	Major				4	6	6	5	4	4	1	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+LA	5,7,7,6,5,5	1,3,4,2,1,1	%	%	%	LA/Major
+
+* Ods Output
+A	Major				5	7	7	6	5	5	1	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+SIb	6,8,8,7,6,6	1,3,4,2,1,1	%	%	%	SIb/Major
+
+* Ods Output
+Bb	Major				6	8	8	7	6	6	1	3	4	2	1	1
+
+* Txt Latin Enharm Output
+LA#	6,8,8,7,6,6	1,3,4,2,1,1	%	%	%	LA#/Major
+
+* Ods Enharm Output
+A#	Major				6	8	8	7	6	6	1	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+SI	7,9,9,8,7,7	1,3,4,2,1,1	%	%	%	SI/Major
+
+* Ods Output
+B	Major				7	9	9	8	7	7	1	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+DO	8,10,10,9,8,8	1,3,4,2,1,1	%	%	%	DO/Major
+
+* Ods Output
+C	Major				8	10	10	9	8	8	1	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+REb	9,11,11,10,9,9	1,3,4,2,1,1	%	%	%	REb/Major
+
+* Ods Output
+Db	Major				9	11	11	10	9	9	1	3	4	2	1	1
+
+* Txt Latin Enharm Output
+DO#	9,11,11,10,9,9	1,3,4,2,1,1	%	%	%	DO#/Major
+
+* Ods Enharm Output
+C#	Major				9	11	11	10	9	9	1	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+RE	10,12,12,11,10,10	1,3,4,2,1,1	%	%	%	RE/Major
+
+* Ods Output
+D	Major				10	12	12	11	10	10	1	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+MIb	11,13,13,12,11,11	1,3,4,2,1,1	%	%	%	MIb/Major
+
+* Ods Output
+Eb	Major				11	13	13	12	11	11	1	3	4	2	1	1
+
+* Txt Latin Enharm Output
+RE#	11,13,13,12,11,11	1,3,4,2,1,1	%	%	%	RE#/Major
+
+* Ods Enharm Output
+D#	Major				11	13	13	12	11	11	1	3	4	2	1	1
+
+===================================
+
+* Txt Latin Output
+MI	12,14,14,13,12,12	1,3,4,2,1,1	%	%	%	MI/Major
+
+* Ods Output
+E	Major				12	14	14	13	12	12	1	3	4	2	1	1
+
+##########################################################################

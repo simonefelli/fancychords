@@ -1,0 +1,107 @@
+
+---------------------------------------------------------------------------------
+
+input_crdf = './small_list.csv'
+input_crdf = './small_list_ita.csv'
+
+==========================================
+
+> Num Of Success: 88
+{'perfect': 83, 'quality': 5, 'no_match': 0, 'finder_failed': 0}
+
+> Num Of Failed: 3
+{'perfect': 0, 'quality': 0, 'no_match': 2, 'finder_failed': 1}
+
+> Failed Asserts: [('maj7', 1), ('sus4', 1), ('', 1)]
+
+> Failed Finder: [('maj7', 1)]
+
+==========================================
+
+
+
+---------------------------------------------------------------------------------
+
+input_jsonf = './tvk_all_c.json'
+
+==========================================
+
+> Num Of Scuccess: 673
+{'perfect': 475, 'quality': 198, 'no_match': 0, 'finder_failed': 0}
+
+> Num Of Failed: 184
+{'perfect': 0, 'quality': 0, 'no_match': 183, 'finder_failed': 1}
+
+> Failed Asserts: [('majb5', 12), ('m#5', 12), ('mbb5', 12), ('sus2b5', 12), ('sus2#5', 12), ('aug7', 12), ('augmaj7', 12), ('mmaj7bb5', 12), ('maj#11', 12), ('7sus2#5', 12), ('7sus4#5', 12), ('7sus2sus4', 12), ('maj7sus2sus4', 12), ('7#9b5', 11), ('augmaj9', 9), ('aug9', 8)]
+
+> Failed Finder: [('maj#11', 1)]
+
+==========================================
+
+
+
+---------------------------------------------------------------------------------
+
+
+input_jsonf = './tvk_medium.json'
+
+
+==========================================
+
+> Num Of Success: 1194
+{'perfect': 895, 'quality': 299, 'no_match': 0, 'finder_failed': 0}
+
+> Num Of Failed: 406
+{'perfect': 0, 'quality': 0, 'no_match': 398, 'finder_failed': 8}
+
+> Failed Asserts: [('majb5', 36), ('m#5', 36), ('mbb5', 36), ('sus2b5', 24), ('sus2#5', 24), ('aug7', 24), ('augmaj7', 24), ('mmaj7bb5', 24), ('7#9b5', 24), ('maj#11', 24), ('7sus2#5', 24), ('7sus4#5', 24), ('7sus2sus4', 24), ('maj7sus2sus4', 24), ('augmaj9', 18), ('aug9', 16)]
+
+> Failed Finder: [('maj#11', 8)]
+
+==========================================
+
+
+
+---------------------------------------------------------------------------------
+
+
+input_jsonf = './tvk_big.json'
+
+
+==========================================
+
+> Num Of Success: 9555
+{'perfect': 6868, 'quality': 2687, 'no_match': 0, 'finder_failed': 0}
+
+> Num Of Failed: 3153
+{'perfect': 0, 'quality': 0, 'no_match': 3102, 'finder_failed': 51}
+
+> Failed Asserts: [('majb5', 204), ('m#5', 204), ('mbb5', 204), ('sus2b5', 204), ('sus2#5', 204), ('aug7', 204), ('augmaj7', 204), ('mmaj7bb5', 204), ('maj#11', 204), ('7sus2#5', 204), ('7sus4#5', 204), ('7sus2sus4', 204), ('maj7sus2sus4', 204), ('7#9b5', 193), ('augmaj9', 161), ('aug9', 147)]
+
+> Failed Finder: [('maj#11', 51)]
+
+==========================================
+
+
+
+---------------------------------------------------------------------------------
+
+input_crdf = './big_list.csv'
+
+==========================================
+
+> Num Of Success: 406
+{'perfect': 348, 'quality': 58, 'no_match': 0, 'finder_failed': 0}
+
+> Num Of Failed: 3
+{'perfect': 0, 'quality': 0, 'no_match': 2, 'finder_failed': 1}
+
+> Failed Asserts: [('maj7', 1), ('sus4', 1), ('', 1)]
+
+> Failed Finder: [('maj7', 1)]
+
+==========================================
+
+
+
+---------------------------------------------------------------------------------

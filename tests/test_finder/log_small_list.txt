@@ -1,0 +1,571 @@
+
+#################################
+> Num Of Success: 88
+---------------------------------
+ASSERT:
+* ('Aadd9/E', 'A', [0, 7, 7, 6, 0, 0], ['x', '2', '3', '1', 'x', 'x'], 'add9', '', 'E')
+GUESS: perfect
+* ['Aadd9/E', 'perfect', 'add9', '/E', 80, ['5', '5', 'R', '3', '9', '5'], ['E', 'E', 'A', 'C#', 'B', 'E'], [0, 2, 4, 7], 'matcher', 'major', 'sharp', False, 'E']
+---------------------------------
+ASSERT:
+* ('A7/E', 'A', [0, 0, 2, 0, 2, 0], ['x', 'x', '1', 'x', '2', 'x'], '7', '', 'E')
+GUESS: perfect
+* ['A7/E', 'perfect', '7', '/E', 80, ['5', 'R', '5', 'b7', '3', '5'], ['E', 'A', 'E', 'G', 'C#', 'E'], [0, 4, 7, 10], 'matcher', 'major', 'sharp', False, 'E']
+---------------------------------
+ASSERT:
+* ('A6/E', 'A', [0, 0, 2, 2, 2, 2], ['x', 'x', '1', '1', '1', '1'], '6', '', 'E')
+GUESS: perfect
+* ['A6/E', 'perfect', '6', '/E', 80, ['5', 'R', '5', 'R', '3', '6'], ['E', 'A', 'E', 'A', 'C#', 'F#'], [0, 4, 7, 9], 'matcher', 'major', 'sharp', False, 'E']
+---------------------------------
+ASSERT:
+* ('A/C#', 'A', [None, 4, 2, 2, 2, None], ['x', '3', '1', '1', '1', 'x'], '', '', 'C#')
+GUESS: perfect
+* ['A/C#', 'perfect', 'major', '/C#', 80, [None, '3', '5', 'R', '3', None], [None, 'C#', 'E', 'A', 'C#', None], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'C#']
+---------------------------------
+ASSERT:
+* ('A/C#', 'A', [None, 4, 2, 2, 5, 5], ['x', '2', '1', '1', '4', '4'], '', '', 'C#')
+GUESS: perfect
+* ['A/C#', 'perfect', 'major', '/C#', 80, [None, '3', '5', 'R', '5', 'R'], [None, 'C#', 'E', 'A', 'E', 'A'], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'C#']
+* ['A5/C#', 'no_match', '5', '/C#', 65, [None, '3', '5', 'R', '5', 'R'], [None, 'C#', 'E', 'A', 'E', 'A'], [0, 4, 7], 'slash', 'major', 'sharp', False, 'E']
+* ['A5(no3)/C#', 'no_match', '5', '(no3)/C#', 30, [None, '3', '5', 'R', '5', 'R'], [None, 'C#', 'E', 'A', 'E', 'A'], [0, 4, 7], 'slash_no3', 'major', 'sharp', False, 'E']
+---------------------------------
+ASSERT:
+* ('A/G', 'A', [3, None, 2, 2, 2, None], ['2', 'x', '1', '1', '1', 'x'], '', '', 'G')
+GUESS: perfect
+* ['A7/G', 'no_match', '7', '/G', 80, ['b7', None, '5', 'R', '3', None], ['G', None, 'E', 'A', 'C#', None], [0, 4, 7, 10], 'matcher', 'major', 'sharp', False, 'G']
+* ['A/G', 'perfect', 'major', '/G', 65, ['b7', None, '5', 'R', '3', None], ['G', None, 'E', 'A', 'C#', None], [0, 4, 7, 10], 'slash', 'major', 'sharp', False, 'E']
+---------------------------------
+ASSERT:
+* ('A/G#', 'A', [4, 0, 2, 2, 2, 0], ['4', 'x', '1', '1', '1', 'x'], '', '', 'G#')
+GUESS: perfect
+* ['A/G#', 'perfect', 'major', '/G#', 85, ['7', 'R', '5', 'R', '3', '5'], ['G#', 'A', 'E', 'A', 'C#', 'E'], [0, 4, 7, 11], 'slash', 'major', 'sharp', True, 'A']
+* ['Amaj7/G#', 'no_match', 'maj7', '/G#', 80, ['7', 'R', '5', 'R', '3', '5'], ['G#', 'A', 'E', 'A', 'C#', 'E'], [0, 4, 7, 11], 'matcher', 'major', 'sharp', False, 'G#']
+---------------------------------
+ASSERT:
+* ('Am/F#', 'A', [2, 0, None, 2, 1, 0], ['2', 'x', 'x', '3', '1', 'x'], 'm', '', 'F#')
+GUESS: perfect
+* ['Am/F#', 'perfect', 'm', '/F#', 85, ['6', 'R', None, 'R', 'b3', '5'], ['F#', 'A', None, 'A', 'C', 'E'], [0, 3, 7, 9], 'slash', 'minor', 'flat', True, 'A']
+* ['Am6/Gb', 'no_match', 'm6', '/Gb', 80, ['6', 'R', None, 'R', 'b3', '5'], ['Gb', 'A', None, 'A', 'C', 'E'], [0, 3, 7, 9], 'matcher', 'minor', 'flat', False, 'Gb']
+* ['Am(no3)/F#', 'quality', 'm', '(no3)/F#', 50, ['6', 'R', None, 'R', 'b3', '5'], ['F#', 'A', None, 'A', 'C', 'E'], [0, 3, 7, 9], 'slash_no3', 'minor', 'flat', True, 'A']
+* ['Am6(no3)/Gb', 'no_match', 'm6', '(no3)/Gb', 40, ['6', 'R', None, 'R', 'b3', '5'], ['Gb', 'A', None, 'A', 'C', 'E'], [0, 3, 7, 9], 'matcher_no3', 'minor', 'flat', False, 'Gb']
+---------------------------------
+ASSERT:
+* ('Am/G', 'A', [3, 0, 2, 2, 1, 0], ['4', 'x', '2', '3', '1', 'x'], 'm', '', 'G')
+GUESS: perfect
+* ['Am/G', 'perfect', 'm', '/G', 85, ['b7', 'R', '5', 'R', 'b3', '5'], ['G', 'A', 'E', 'A', 'C', 'E'], [0, 3, 7, 10], 'slash', 'minor', 'flat', True, 'A']
+* ['Am7/G', 'no_match', 'm7', '/G', 80, ['b7', 'R', '5', 'R', 'b3', '5'], ['G', 'A', 'E', 'A', 'C', 'E'], [0, 3, 7, 10], 'matcher', 'minor', 'flat', False, 'G']
+* ['Am(no3)/G', 'quality', 'm', '(no3)/G', 50, ['b7', 'R', '5', 'R', 'b3', '5'], ['G', 'A', 'E', 'A', 'C', 'E'], [0, 3, 7, 10], 'slash_no3', 'minor', 'flat', True, 'A']
+* ['A7#9(no3)/G', 'no_match', '7#9', '(no3)/G', 40, ['b7', 'R', '5', 'R', '#9', '5'], ['G', 'A', 'E', 'A', 'C', 'E'], [0, 3, 7, 10], 'matcher_no3', 'major', 'sharp', False, 'G']
+---------------------------------
+ASSERT:
+* ('Am7/G', 'A', [3, 0, 2, 0, 1, 0], ['3', 'x', '2', 'x', '1', 'x'], 'm7', '', 'G')
+GUESS: perfect
+* ['Am7/G', 'perfect', 'm7', '/G', 80, ['b7', 'R', '5', 'b7', 'b3', '5'], ['G', 'A', 'E', 'G', 'C', 'E'], [0, 3, 7, 10], 'matcher', 'minor', 'flat', False, 'G']
+* ['A7#9(no3)/G', 'no_match', '7#9', '(no3)/G', 40, ['b7', 'R', '5', 'b7', '#9', '5'], ['G', 'A', 'E', 'G', 'C', 'E'], [0, 3, 7, 10], 'matcher_no3', 'major', 'sharp', False, 'G']
+---------------------------------
+ASSERT:
+* ('B11/A', 'B', [None, 0, 4, 4, 4, 0], ['x', 'x', '1', '2', '3', 'x'], '11', '', 'A')
+GUESS: perfect
+* ['B11/A', 'perfect', '11', '/A', 80, [None, 'b7', '5', 'R', '3', '11'], [None, 'A', 'F#', 'B', 'D#', 'E'], [0, 4, 5, 7, 10], 'matcher', 'major', 'sharp', False, 'A']
+* ['Badd11/A', 'no_match', 'add11', '/A', 65, [None, 'b7', '5', 'R', '3', '11'], [None, 'A', 'F#', 'B', 'D#', 'E'], [0, 4, 5, 7, 10], 'slash', 'major', 'sharp', False, 'F#']
+---------------------------------
+ASSERT:
+* ('B7/F#', 'B', [2, None, 1, 2, 0, 2], ['x', '1', '2', '3', 'x', '4'], '7', '', 'F#')
+GUESS: perfect
+* ['B7/F#', 'perfect', '7', '/F#', 80, ['5', None, '3', 'b7', 'R', '5'], ['F#', None, 'D#', 'A', 'B', 'F#'], [0, 4, 7, 10], 'matcher', 'major', 'sharp', False, 'F#']
+---------------------------------
+ASSERT:
+* ('B/D#', 'B', [None, 6, 4, 4, 4, None], ['x', '3', '1', '1', '1', 'x'], '', '', 'D#')
+GUESS: perfect
+* ['B/D#', 'perfect', 'major', '/D#', 80, [None, '3', '5', 'R', '3', None], [None, 'D#', 'F#', 'B', 'D#', None], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'D#']
+---------------------------------
+ASSERT:
+* ('Bm/A', 'B', [None, 0, 4, 4, 3, 2], ['x', 'x', '3', '4', '2', '1'], 'm', '', 'A')
+GUESS: perfect
+* ['Bm7/A', 'no_match', 'm7', '/A', 80, [None, 'b7', '5', 'R', 'b3', '5'], [None, 'A', 'F#', 'B', 'D', 'F#'], [0, 3, 7, 10], 'matcher', 'minor', 'sharp', False, 'A']
+* ['Bm/A', 'perfect', 'm', '/A', 65, [None, 'b7', '5', 'R', 'b3', '5'], [None, 'A', 'F#', 'B', 'D', 'F#'], [0, 3, 7, 10], 'slash', 'minor', 'sharp', False, 'F#']
+* ['B7#9(no3)/A', 'no_match', '7#9', '(no3)/A', 40, [None, 'b7', '5', 'R', '#9', '5'], [None, 'A', 'F#', 'B', 'D', 'F#'], [0, 3, 7, 10], 'matcher_no3', 'major', 'sharp', False, 'A']
+* ['Bm(no3)/A', 'quality', 'm', '(no3)/A', 30, [None, 'b7', '5', 'R', 'b3', '5'], [None, 'A', 'F#', 'B', 'D', 'F#'], [0, 3, 7, 10], 'slash_no3', 'minor', 'sharp', False, 'F#']
+---------------------------------
+ASSERT:
+* ('Bm/F#', 'B', [2, 2, 4, 4, 3, 2], ['1', '1', '3', '4', '2', '1'], 'm', '', 'F#')
+GUESS: perfect
+* ['Bm/F#', 'perfect', 'm', '/F#', 80, ['5', 'R', '5', 'R', 'b3', '5'], ['F#', 'B', 'F#', 'B', 'D', 'F#'], [0, 3, 7], 'matcher', 'minor', 'sharp', False, 'F#']
+* ['Bm(no3)/F#', 'quality', 'm', '(no3)/F#', 40, ['5', 'R', '5', 'R', 'b3', '5'], ['F#', 'B', 'F#', 'B', 'D', 'F#'], [0, 3, 7], 'matcher_no3', 'minor', 'sharp', False, 'F#']
+---------------------------------
+ASSERT:
+* ('Bm7/A', 'B', [5, 2, 4, 2, 3, 2], ['4', '1', '3', '1', '2', '1'], 'm7', '', 'A')
+GUESS: perfect
+* ['Bm7/A', 'perfect', 'm7', '/A', 80, ['b7', 'R', '5', 'b7', 'b3', '5'], ['A', 'B', 'F#', 'A', 'D', 'F#'], [0, 3, 7, 10], 'matcher', 'minor', 'sharp', False, 'A']
+* ['B7#9(no3)/A', 'no_match', '7#9', '(no3)/A', 40, ['b7', 'R', '5', 'b7', '#9', '5'], ['A', 'B', 'F#', 'A', 'D', 'F#'], [0, 3, 7, 10], 'matcher_no3', 'major', 'sharp', False, 'A']
+---------------------------------
+ASSERT:
+* ('Bm7/E', 'B', [0, 2, 4, 2, 3, 2], ['x', '1', '3', '1', '2', '1'], 'm7', '', 'E')
+GUESS: perfect
+* ['Bm7/E', 'perfect', 'm7', '/E', 85, ['4', 'R', '5', 'b7', 'b3', '5'], ['E', 'B', 'F#', 'A', 'D', 'F#'], [0, 3, 5, 7, 10], 'slash', 'minor', 'sharp', True, 'B']
+* ['Bm11/E', 'no_match', 'm11', '/E', 80, ['11', 'R', '5', 'b7', 'b3', '5'], ['E', 'B', 'F#', 'A', 'D', 'F#'], [0, 3, 5, 7, 10], 'matcher', 'minor', 'sharp', False, 'E']
+* ['B7#9(no3)/E', 'no_match', '7#9', '(no3)/E', 50, ['4', 'R', '5', 'b7', '#9', '5'], ['E', 'B', 'F#', 'A', 'D', 'F#'], [0, 3, 5, 7, 10], 'slash_no3', 'major', 'sharp', True, 'B']
+* ['Bm11(no3)/E', 'no_match', 'm11', '(no3)/E', 40, ['11', 'R', '5', 'b7', 'b3', '5'], ['E', 'B', 'F#', 'A', 'D', 'F#'], [0, 3, 5, 7, 10], 'matcher_no3', 'minor', 'sharp', False, 'E']
+---------------------------------
+ASSERT:
+* ('B13sus2/F#', 'B', [2, 2, 4, 2, 2, 4], ['1', '1', '3', '1', '1', '4'], '13sus2', '', 'F#')
+GUESS: perfect
+* ['B13sus2/F#', 'perfect', '13sus2', '/F#', 80, ['5', 'R', '5', 'b7', '2', '13'], ['F#', 'B', 'F#', 'A', 'C#', 'G#'], [0, 2, 7, 9, 10], 'matcher', 'major', 'sharp', False, 'F#']
+* ['B13sus2(no3)/F#', 'quality', '13sus2', '(no3)/F#', 40, ['5', 'R', '5', 'b7', '2', '13'], ['F#', 'B', 'F#', 'A', 'C#', 'G#'], [0, 2, 7, 9, 10], 'matcher_no3', 'major', 'sharp', False, 'F#']
+---------------------------------
+ASSERT:
+* ('Cmaj9/B', 'C', [None, 2, 0, 0, 1, 0], ['x', '3', 'x', 'x', '1', 'x'], 'maj9', '', 'B')
+GUESS: perfect
+* ['Cmaj9/B', 'perfect', 'maj9', '/B', 80, [None, '7', '9', '5', 'R', '3'], [None, 'B', 'D', 'G', 'C', 'E'], [0, 2, 4, 7, 11], 'matcher', 'major', 'sharp', False, 'B']
+* ['Cadd9/B', 'no_match', 'add9', '/B', 65, [None, '7', '9', '5', 'R', '3'], [None, 'B', 'D', 'G', 'C', 'E'], [0, 2, 4, 7, 11], 'slash', 'major', 'sharp', False, 'D']
+---------------------------------
+ASSERT:
+* ('Cmaj7/G', 'C', [3, 3, 2, 0, 0, 0], ['3', '4', '2', 'x', 'x', 'x'], 'maj7', '', 'G')
+GUESS: perfect
+* ['Cmaj7/G', 'perfect', 'maj7', '/G', 80, ['5', 'R', '3', '5', '7', '3'], ['G', 'C', 'E', 'G', 'B', 'E'], [0, 4, 7, 11], 'matcher', 'major', 'sharp', False, 'G']
+---------------------------------
+ASSERT:
+* ('C/D', 'C', [None, None, 0, 0, 1, 0], ['x', 'x', 'x', 'x', '1', 'x'], '', '', 'D')
+GUESS: perfect
+* ['Cadd9/D', 'no_match', 'add9', '/D', 80, [None, None, '9', '5', 'R', '3'], [None, None, 'D', 'G', 'C', 'E'], [0, 2, 4, 7], 'matcher', 'major', 'sharp', False, 'D']
+* ['C/D', 'perfect', 'major', '/D', 65, [None, None, '2', '5', 'R', '3'], [None, None, 'D', 'G', 'C', 'E'], [0, 2, 4, 7], 'slash', 'major', 'sharp', False, 'G']
+---------------------------------
+ASSERT:
+* ('C/D', 'C', [None, None, 0, 5, 5, 3], ['x', 'x', 'x', '3', '4', '1'], '', '', 'D')
+GUESS: perfect
+* ['C/D', 'perfect', 'major', '/D', 85, [None, None, '2', 'R', '3', '5'], [None, None, 'D', 'C', 'E', 'G'], [0, 2, 4, 7], 'slash', 'major', 'sharp', True, 'C']
+* ['Cadd9/D', 'no_match', 'add9', '/D', 80, [None, None, '9', 'R', '3', '5'], [None, None, 'D', 'C', 'E', 'G'], [0, 2, 4, 7], 'matcher', 'major', 'sharp', False, 'D']
+---------------------------------
+ASSERT:
+* ('C/E', 'C', [0, 3, 2, 0, 1, 0], ['x', '3', '2', 'x', '1', 'x'], '', '', 'E')
+GUESS: perfect
+* ['C/E', 'perfect', 'major', '/E', 80, ['3', 'R', '3', '5', 'R', '3'], ['E', 'C', 'E', 'G', 'C', 'E'], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'E']
+---------------------------------
+ASSERT:
+* ('C/G', 'C', [3, 3, 2, 0, 1, 0], ['3', '4', '2', 'x', '1', 'x'], '', '', 'G')
+GUESS: perfect
+* ['C/G', 'perfect', 'major', '/G', 80, ['5', 'R', '3', '5', 'R', '3'], ['G', 'C', 'E', 'G', 'C', 'E'], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'G']
+---------------------------------
+ASSERT:
+* ('C/G', 'C', [3, None, 2, 0, 1, 0], ['3', 'x', '2', 'x', '1', 'x'], '', '', 'G')
+GUESS: perfect
+* ['C/G', 'perfect', 'major', '/G', 80, ['5', None, '3', '5', 'R', '3'], ['G', None, 'E', 'G', 'C', 'E'], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'G']
+---------------------------------
+ASSERT:
+* ('C/G', 'C', [3, None, 2, 0, 1, 3], ['3', 'x', '2', 'x', '1', '4'], '', '', 'G')
+GUESS: perfect
+* ['C/G', 'perfect', 'major', '/G', 80, ['5', None, '3', '5', 'R', '5'], ['G', None, 'E', 'G', 'C', 'G'], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'G']
+---------------------------------
+ASSERT:
+* ('Cm/G', 'C', [3, 3, 5, 5, 4, 3], ['1', '1', '3', '4', '2', '1'], 'm', '', 'G')
+GUESS: perfect
+* ['Cm/G', 'perfect', 'm', '/G', 80, ['5', 'R', '5', 'R', 'b3', '5'], ['G', 'C', 'G', 'C', 'Eb', 'G'], [0, 3, 7], 'matcher', 'minor', 'flat', False, 'G']
+* ['Cm(no3)/G', 'quality', 'm', '(no3)/G', 40, ['5', 'R', '5', 'R', 'b3', '5'], ['G', 'C', 'G', 'C', 'Eb', 'G'], [0, 3, 7], 'matcher_no3', 'minor', 'flat', False, 'G']
+---------------------------------
+ASSERT:
+* ('Cm7/G', 'C', [3, 3, 5, 3, 4, 3], ['1', '1', '3', '1', '2', '1'], 'm7', '', 'G')
+GUESS: perfect
+* ['Cm7/G', 'perfect', 'm7', '/G', 80, ['5', 'R', '5', 'b7', 'b3', '5'], ['G', 'C', 'G', 'Bb', 'Eb', 'G'], [0, 3, 7, 10], 'matcher', 'minor', 'flat', False, 'G']
+* ['C7#9(no3)/G', 'no_match', '7#9', '(no3)/G', 40, ['5', 'R', '5', 'b7', '#9', '5'], ['G', 'C', 'G', 'A#', 'D#', 'G'], [0, 3, 7, 10], 'matcher_no3', 'major', 'sharp', False, 'G']
+---------------------------------
+ASSERT:
+* ('C#m/G#', 'C#', [4, 4, 6, 6, 5, 4], ['1', '1', '3', '4', '2', '1'], 'm', '', 'G#')
+GUESS: perfect
+* ['C#m/G#', 'perfect', 'm', '/G#', 80, ['5', 'R', '5', 'R', 'b3', '5'], ['G#', 'C#', 'G#', 'C#', 'E', 'G#'], [0, 3, 7], 'matcher', 'minor', 'sharp', False, 'G#']
+* ['C#m(no3)/G#', 'quality', 'm', '(no3)/G#', 40, ['5', 'R', '5', 'R', 'b3', '5'], ['G#', 'C#', 'G#', 'C#', 'E', 'G#'], [0, 3, 7], 'matcher_no3', 'minor', 'sharp', False, 'G#']
+---------------------------------
+ASSERT:
+* ('C#m7/G#', 'C#', [4, 4, 6, 4, 5, 4], ['1', '1', '3', '1', '2', '1'], 'm7', '', 'G#')
+GUESS: perfect
+* ['C#m7/G#', 'perfect', 'm7', '/G#', 80, ['5', 'R', '5', 'b7', 'b3', '5'], ['G#', 'C#', 'G#', 'B', 'E', 'G#'], [0, 3, 7, 10], 'matcher', 'minor', 'sharp', False, 'G#']
+* ['C#7#9(no3)/G#', 'no_match', '7#9', '(no3)/G#', 40, ['5', 'R', '5', 'b7', '#9', '5'], ['G#', 'C#', 'G#', 'B', 'E', 'G#'], [0, 3, 7, 10], 'matcher_no3', 'major', 'sharp', False, 'G#']
+---------------------------------
+ASSERT:
+* ('Dadd11/B', 'D', [None, 2, 0, 0, 3, 2], ['x', '1', 'x', 'x', '3', '2'], 'add11', '', 'B')
+GUESS: quality
+* ['Dadd11(no5)/B', 'quality', 'add11', '(no5)/B', 70, [None, '6', 'R', '11', 'R', '3'], [None, 'B', 'D', 'G', 'D', 'F#'], [0, 4, 5, 9], 'slash_no5', 'major', 'sharp', True, 'D']
+---------------------------------
+ASSERT:
+* ('Dadd11/F#', 'D', [2, None, 0, 2, 3, 3], ['1', 'x', 'x', '2', '3', '4'], 'add11', '', 'F#')
+GUESS: perfect
+* ['Dsus4/F#', 'no_match', 'sus4', '/F#', 85, ['3', None, 'R', '5', 'R', '4'], ['F#', None, 'D', 'A', 'D', 'G'], [0, 4, 5, 7], 'slash', 'major', 'sharp', True, 'D']
+* ['Dadd11/F#', 'perfect', 'add11', '/F#', 80, ['3', None, 'R', '5', 'R', '11'], ['F#', None, 'D', 'A', 'D', 'G'], [0, 4, 5, 7], 'matcher', 'major', 'sharp', False, 'F#']
+* ['Dadd11(no3)/F#', 'quality', 'add11', '(no3)/F#', 50, ['3', None, 'R', '5', 'R', '11'], ['F#', None, 'D', 'A', 'D', 'G'], [0, 4, 5, 7], 'slash_no3', 'major', 'sharp', True, 'D']
+---------------------------------
+ASSERT:
+* ('Dadd11/G', 'D', [3, None, 0, 0, 3, 2], ['2', 'x', 'x', 'x', '3', '1'], 'add11', '', 'G')
+GUESS: quality
+* ['Dadd11(no5)/G', 'quality', 'add11', '(no5)/G', 70, ['11', None, 'R', '11', 'R', '3'], ['G', None, 'D', 'G', 'D', 'F#'], [0, 4, 5], 'matcher_no5', 'major', 'sharp', False, 'G']
+---------------------------------
+ASSERT:
+* ('Dadd9add11/A', 'D', [5, 5, 4, 0, 3, 0], ['3', '4', '2', 'x', '1', 'x'], 'add9add11', '', 'A')
+GUESS: perfect
+* ['Dadd9add11/A', 'perfect', 'add9add11', '/A', 80, ['5', 'R', '3', '11', 'R', '9'], ['A', 'D', 'F#', 'G', 'D', 'E'], [0, 2, 4, 5, 7], 'matcher', 'major', 'sharp', False, 'A']
+* ['Dadd9add11(no5)/A', 'quality', 'add9add11', '(no5)/A', 70, ['5', 'R', '3', '11', 'R', '9'], ['A', 'D', 'F#', 'G', 'D', 'E'], [0, 2, 4, 5, 7], 'slash_no5', 'major', 'sharp', True, 'D']
+---------------------------------
+ASSERT:
+* ('D7/F#', 'D', [2, None, 0, 2, 1, 2], ['T', 'x', 'x', '2', '1', '3'], '7', '', 'F#')
+GUESS: perfect
+* ['D7/F#', 'perfect', '7', '/F#', 80, ['3', None, 'R', '5', 'b7', '3'], ['F#', None, 'D', 'A', 'C', 'F#'], [0, 4, 7, 10], 'matcher', 'major', 'sharp', False, 'F#']
+---------------------------------
+ASSERT:
+* ('D7/E', 'D', [0, 3, 0, 2, 3, 2], ['x', '3', 'x', '1', '2', '1'], '7', '', 'E')
+GUESS: perfect
+* ['D9/E', 'no_match', '9', '/E', 80, ['9', 'b7', 'R', '5', 'R', '3'], ['E', 'C', 'D', 'A', 'D', 'F#'], [0, 2, 4, 7, 10], 'matcher', 'major', 'sharp', False, 'E']
+* ['D7/E', 'perfect', '7', '/E', 65, ['2', 'b7', 'R', '5', 'R', '3'], ['E', 'C', 'D', 'A', 'D', 'F#'], [0, 2, 4, 7, 10], 'slash', 'major', 'sharp', False, 'C']
+---------------------------------
+ASSERT:
+* ('Dmaj9/E', 'D', [0, 4, 0, 2, 3, 2], ['x', '4', 'x', '1', '3', '2'], 'maj9', '', 'E')
+GUESS: perfect
+* ['Dmaj9/E', 'perfect', 'maj9', '/E', 80, ['9', '7', 'R', '5', 'R', '3'], ['E', 'C#', 'D', 'A', 'D', 'F#'], [0, 2, 4, 7, 11], 'matcher', 'major', 'sharp', False, 'E']
+* ['Dmaj7/E', 'no_match', 'maj7', '/E', 65, ['2', '7', 'R', '5', 'R', '3'], ['E', 'C#', 'D', 'A', 'D', 'F#'], [0, 2, 4, 7, 11], 'slash', 'major', 'sharp', False, 'C#']
+---------------------------------
+ASSERT:
+* ('D/F#', 'D', [2, None, 0, 2, 3, None], ['1', 'x', 'x', '2', '3', 'x'], '', '', 'F#')
+GUESS: perfect
+* ['D5/F#', 'no_match', '5', '/F#', 85, ['3', None, 'R', '5', 'R', None], ['F#', None, 'D', 'A', 'D', None], [0, 4, 7], 'slash', 'major', 'sharp', True, 'D']
+* ['D/F#', 'perfect', 'major', '/F#', 80, ['3', None, 'R', '5', 'R', None], ['F#', None, 'D', 'A', 'D', None], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'F#']
+* ['D5(no3)/F#', 'no_match', '5', '(no3)/F#', 50, ['3', None, 'R', '5', 'R', None], ['F#', None, 'D', 'A', 'D', None], [0, 4, 7], 'slash_no3', 'major', 'sharp', True, 'D']
+---------------------------------
+ASSERT:
+* ('D/F#', 'D', [2, 0, 0, 2, 3, 2], ['1', 'x', 'x', '2', '4', '3'], '', '', 'F#')
+GUESS: perfect
+* ['D/F#', 'perfect', 'major', '/F#', 80, ['3', '5', 'R', '5', 'R', '3'], ['F#', 'A', 'D', 'A', 'D', 'F#'], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'F#']
+---------------------------------
+ASSERT:
+* ('D/F#', 'D', [2, 0, 0, 2, 3, 2], ['T', 'x', 'x', '1', '3', '2'], '', '', 'F#')
+GUESS: perfect
+* ['D/F#', 'perfect', 'major', '/F#', 80, ['3', '5', 'R', '5', 'R', '3'], ['F#', 'A', 'D', 'A', 'D', 'F#'], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'F#']
+---------------------------------
+ASSERT:
+* ('Dm(add11)/C', 'D', [None, 3, 0, 0, 3, 1], ['x', '2', 'x', 'x', '3', '1'], 'm(add11)', '', 'C')
+GUESS: quality
+* ['Dm11(no5)/C', 'no_match', 'm11', '(no5)/C', 70, [None, 'b7', 'R', '11', 'R', 'b3'], [None, 'C', 'D', 'G', 'D', 'F'], [0, 3, 5, 10], 'matcher_no5', 'minor', 'flat', False, 'C']
+* ['Dm(add11)(no5)/C', 'quality', 'm(add11)', '(no5)/C', 70, [None, 'b7', 'R', '11', 'R', 'b3'], [None, 'C', 'D', 'G', 'D', 'F'], [0, 3, 5, 10], 'slash_no5', 'minor', 'flat', True, 'D']
+---------------------------------
+ASSERT:
+* ('Dm7/C', 'D', [None, 3, 0, 2, 1, 1], ['x', '3', 'x', '2', '1', '1'], 'm7', '', 'C')
+GUESS: perfect
+* ['Dm7/C', 'perfect', 'm7', '/C', 80, [None, 'b7', 'R', '5', 'b7', 'b3'], [None, 'C', 'D', 'A', 'C', 'F'], [0, 3, 7, 10], 'matcher', 'minor', 'flat', False, 'C']
+* ['D7#9(no3)/C', 'no_match', '7#9', '(no3)/C', 40, [None, 'b7', 'R', '5', 'b7', '#9'], [None, 'C', 'D', 'A', 'C', 'F'], [0, 3, 7, 10], 'matcher_no3', 'major', 'sharp', False, 'C']
+---------------------------------
+ASSERT:
+* ('Dm7/G', 'D', [3, None, 0, 2, 1, 1], ['3', 'x', 'x', '2', '1', '1'], 'm7', '', 'G')
+GUESS: perfect
+* ['Dm7/G', 'perfect', 'm7', '/G', 85, ['4', None, 'R', '5', 'b7', 'b3'], ['G', None, 'D', 'A', 'C', 'F'], [0, 3, 5, 7, 10], 'slash', 'minor', 'flat', True, 'D']
+* ['Dm11/G', 'no_match', 'm11', '/G', 80, ['11', None, 'R', '5', 'b7', 'b3'], ['G', None, 'D', 'A', 'C', 'F'], [0, 3, 5, 7, 10], 'matcher', 'minor', 'flat', False, 'G']
+* ['D7#9(no3)/G', 'no_match', '7#9', '(no3)/G', 50, ['4', None, 'R', '5', 'b7', '#9'], ['G', None, 'D', 'A', 'C', 'F'], [0, 3, 5, 7, 10], 'slash_no3', 'major', 'sharp', True, 'D']
+* ['Dm11(no3)/G', 'no_match', 'm11', '(no3)/G', 40, ['11', None, 'R', '5', 'b7', 'b3'], ['G', None, 'D', 'A', 'C', 'F'], [0, 3, 5, 7, 10], 'matcher_no3', 'minor', 'flat', False, 'G']
+---------------------------------
+ASSERT:
+* ('D7sus2/G', 'D', [3, None, 0, 2, 1, 0], ['3', 'x', 'x', '2', '1', 'x'], '7sus2', '', 'G')
+GUESS: perfect
+* ['D7sus2/G', 'perfect', '7sus2', '/G', 85, ['4', None, 'R', '5', 'b7', '2'], ['G', None, 'D', 'A', 'C', 'E'], [0, 2, 5, 7, 10], 'slash', 'major', 'sharp', True, 'D']
+* ['D9sus4/G', 'no_match', '9sus4', '/G', 80, ['4', None, 'R', '5', 'b7', '9'], ['G', None, 'D', 'A', 'C', 'E'], [0, 2, 5, 7, 10], 'matcher', 'major', 'sharp', False, 'G']
+* ['D7sus2(no3)/G', 'quality', '7sus2', '(no3)/G', 50, ['4', None, 'R', '5', 'b7', '2'], ['G', None, 'D', 'A', 'C', 'E'], [0, 2, 5, 7, 10], 'slash_no3', 'major', 'sharp', True, 'D']
+* ['D11(no3)/G', 'no_match', '11', '(no3)/G', 40, ['11', None, 'R', '5', 'b7', '9'], ['G', None, 'D', 'A', 'C', 'E'], [0, 2, 5, 7, 10], 'matcher_no3', 'major', 'sharp', False, 'G']
+---------------------------------
+ASSERT:
+* ('Dsus2/B', 'D', [None, 2, 0, 2, 3, 0], ['x', '1', 'x', '2', '3', 'x'], 'sus2', '', 'B')
+GUESS: perfect
+* ['Dsus2/B', 'perfect', 'sus2', '/B', 85, [None, '6', 'R', '5', 'R', '2'], [None, 'B', 'D', 'A', 'D', 'E'], [0, 2, 7, 9], 'slash', 'major', 'sharp', True, 'D']
+* ['D6sus2/B', 'no_match', '6sus2', '/B', 80, [None, '6', 'R', '5', 'R', '2'], [None, 'B', 'D', 'A', 'D', 'E'], [0, 2, 7, 9], 'matcher', 'major', 'sharp', False, 'B']
+* ['Dadd9(no3)/B', 'no_match', 'add9', '(no3)/B', 50, [None, '6', 'R', '5', 'R', '9'], [None, 'B', 'D', 'A', 'D', 'E'], [0, 2, 7, 9], 'slash_no3', 'major', 'sharp', True, 'D']
+* ['D6sus2(no3)/B', 'no_match', '6sus2', '(no3)/B', 40, [None, '6', 'R', '5', 'R', '2'], [None, 'B', 'D', 'A', 'D', 'E'], [0, 2, 7, 9], 'matcher_no3', 'major', 'sharp', False, 'B']
+---------------------------------
+ASSERT:
+* ('Dsus2/C', 'D', [None, 3, 0, 2, 3, 0], ['x', '2', 'x', '1', '3', 'x'], 'sus2', '', 'C')
+GUESS: perfect
+* ['Dsus2/C', 'perfect', 'sus2', '/C', 85, [None, 'b7', 'R', '5', 'R', '2'], [None, 'C', 'D', 'A', 'D', 'E'], [0, 2, 7, 10], 'slash', 'major', 'sharp', True, 'D']
+* ['D7sus2/C', 'no_match', '7sus2', '/C', 80, [None, 'b7', 'R', '5', 'R', '2'], [None, 'C', 'D', 'A', 'D', 'E'], [0, 2, 7, 10], 'matcher', 'major', 'sharp', False, 'C']
+* ['Dadd9(no3)/C', 'no_match', 'add9', '(no3)/C', 50, [None, 'b7', 'R', '5', 'R', '9'], [None, 'C', 'D', 'A', 'D', 'E'], [0, 2, 7, 10], 'slash_no3', 'major', 'sharp', True, 'D']
+* ['D7sus2(no3)/C', 'no_match', '7sus2', '(no3)/C', 40, [None, 'b7', 'R', '5', 'R', '2'], [None, 'C', 'D', 'A', 'D', 'E'], [0, 2, 7, 10], 'matcher_no3', 'major', 'sharp', False, 'C']
+---------------------------------
+ASSERT:
+* ('D6sus2/E', 'D', [0, 5, 7, 7, 0, 0], ['x', '1', '3', '4', 'x', 'x'], '6sus2', '', 'E')
+GUESS: perfect
+* ['D6sus2/E', 'perfect', '6sus2', '/E', 80, ['2', 'R', '5', 'R', '6', '2'], ['E', 'D', 'A', 'D', 'B', 'E'], [0, 2, 7, 9], 'matcher', 'major', 'sharp', False, 'E']
+* ['D6sus2(no3)/E', 'quality', '6sus2', '(no3)/E', 40, ['2', 'R', '5', 'R', '6', '2'], ['E', 'D', 'A', 'D', 'B', 'E'], [0, 2, 7, 9], 'matcher_no3', 'major', 'sharp', False, 'E']
+---------------------------------
+ASSERT:
+* ('Dsus2/F#', 'D', [2, 0, 0, 2, 3, 0], ['1', 'x', 'x', '3', '2', 'x'], 'sus2', '', 'F#')
+GUESS: perfect
+* ['Dadd9/F#', 'no_match', 'add9', '/F#', 80, ['3', '5', 'R', '5', 'R', '9'], ['F#', 'A', 'D', 'A', 'D', 'E'], [0, 2, 4, 7], 'matcher', 'major', 'sharp', False, 'F#']
+* ['Dsus2/F#', 'perfect', 'sus2', '/F#', 65, ['3', '5', 'R', '5', 'R', '2'], ['F#', 'A', 'D', 'A', 'D', 'E'], [0, 2, 4, 7], 'slash', 'major', 'sharp', False, 'A']
+* ['Dadd9(no3)/F#', 'no_match', 'add9', '(no3)/F#', 30, ['3', '5', 'R', '5', 'R', '9'], ['F#', 'A', 'D', 'A', 'D', 'E'], [0, 2, 4, 7], 'slash_no3', 'major', 'sharp', False, 'A']
+---------------------------------
+ASSERT:
+* ('E7/B', 'E', [None, 2, 0, 1, 0, 0], ['x', '2', 'x', '1', 'x', 'x'], '7', '', 'B')
+GUESS: perfect
+* ['E7/B', 'perfect', '7', '/B', 80, [None, '5', 'b7', '3', '5', 'R'], [None, 'B', 'D', 'G#', 'B', 'E'], [0, 4, 7, 10], 'matcher', 'major', 'sharp', False, 'B']
+---------------------------------
+ASSERT:
+* ('E7/G#', 'E', [4, 2, 0, 1, 0, 0], ['4', '2', 'x', '1', 'x', 'x'], '7', '', 'G#')
+GUESS: perfect
+* ['E7/G#', 'perfect', '7', '/G#', 80, ['3', '5', 'b7', '3', '5', 'R'], ['G#', 'B', 'D', 'G#', 'B', 'E'], [0, 4, 7, 10], 'matcher', 'major', 'sharp', False, 'G#']
+---------------------------------
+ASSERT:
+* ('E/G#', 'E', [4, 2, 2, 1, 0, 0], ['4', '2', '3', '1', 'x', 'x'], '', '', 'G#')
+GUESS: perfect
+* ['E/G#', 'perfect', 'major', '/G#', 80, ['3', '5', 'R', '3', '5', 'R'], ['G#', 'B', 'E', 'G#', 'B', 'E'], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'G#']
+---------------------------------
+ASSERT:
+* ('E/G#', 'E', [4, 2, 2, 4, 5, None], ['2', '1', '1', '3', '4', 'x'], '', '', 'G#')
+GUESS: perfect
+* ['E/G#', 'perfect', 'major', '/G#', 80, ['3', '5', 'R', '5', 'R', None], ['G#', 'B', 'E', 'B', 'E', None], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'G#']
+* ['E5/G#', 'no_match', '5', '/G#', 65, ['3', '5', 'R', '5', 'R', None], ['G#', 'B', 'E', 'B', 'E', None], [0, 4, 7], 'slash', 'major', 'sharp', False, 'B']
+* ['E5(no3)/G#', 'no_match', '5', '(no3)/G#', 30, ['3', '5', 'R', '5', 'R', None], ['G#', 'B', 'E', 'B', 'E', None], [0, 4, 7], 'slash_no3', 'major', 'sharp', False, 'B']
+---------------------------------
+ASSERT:
+* ('E/G#', 'E', [4, None, 2, 4, 5, None], ['2', 'x', '1', '3', '4', 'x'], '', '', 'G#')
+GUESS: perfect
+* ['E5/G#', 'no_match', '5', '/G#', 85, ['3', None, 'R', '5', 'R', None], ['G#', None, 'E', 'B', 'E', None], [0, 4, 7], 'slash', 'major', 'sharp', True, 'E']
+* ['E/G#', 'perfect', 'major', '/G#', 80, ['3', None, 'R', '5', 'R', None], ['G#', None, 'E', 'B', 'E', None], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'G#']
+* ['E5(no3)/G#', 'no_match', '5', '(no3)/G#', 50, ['3', None, 'R', '5', 'R', None], ['G#', None, 'E', 'B', 'E', None], [0, 4, 7], 'slash_no3', 'major', 'sharp', True, 'E']
+---------------------------------
+ASSERT:
+* ('Em/G', 'E', [3, 2, 2, 0, 0, 0], ['4', '2', '3', 'x', 'x', 'x'], 'm', '', 'G')
+GUESS: perfect
+* ['Em/G', 'perfect', 'm', '/G', 80, ['b3', '5', 'R', 'b3', '5', 'R'], ['G', 'B', 'E', 'G', 'B', 'E'], [0, 3, 7], 'matcher', 'minor', 'sharp', False, 'G']
+* ['Em(no3)/G', 'quality', 'm', '(no3)/G', 40, ['b3', '5', 'R', 'b3', '5', 'R'], ['G', 'B', 'E', 'G', 'B', 'E'], [0, 3, 7], 'matcher_no3', 'minor', 'sharp', False, 'G']
+---------------------------------
+ASSERT:
+* ('F6/C', 'F', [None, 3, 0, 2, 1, 1], ['x', '3', 'x', '2', '1', '1'], '6', '', 'C')
+GUESS: perfect
+* ['F6/C', 'perfect', '6', '/C', 80, [None, '5', '6', '3', '5', 'R'], [None, 'C', 'D', 'A', 'C', 'F'], [0, 4, 7, 9], 'matcher', 'major', 'flat', False, 'C']
+---------------------------------
+ASSERT:
+* ('Fmaj7/C', 'F', [None, 3, 3, 2, 1, 0], ['x', '3', '4', '2', '1', 'x'], 'maj7', '', 'C')
+GUESS: perfect
+* ['Fmaj7/C', 'perfect', 'maj7', '/C', 80, [None, '5', 'R', '3', '5', '7'], [None, 'C', 'F', 'A', 'C', 'E'], [0, 4, 7, 11], 'matcher', 'major', 'flat', False, 'C']
+---------------------------------
+ASSERT:
+* ('F/C', 'F', [None, 3, 3, 2, 1, 1], ['x', '3', '4', '2', '1', '1'], '', '', 'C')
+GUESS: perfect
+* ['F/C', 'perfect', 'major', '/C', 80, [None, '5', 'R', '3', '5', 'R'], [None, 'C', 'F', 'A', 'C', 'F'], [0, 4, 7], 'matcher', 'major', 'flat', False, 'C']
+---------------------------------
+ASSERT:
+* ('F/C', 'F', [None, 3, 3, 2, 1, None], ['x', '3', '4', '2', '1', 'x'], '', '', 'C')
+GUESS: perfect
+* ['F/C', 'perfect', 'major', '/C', 80, [None, '5', 'R', '3', '5', None], [None, 'C', 'F', 'A', 'C', None], [0, 4, 7], 'matcher', 'major', 'flat', False, 'C']
+---------------------------------
+ASSERT:
+* ('F/G', 'F', [3, 0, 3, 2, 1, None], ['3', 'x', '4', '2', '1', 'x'], '', '', 'G')
+GUESS: perfect
+* ['Fadd9/G', 'no_match', 'add9', '/G', 80, ['9', '3', 'R', '3', '5', None], ['G', 'A', 'F', 'A', 'C', None], [0, 2, 4, 7], 'matcher', 'major', 'flat', False, 'G']
+* ['F/G', 'perfect', 'major', '/G', 65, ['2', '3', 'R', '3', '5', None], ['G', 'A', 'F', 'A', 'C', None], [0, 2, 4, 7], 'slash', 'major', 'flat', False, 'A']
+---------------------------------
+ASSERT:
+* ('F/G', 'F', [3, None, 3, 2, 1, 1], ['3', 'x', '4', '2', '1', '1'], '', '', 'G')
+GUESS: perfect
+* ['F/G', 'perfect', 'major', '/G', 85, ['2', None, 'R', '3', '5', 'R'], ['G', None, 'F', 'A', 'C', 'F'], [0, 2, 4, 7], 'slash', 'major', 'flat', True, 'F']
+* ['Fadd9/G', 'no_match', 'add9', '/G', 80, ['9', None, 'R', '3', '5', 'R'], ['G', None, 'F', 'A', 'C', 'F'], [0, 2, 4, 7], 'matcher', 'major', 'flat', False, 'G']
+---------------------------------
+ASSERT:
+* ('F#7/A#', 'F#', [6, None, 4, 6, 5, None], ['3', 'x', '4', '4', '2', 'x'], '7', '', 'A#')
+GUESS: perfect
+* ['F#7/A#', 'perfect', '7', '/A#', 80, ['3', None, 'R', '5', 'b7', None], ['A#', None, 'F#', 'C#', 'E', None], [0, 4, 7, 10], 'matcher', 'major', 'sharp', False, 'A#']
+* ['F#7(no3)/A#', 'quality', '7', '(no3)/A#', 50, ['3', None, 'R', '5', 'b7', None], ['A#', None, 'F#', 'C#', 'E', None], [0, 4, 7, 10], 'slash_no3', 'major', 'sharp', True, 'F#']
+---------------------------------
+ASSERT:
+* ('F#/A#', 'F#', [6, None, 4, 6, 7, None], ['2', 'x', '1', '3', '4', 'x'], '', '', 'A#')
+GUESS: perfect
+* ['F#5/A#', 'no_match', '5', '/A#', 85, ['3', None, 'R', '5', 'R', None], ['A#', None, 'F#', 'C#', 'F#', None], [0, 4, 7], 'slash', 'major', 'sharp', True, 'F#']
+* ['F#/A#', 'perfect', 'major', '/A#', 80, ['3', None, 'R', '5', 'R', None], ['A#', None, 'F#', 'C#', 'F#', None], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'A#']
+* ['F#5(no3)/A#', 'no_match', '5', '(no3)/A#', 50, ['3', None, 'R', '5', 'R', None], ['A#', None, 'F#', 'C#', 'F#', None], [0, 4, 7], 'slash_no3', 'major', 'sharp', True, 'F#']
+---------------------------------
+ASSERT:
+* ('F#m11/E', 'F#', [0, 4, 4, 2, 0, 0], ['x', '3', '4', '1', 'x', 'x'], 'm11', '', 'E')
+GUESS: perfect
+* ['F#m11/E', 'perfect', 'm11', '/E', 80, ['b7', '5', 'R', 'b3', '11', 'b7'], ['E', 'C#', 'F#', 'A', 'B', 'E'], [0, 3, 5, 7, 10], 'matcher', 'minor', 'sharp', False, 'E']
+* ['F#m11(no3)/E', 'quality', 'm11', '(no3)/E', 40, ['b7', '5', 'R', 'b3', '11', 'b7'], ['E', 'C#', 'F#', 'A', 'B', 'E'], [0, 3, 5, 7, 10], 'matcher_no3', 'minor', 'sharp', False, 'E']
+---------------------------------
+ASSERT:
+* ('F#m11/E', 'F#', [0, 9, 7, 9, 0, 0], ['x', '3', '1', '4', 'x', 'x'], 'm11', '', 'E')
+GUESS: quality
+* ['F#m11(no5)/E', 'quality', 'm11', '(no5)/E', 70, ['b7', 'R', 'b3', 'b7', '11', 'b7'], ['E', 'F#', 'A', 'E', 'B', 'E'], [0, 3, 5, 10], 'matcher_no5', 'minor', 'sharp', False, 'E']
+---------------------------------
+ASSERT:
+* ('F#m7/C#', 'F#', [None, 4, 2, 2, 2, 2], ['x', '3', '1', '1', '1', '1'], 'm7', '', 'C#')
+GUESS: perfect
+* ['F#m7/C#', 'perfect', 'm7', '/C#', 80, [None, '5', 'b7', 'b3', '5', 'R'], [None, 'C#', 'E', 'A', 'C#', 'F#'], [0, 3, 7, 10], 'matcher', 'minor', 'sharp', False, 'C#']
+* ['F#7#9(no3)/C#', 'no_match', '7#9', '(no3)/C#', 40, [None, '5', 'b7', '#9', '5', 'R'], [None, 'C#', 'E', 'A', 'C#', 'F#'], [0, 3, 7, 10], 'matcher_no3', 'major', 'sharp', False, 'C#']
+---------------------------------
+ASSERT:
+* ('F#m7/E', 'F#', [0, 4, 4, 2, 2, 2], ['x', '3', '4', '1', '1', '1'], 'm7', '', 'E')
+GUESS: perfect
+* ['F#m7/E', 'perfect', 'm7', '/E', 80, ['b7', '5', 'R', 'b3', '5', 'R'], ['E', 'C#', 'F#', 'A', 'C#', 'F#'], [0, 3, 7, 10], 'matcher', 'minor', 'sharp', False, 'E']
+* ['F#m/E', 'no_match', 'm', '/E', 65, ['b7', '5', 'R', 'b3', '5', 'R'], ['E', 'C#', 'F#', 'A', 'C#', 'F#'], [0, 3, 7, 10], 'slash', 'minor', 'sharp', False, 'C#']
+* ['F#7#9(no3)/E', 'no_match', '7#9', '(no3)/E', 40, ['b7', '5', 'R', '#9', '5', 'R'], ['E', 'C#', 'F#', 'A', 'C#', 'F#'], [0, 3, 7, 10], 'matcher_no3', 'major', 'sharp', False, 'E']
+* ['F#m(no3)/E', 'no_match', 'm', '(no3)/E', 30, ['b7', '5', 'R', 'b3', '5', 'R'], ['E', 'C#', 'F#', 'A', 'C#', 'F#'], [0, 3, 7, 10], 'slash_no3', 'minor', 'sharp', False, 'C#']
+---------------------------------
+ASSERT:
+* ('G7/D', 'G', [None, None, 0, 0, 0, 1], ['x', 'x', 'x', 'x', 'x', '1'], '7', '', 'D')
+GUESS: perfect
+* ['G7/D', 'perfect', '7', '/D', 85, [None, None, '5', 'R', '3', 'b7'], [None, None, 'D', 'G', 'B', 'F'], [0, 4, 7, 10], 'slash', 'major', 'sharp', True, 'G']
+* ['G7/D', 'perfect', '7', '/D', 80, [None, None, '5', 'R', '3', 'b7'], [None, None, 'D', 'G', 'B', 'F'], [0, 4, 7, 10], 'matcher', 'major', 'sharp', False, 'D']
+* ['G7(no5)/D', 'quality', '7', '(no5)/D', 70, [None, None, '5', 'R', '3', 'b7'], [None, None, 'D', 'G', 'B', 'F'], [0, 4, 7, 10], 'slash_no5', 'major', 'sharp', True, 'G']
+---------------------------------
+ASSERT:
+* ('G6/A', 'G', [None, 0, 5, 4, 3, 0], ['x', 'x', '3', '2', '1', 'x'], '6', '', 'A')
+GUESS: perfect
+* ['G6/A', 'perfect', '6', '/A', 85, [None, '2', 'R', '3', '5', '6'], [None, 'A', 'G', 'B', 'D', 'E'], [0, 2, 4, 7, 9], 'slash', 'major', 'sharp', True, 'G']
+* ['G6(add9)/A', 'no_match', '6(add9)', '/A', 80, [None, '9', 'R', '3', '5', '6'], [None, 'A', 'G', 'B', 'D', 'E'], [0, 2, 4, 7, 9], 'matcher', 'major', 'sharp', False, 'A']
+---------------------------------
+ASSERT:
+* ('G6/B', 'G', [None, 2, 0, 0, 3, 0], ['x', '1', 'x', 'x', '3', 'x'], '6', '', 'B')
+GUESS: perfect
+* ['G6/B', 'perfect', '6', '/B', 80, [None, '3', '5', 'R', '5', '6'], [None, 'B', 'D', 'G', 'D', 'E'], [0, 4, 7, 9], 'matcher', 'major', 'sharp', False, 'B']
+* ['G6(no3)/B', 'quality', '6', '(no3)/B', 30, [None, '3', '5', 'R', '5', '6'], [None, 'B', 'D', 'G', 'D', 'E'], [0, 4, 7, 9], 'slash_no3', 'major', 'sharp', False, 'D']
+---------------------------------
+ASSERT:
+* ('Gmaj7/B', 'G', [None, 2, 0, 0, 3, 2], ['x', '1', 'x', 'x', '3', '2'], 'maj7', '', 'B')
+GUESS: perfect
+* ['Gmaj7/B', 'perfect', 'maj7', '/B', 80, [None, '3', '5', 'R', '5', '7'], [None, 'B', 'D', 'G', 'D', 'F#'], [0, 4, 7, 11], 'matcher', 'major', 'sharp', False, 'B']
+* ['Gmaj7(no3)/B', 'quality', 'maj7', '(no3)/B', 30, [None, '3', '5', 'R', '5', '7'], [None, 'B', 'D', 'G', 'D', 'F#'], [0, 4, 7, 11], 'slash_no3', 'major', 'sharp', False, 'D']
+---------------------------------
+ASSERT:
+* ('G/A', 'G', [5, None, 5, 4, 3, 3], ['3', 'x', '4', '2', '1', '1'], '', '', 'A')
+GUESS: perfect
+* ['G/A', 'perfect', 'major', '/A', 85, ['2', None, 'R', '3', '5', 'R'], ['A', None, 'G', 'B', 'D', 'G'], [0, 2, 4, 7], 'slash', 'major', 'sharp', True, 'G']
+* ['Gadd9/A', 'no_match', 'add9', '/A', 80, ['9', None, 'R', '3', '5', 'R'], ['A', None, 'G', 'B', 'D', 'G'], [0, 2, 4, 7], 'matcher', 'major', 'sharp', False, 'A']
+---------------------------------
+ASSERT:
+* ('G/B', 'G', [None, 2, 0, 0, 3, 3], ['x', '1', 'x', 'x', '3', '4'], '', '', 'B')
+GUESS: perfect
+* ['G/B', 'perfect', 'major', '/B', 80, [None, '3', '5', 'R', '5', 'R'], [None, 'B', 'D', 'G', 'D', 'G'], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'B']
+* ['G5/B', 'no_match', '5', '/B', 65, [None, '3', '5', 'R', '5', 'R'], [None, 'B', 'D', 'G', 'D', 'G'], [0, 4, 7], 'slash', 'major', 'sharp', False, 'D']
+* ['G5(no3)/B', 'no_match', '5', '(no3)/B', 30, [None, '3', '5', 'R', '5', 'R'], [None, 'B', 'D', 'G', 'D', 'G'], [0, 4, 7], 'slash_no3', 'major', 'sharp', False, 'D']
+---------------------------------
+ASSERT:
+* ('G/D', 'G', [None, None, 0, 4, 3, 3], ['x', 'x', 'x', '2', '1', '1'], '', '', 'D')
+GUESS: perfect
+* ['G/D', 'perfect', 'major', '/D', 80, [None, None, '5', '3', '5', 'R'], [None, None, 'D', 'B', 'D', 'G'], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'D']
+---------------------------------
+ASSERT:
+* ('G/F#', 'G', [2, 2, 0, 0, 3, 3], ['1', '2', 'x', 'x', '3', '4'], '', '', 'F#')
+GUESS: perfect
+* ['Gmaj7/F#', 'no_match', 'maj7', '/F#', 80, ['7', '3', '5', 'R', '5', 'R'], ['F#', 'B', 'D', 'G', 'D', 'G'], [0, 4, 7, 11], 'matcher', 'major', 'sharp', False, 'F#']
+* ['G/F#', 'perfect', 'major', '/F#', 65, ['7', '3', '5', 'R', '5', 'R'], ['F#', 'B', 'D', 'G', 'D', 'G'], [0, 4, 7, 11], 'slash', 'major', 'sharp', False, 'B']
+---------------------------------
+ASSERT:
+* ('Gm6/Bb', 'G', [None, 1, 2, 0, 3, 0], ['x', '1', '2', 'x', '4', 'x'], 'm6', '', 'Bb')
+GUESS: perfect
+* ['Gm6/Bb', 'perfect', 'm6', '/Bb', 80, [None, 'b3', '6', 'R', '5', '6'], [None, 'Bb', 'E', 'G', 'D', 'E'], [0, 3, 7, 9], 'matcher', 'minor', 'flat', False, 'Bb']
+* ['Gm6(no3)/Bb', 'quality', 'm6', '(no3)/Bb', 40, [None, 'b3', '6', 'R', '5', '6'], [None, 'Bb', 'E', 'G', 'D', 'E'], [0, 3, 7, 9], 'matcher_no3', 'minor', 'flat', False, 'Bb']
+* ['G6(no3)/A#', 'no_match', '6', '(no3)/A#', 30, [None, 'b3', '6', 'R', '5', '6'], [None, 'A#', 'E', 'G', 'D', 'E'], [0, 3, 7, 9], 'slash_no3', 'major', 'sharp', False, 'E']
+---------------------------------
+ASSERT:
+* ('G5/D', 'G', [None, None, 0, 0, 3, 3], ['x', 'x', 'x', 'x', '3', '4'], '5', '', 'D')
+GUESS: perfect
+* ['G5/D', 'perfect', '5', '/D', 80, [None, None, '5', 'R', '5', 'R'], [None, None, 'D', 'G', 'D', 'G'], [0, 7], 'matcher', 'major', 'sharp', False, 'D']
+* ['G5(no3)/D', 'quality', '5', '(no3)/D', 40, [None, None, '5', 'R', '5', 'R'], [None, None, 'D', 'G', 'D', 'G'], [0, 7], 'matcher_no3', 'major', 'sharp', False, 'D']
+---------------------------------
+ASSERT:
+* ('G5/F#', 'G', [2, None, 0, 0, 3, 3], ['1', 'x', 'x', 'x', '3', '4'], '5', '', 'F#')
+GUESS: perfect
+* ['G5/F#', 'perfect', '5', '/F#', 65, ['7', None, '5', 'R', '5', 'R'], ['F#', None, 'D', 'G', 'D', 'G'], [0, 7, 11], 'slash', 'major', 'sharp', False, 'D']
+* ['Gmaj7(no3)/F#', 'no_match', 'maj7', '(no3)/F#', 40, ['7', None, '5', 'R', '5', 'R'], ['F#', None, 'D', 'G', 'D', 'G'], [0, 7, 11], 'matcher_no3', 'major', 'sharp', False, 'F#']
+* ['G5(no3)/F#', 'quality', '5', '(no3)/F#', 30, ['7', None, '5', 'R', '5', 'R'], ['F#', None, 'D', 'G', 'D', 'G'], [0, 7, 11], 'slash_no3', 'major', 'sharp', False, 'D']
+---------------------------------
+ASSERT:
+* ('G6sus2/F#', 'G', [2, 0, 0, 0, 3, 0], ['1', 'x', 'x', 'x', '3', 'x'], '6sus2', '', 'F#')
+GUESS: perfect
+* ['G6sus2/F#', 'perfect', '6sus2', '/F#', 65, ['7', '2', '5', 'R', '5', '6'], ['F#', 'A', 'D', 'G', 'D', 'E'], [0, 2, 7, 9, 11], 'slash', 'major', 'sharp', False, 'A']
+* ['Gmaj13(no3)/F#', 'no_match', 'maj13', '(no3)/F#', 40, ['7', '9', '5', 'R', '5', '13'], ['F#', 'A', 'D', 'G', 'D', 'E'], [0, 2, 7, 9, 11], 'matcher_no3', 'major', 'sharp', False, 'F#']
+* ['G6sus2(no3)/F#', 'quality', '6sus2', '(no3)/F#', 30, ['7', '2', '5', 'R', '5', '6'], ['F#', 'A', 'D', 'G', 'D', 'E'], [0, 2, 7, 9, 11], 'slash_no3', 'major', 'sharp', False, 'A']
+---------------------------------
+ASSERT:
+* ('Gsus2/F#', 'G', [2, 0, 0, 2, 3, 3], ['1', 'x', 'x', '2', '3', '4'], 'sus2', '', 'F#')
+GUESS: perfect
+* ['Gmaj7sus2/F#', 'no_match', 'maj7sus2', '/F#', 80, ['7', '2', '5', '2', '5', 'R'], ['F#', 'A', 'D', 'A', 'D', 'G'], [0, 2, 7, 11], 'matcher', 'major', 'sharp', False, 'F#']
+* ['Gsus2/F#', 'perfect', 'sus2', '/F#', 65, ['7', '2', '5', '2', '5', 'R'], ['F#', 'A', 'D', 'A', 'D', 'G'], [0, 2, 7, 11], 'slash', 'major', 'sharp', False, 'A']
+* ['Gmaj9(no3)/F#', 'no_match', 'maj9', '(no3)/F#', 40, ['7', '9', '5', '9', '5', 'R'], ['F#', 'A', 'D', 'A', 'D', 'G'], [0, 2, 7, 11], 'matcher_no3', 'major', 'sharp', False, 'F#']
+* ['Gadd9(no3)/F#', 'no_match', 'add9', '(no3)/F#', 30, ['7', '9', '5', '9', '5', 'R'], ['F#', 'A', 'D', 'A', 'D', 'G'], [0, 2, 7, 11], 'slash_no3', 'major', 'sharp', False, 'A']
+---------------------------------
+ASSERT:
+* ('D7/A', 'D', [None, 0, 0, 2, 1, 2], ['x', 'x', 'x', '2', '1', '3'], '7', '', 'A')
+GUESS: perfect
+* ['D7/A', 'perfect', '7', '/A', 80, [None, '5', 'R', '5', 'b7', '3'], [None, 'A', 'D', 'A', 'C', 'F#'], [0, 4, 7, 10], 'matcher', 'major', 'sharp', False, 'A']
+---------------------------------
+ASSERT:
+* ('D/F#', 'D', [2, None, 0, 2, 3, 2], ['1', 'x', 'x', '2', '4', '3'], '', '', 'F#')
+GUESS: perfect
+* ['D/F#', 'perfect', 'major', '/F#', 80, ['3', None, 'R', '5', 'R', '3'], ['F#', None, 'D', 'A', 'D', 'F#'], [0, 4, 7], 'matcher', 'major', 'sharp', False, 'F#']
+---------------------------------
+ASSERT:
+* ('G7/B', 'G', [None, 2, 3, 0, 3, 3], ['x', '1', '2', 'x', '3', '4'], '7', '', 'B')
+GUESS: perfect
+* ['G7/B', 'perfect', '7', '/B', 80, [None, '3', 'b7', 'R', '5', 'R'], [None, 'B', 'F', 'G', 'D', 'G'], [0, 4, 7, 10], 'matcher', 'major', 'sharp', False, 'B']
+* ['G7(no3)/B', 'quality', '7', '(no3)/B', 30, [None, '3', 'b7', 'R', '5', 'R'], [None, 'B', 'F', 'G', 'D', 'G'], [0, 4, 7, 10], 'slash_no3', 'major', 'sharp', False, 'F']
+---------------------------------
+ASSERT:
+* ('Em7/B', 'E', [None, 2, 0, 0, 0, 0], ['x', '1', 'x', 'x', 'x', 'x'], 'm7', '', 'B')
+GUESS: perfect
+* ['Em7/B', 'perfect', 'm7', '/B', 80, [None, '5', 'b7', 'b3', '5', 'R'], [None, 'B', 'D', 'G', 'B', 'E'], [0, 3, 7, 10], 'matcher', 'minor', 'sharp', False, 'B']
+* ['E7#9(no3)/B', 'no_match', '7#9', '(no3)/B', 40, [None, '5', 'b7', '#9', '5', 'R'], [None, 'B', 'D', 'G', 'B', 'E'], [0, 3, 7, 10], 'matcher_no3', 'major', 'sharp', False, 'B']
+---------------------------------
+ASSERT:
+* ('G7/D', 'G', [None, 5, 3, 4, 6, 3], ['x', '3', '1', '2', '4', '1'], '7', '', 'D')
+GUESS: perfect
+* ['G7/D', 'perfect', '7', '/D', 80, [None, '5', 'b7', '3', 'b7', 'R'], [None, 'D', 'F', 'B', 'F', 'G'], [0, 4, 7, 10], 'matcher', 'major', 'sharp', False, 'D']
+* ['G7/D', 'perfect', '7', '/D', 65, [None, '5', 'b7', '3', 'b7', 'R'], [None, 'D', 'F', 'B', 'F', 'G'], [0, 4, 7, 10], 'slash', 'major', 'sharp', False, 'F']
+* ['G7(no5)/D', 'quality', '7', '(no5)/D', 50, [None, '5', 'b7', '3', 'b7', 'R'], [None, 'D', 'F', 'B', 'F', 'G'], [0, 4, 7, 10], 'slash_no5', 'major', 'sharp', False, 'F']
+---------------------------------
+ASSERT:
+* ('Fm/F', 'F', [None, None, 3, 1, 1, 4], ['x', 'x', '3', '1', '1', '4'], 'm', '', 'F')
+GUESS: quality
+* ['Fm', 'quality', 'm', '', 100, [None, None, 'R', 'b3', '5', 'b3'], [None, None, 'F', 'Ab', 'C', 'Ab'], [0, 3, 7], 'matcher', 'minor', 'flat', True, 'F']
+* ['Fm(no3)', 'quality', 'm', '(no3)', 60, [None, None, 'R', 'b3', '5', 'b3'], [None, None, 'F', 'Ab', 'C', 'Ab'], [0, 3, 7], 'matcher_no3', 'minor', 'flat', True, 'F']
+---------------------------------
+ASSERT:
+* ('Bb/F', 'Bb', [None, None, 3, 3, 3, None], ['x', 'x', '1', '1', '1', 'x'], '', '', 'F')
+GUESS: perfect
+* ['Bb/F', 'perfect', 'major', '/F', 80, [None, None, '5', 'R', '3', None], [None, None, 'F', 'Bb', 'D', None], [0, 4, 7], 'matcher', 'major', 'flat', False, 'F']
+* ['Bb(no5)/F', 'quality', 'major', '(no5)/F', 70, [None, None, '5', 'R', '3', None], [None, None, 'F', 'Bb', 'D', None], [0, 4, 7], 'slash_no5', 'major', 'flat', True, 'Bb']
+---------------------------------
+ASSERT:
+* ('G7/F', 'G', [1, None, 3, 0, 0, 3], ['1', 'x', '3', 'x', 'x', '4'], '7', '', 'F')
+GUESS: perfect
+* ['G7/F', 'perfect', '7', '/F', 80, ['b7', None, 'b7', 'R', '3', 'R'], ['F', None, 'F', 'G', 'B', 'G'], [0, 4, 10], 'matcher', 'major', 'sharp', False, 'F']
+* ['G7(no5)/F', 'quality', '7', '(no5)/F', 70, ['b7', None, 'b7', 'R', '3', 'R'], ['F', None, 'F', 'G', 'B', 'G'], [0, 4, 10], 'matcher_no5', 'major', 'sharp', False, 'F']
+---------------------------------
+ASSERT:
+* ('Cm/Eb', 'C', [None, 6, 5, 5, 4, None], ['x', '4', '2', '3', '1', 'x'], 'm', '', 'Eb')
+GUESS: perfect
+* ['Cm/Eb', 'perfect', 'm', '/Eb', 80, [None, 'b3', '5', 'R', 'b3', None], [None, 'Eb', 'G', 'C', 'Eb', None], [0, 3, 7], 'matcher', 'minor', 'flat', False, 'Eb']
+* ['Cm(no3)/Eb', 'quality', 'm', '(no3)/Eb', 40, [None, 'b3', '5', 'R', 'b3', None], [None, 'Eb', 'G', 'C', 'Eb', None], [0, 3, 7], 'matcher_no3', 'minor', 'flat', False, 'Eb']
+---------------------------------
+
+#################################
+> Num Of Failed: 3
+---------------------------------
+ASSERT:
+* ('Cmaj7/B', 'C', [None, 2, 2, 0, 0, 0], ['x', '1', '2', 'x', 'x', 'x'], 'maj7', '', 'B')
+GUESS: finder_failed
+* [(None, None, 0, [None, '7', '3', '5', '7', '3'], [None, None, 'E', 'G', 'B', 'E'], [4, 7, 11], None, None, None, False, 'E')]
+---------------------------------
+ASSERT:
+* ('Dsus4/B', 'D', [None, 2, 0, 0, 3, 0], ['x', '1', 'x', 'x', '3', 'x'], 'sus4', '', 'B')
+GUESS: no_match
+* ['Dsus2sus4(no5)/B', 'no_match', 'sus2sus4', '(no5)/B', 70, [None, '6', 'R', '4', 'R', '2'], [None, 'B', 'D', 'G', 'D', 'E'], [0, 2, 5, 9], 'slash_no5', 'major', 'sharp', True, 'D']
+---------------------------------
+ASSERT:
+* ('G/A', 'G', [5, 0, 5, 4, 3, None], ['3', 'x', '4', '2', '1', 'x'], '', '', 'A')
+GUESS: no_match
+* ['Gadd9/A', 'no_match', 'add9', '/A', 80, ['9', '9', 'R', '3', '5', None], ['A', 'A', 'G', 'B', 'D', None], [0, 2, 4, 7], 'matcher', 'major', 'sharp', False, 'A']
+---------------------------------
+
+==========================================
+
+> Num Of Success: 88
+{'perfect': 83, 'quality': 5, 'no_match': 0, 'finder_failed': 0}
+
+> Num Of Failed: 3
+{'perfect': 0, 'quality': 0, 'no_match': 2, 'finder_failed': 1}
+
+> Failed Asserts: [('maj7', 1), ('sus4', 1), ('', 1)]
+
+> Failed Finder: [('maj7', 1)]
+
+==========================================
