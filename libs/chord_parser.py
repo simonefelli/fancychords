@@ -171,6 +171,10 @@ def check_crd_params(chord_name, frets, fingers, intervals, dlabels, footer, sub
         # sanitize chord_filename
         for forbidd_char in '/\\':
             chord_filename = chord_filename.replace(forbidd_char, '_', 9)
+        # remove the other forbidden chars now, before duplicate filenames
+        # are checked, so that names differing only by a forbidden char
+        # (ie 'C(add9)' and 'Cadd9') do not overwrite each other
+        chord_filename = global_utilities.sanitize_str(chord_filename)
     else:
         error_in_chord = True
         error_message += 'chord name is blank '

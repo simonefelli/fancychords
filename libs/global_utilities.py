@@ -59,7 +59,7 @@ def sanitize_str(instr):
             , '<', '>', '&', '$', '£'
             , '*', '(', ')', '!'
             , '|', '~', '`', '´'
-            , '{', '}', '%', '+'
+            , '{', '}', '%'
             ]
         # safe encoding for windows
         instr = instr.encode('latin1', 'ignore').decode('utf8', 'ignore')
