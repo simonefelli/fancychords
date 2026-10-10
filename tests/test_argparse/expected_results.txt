@@ -1,0 +1,5 @@
+Namespace(dir_output=None, horiz=None, json_file='./config.json', lntk=5.0)
+- dir_output:  ../configout
+- horiz:  True
+- lntk:  5.0
+- fretb_format:  {'*': [1.0, 'black', '1.0', 'black', '1.0', 'none', '3', 'white', '1.0', 'bold', 'Ubuntu Mono', False, False], 'r': [1.0, 'lightgrey', '1.0', 'black', '1.0', 'none', '5', 'black', '1.0', 'bold', 'Ubuntu Mono', False, False], '3': [1.0, 'lightsalmon', '1.0', 'black', '1.0', 'none', '5', 'black', '1.0', 'bold', 'Ubuntu Mono', False, False], 'b3': [1.0, 'lightsalmon', '1.0', 'black', '1.0', 'none', '5', 'black', '1.0', 'bold', 'Ubuntu Mono', False, False]}

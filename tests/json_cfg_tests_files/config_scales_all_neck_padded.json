@@ -1,0 +1,67 @@
+{
+  "i/o": {
+    "dir_output": "../dirout"
+  },  
+  "flags": {
+    "horiz": true,
+	"scale_label_isbottom": false, 
+    "scale_label_isleft": true, 
+    "enable_header": false,
+    "enable_dotlabels": true,
+    "enable_footer": true,
+    "enable_fretnum": true,
+    "nutline": true,
+    "fret0": false,
+    "convert_flag": true,
+    "report": "enable",
+    "debug": false,
+    "root_is_different": true
+  },
+  "generic_formats": {
+    "font_weight": "normal",
+    "font_family": "Ubuntu Mono Legacy",
+    "scale_label_font_weight": "normal",
+    "scale_label_font_family": "Ubuntu Mono Legacy",
+    "scale_label_font_factor": 0.80, 
+    "upper_labels_font_weight": "normal",
+    "upper_labels_font_family": "Ubuntu Mono Legacy",
+    "upper_labels_font_factor": 1.15,
+    "bottom_labels_font_weight": "normal",
+    "bottom_labels_font_family": "Ubuntu Mono Legacy",
+    "bottom_labels_font_factor": 0.80,
+    "side_labels_font_weight": "normal",
+    "side_labels_font_family": "Ubuntu Mono Legacy",
+    "side_labels_font_factor": 0.70,
+	"fretb_format": {
+		"*":  [1.0,  "black",       "1.0", "black", "1.0", "none", "3.5", "white", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
+		"r":  [0.9,  "lightgrey",   "1.0", "black", "1.0", "none", "5.0", "black", "1.0", "bold",   "Ubuntu Mono Legacy", true,  false],
+		"3":  [1.0,  "lightsalmon", "1.0", "black", "1.0", "none", "3.5", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
+		"b3": [1.0,  "lightsalmon", "1.0", "black", "1.0", "none", "3.5", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
+        "b5": [1.0,  "skyblue",     "1.0", "black", "1.0", "none", "3.5", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
+        "b7": [1.0,  "lightgreen",  "1.0", "black", "1.0", "none", "3.5", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
+        "7":  [1.0,  "lightgreen",  "1.0", "black", "1.0", "none", "3.5", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false]
+	  },
+	"fret0_format": {
+		"*":  [1.05, "black",       "0.7", "black", "0.0", "dashes", "3.5", "white", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
+		"r":  [0.9,  "lightgrey",   "0.7", "black", "1.0", "dashes", "3.5", "black", "1.0", "bold",   "Ubuntu Mono Legacy", true,  false],
+        "b3": [1.0,  "lightsalmon", "0.7", "black", "1.0", "dashes", "3.5", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
+        "3":  [1.0,  "lightsalmon", "0.7", "black", "1.0", "dashes", "3.5", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
+        "b7": [1.0,  "lightgreen",  "0.7", "black", "1.0", "dashes", "3.5", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
+        "7":  [1.0,  "lightgreen",  "0.7", "black", "1.0", "dashes", "3.5", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false]
+	  },
+    "arrows_format": [3.00, "black", "1.0", "e", true, ""]
+  },
+  "parameters": {
+    "lntk": 3.00,
+    "x_or": 20.0,
+    "y_or": 20.0,
+    "ns": 6,
+    "nf": 4,
+    "fd": 77.0,
+    "sd": 55.0,
+    "radius_factor": 0.40,
+    "padding": [0, 16], 
+    "ncols": 1,
+    "thumb_width": "1100.0px"
+  }
+}

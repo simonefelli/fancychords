@@ -1,0 +1,55 @@
+
+// comment
+
+
+NAME		Am Blues Scale, Position 2
+FOLDER		./Blues_Scale
+FILENAME	Am Blues Scale`Pos2´
+STRING01	x,8,x,10 ,11	x,b3,x,4,b5		x,1,x,3,4
+STRING02	x,8,x,10,x		x,b7,x,R,x		x,1,x,3,x
+STRING03	7,8,9,x,x		4,b5,5,x,x		1,2,3,x,x
+STRING04	7,x,x,10,x		R,x,x,b3,x		1,x,x,4,x
+STRING05	7,x,x,10,x		5,x,x,b7,x		1,x,x,4,x
+STRING06	x,8,x,10,11		x,b3,x,4,b5		x,1,x,3,4
+FOOTER		
+ARROWS		
+
+
+NAME		Am Blues Scale\nPosition 1
+FOLDER		./Blues_Scale
+FILENAME	
+STRING01	5,x,x,8			R,x,x,b3		1,x,x,4
+STRING02	5,x,x,8			5,x,x,b7		1,x,x,4
+STRING03	5,x,7,8			b3,x,4,b5		1,x,3,4
+STRING04	5,x,7,x			b7,x,R,x		1,x,3,x
+STRING05	5,6,7,x			4,b5,5,x		1,2,3,x
+STRING06	5,x,x,8			R,x,x,b3		1,x,x,4
+FOOTER		E,A,D,G,B,e
+ARROWS		( ((5,2), (8,2)), ((5,4), (7,4)), ((6,5), (7,5)) )
+
+
+NAME		C Major Scale, Open Position 
+FOLDER		
+FILENAME
+STRING01	0,1,x,3			3,4,x,5		3,4,x,5
+STRING02	0,1,x,3			7,R,x,2		7,R,x,2
+STRING03	0,x,2,x			5,x,6,x		5,x,6,x
+STRING04	0,x,2,3			2,x,3,4		2,x,3,4
+STRING05	0,x,2,3			6,x,7,R		6,x,7,R
+STRING06	0,1,x,3			3,4,x,5		3,4,x,5
+FOOTER		E,A,D,G,B,e
+ARROWS		
+
+
+NAME		C Major Scale, Test  
+FOLDER		./
+FILENAME
+STRING01	0,1,x,3			3,4,x,5		3,4,x,5
+STRING02	x,1,x,3			7,R,x,2		7,R,x,2
+STRING03	0,x,2,x			5,x,6,x		5,x,6,x
+STRING04	0,x,2,3			2,x,3,4		2,x,3,4
+STRING05	0,x,2,3			6,x,7,R		6,x,7,R
+STRING06	x,1,x,3			3,4,x,5		3,4,x,5
+FOOTER		E,A,D,G,B,e
+ARROWS	
+	

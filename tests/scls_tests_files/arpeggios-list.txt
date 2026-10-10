@@ -1,0 +1,29 @@
+
+// comment
+
+NAME		G Dominant 7 Arpeggio, E Form
+FOLDER		./Dom7
+FILENAME	G Dom7 Arp E Form
+
+STRING01	x ,3 ,x ,x ,x 	x ,R ,x ,x ,x 	x ,R ,x ,x ,x 
+STRING02	x ,3 ,x ,x ,6 	x ,5 ,x ,x ,b7	x ,5 ,x ,x ,b7
+STRING03	x ,x ,4 ,x ,x 	x ,x ,3 ,x ,x 	x ,x ,3 ,x ,x 
+STRING04	x ,3 ,x ,5 ,x 	x ,b7,x ,R ,x 	x ,b7,x ,R ,x 
+STRING05	2 ,x ,x ,5 ,x 	3 ,x ,x ,5 ,x 	3 ,x ,x ,5 ,x 
+STRING06	x ,3 ,x ,x ,x 	x ,R ,x ,x ,x 	x ,R ,x ,x ,x 
+FOOTER		E,A,D,G,B,e
+ARROWS		
+
+
+NAME		G Dominant 7 Arpeggio\nC Form
+FOLDER		./Dom7
+FILENAME	G Dom7 Arp C Form
+
+STRING01	7 ,x ,x ,10		3 ,x ,x ,5 		3 ,x ,x ,5 
+STRING02	x ,8 ,x ,x 		x ,R ,x ,x 		x ,R ,x ,x 
+STRING03	7 ,x ,x ,10		5 ,x ,x ,b7		5 ,x ,x ,b7
+STRING04	x ,x ,9 ,x 		x ,x ,3 ,x 		x ,x ,3 ,x 
+STRING05	x ,8 ,x ,10		x ,b7,x ,R 		x ,b7,x ,R 
+STRING06	7 ,x ,x ,10		3 ,x ,x ,5 		3 ,x ,x ,5 
+FOOTER		E,A,D,G,B,e
+ARROWS	

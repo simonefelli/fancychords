@@ -1,0 +1,15 @@
+
+
+NAME		Am Blues Scale, All over the neck
+FOLDER		./
+FILENAME	Am Blues Scale Neck
+STRING01	0 ,x ,x ,3 ,x ,5 ,x ,x ,8 ,x ,10,11,12,x ,x ,15,x 		5 ,x ,x ,b7,x ,R ,x ,x ,b3,x ,4 ,b5,5 ,x ,x ,b7,x 		%
+STRING02	x ,1 ,x ,3 ,4 ,5 ,x ,x ,8 ,x ,10,x ,x ,13,x ,15,16		x ,b3,x ,4 ,b5,5 ,x ,x ,b7,x ,R ,x ,x ,b3,x ,4 ,b5		%
+STRING03	0 ,x ,2 ,x ,x ,5 ,x ,7 ,8 ,9 ,x ,x ,12,x ,14,x ,x 		b7,x ,R ,x ,x ,b3,x ,4 ,b5,5 ,x ,x ,b7,x ,R ,x ,x 		%
+STRING04	0 ,1 ,2 ,x ,x ,5 ,x ,7 ,x ,x ,10,x ,12,13,14,x ,x 		4 ,b5,5 ,x ,x ,b7,x ,R ,x ,x ,b3,x ,4 ,b5,5 ,x ,x 		%
+STRING05	0 ,x ,x ,3 ,x ,5 ,6 ,7 ,x ,x ,10,x ,12,x ,x ,15,x 		R ,x ,x ,b3,x ,4 ,b5,5 ,x ,x ,b7,x ,R ,x ,x ,b3,x 		%
+STRING06	0 ,x ,x ,3 ,x ,5 ,x ,x ,8 ,x ,10,11,12,x ,x ,15,x 		5 ,x ,x ,b7,x ,R ,x ,x ,b3,x ,4 ,b5,5 ,x ,x ,b7,x 		%
+FOOTER		E,A,D,G,B,e
+ARROWS	
+
+

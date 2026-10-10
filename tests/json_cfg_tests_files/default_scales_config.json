@@ -1,0 +1,58 @@
+{
+  "i/o": {
+    "dir_output": "./"
+  },  
+  "flags": {
+    "horiz": false,
+	"scale_label_isbottom": false, 
+    "scale_label_isleft": false, 
+    "enable_header": true,
+    "enable_dotlabels": true,
+    "enable_footer": false,
+    "enable_fretnum": true,
+    "nutline": true,
+    "fret0": false,
+    "convert_flag": false,
+    "report": "disable",
+    "debug": false,
+    "root_is_different": false
+  },
+  "generic_formats": {
+    "font_weight": "normal",
+    "font_family": "Ubuntu Mono Legacy",
+    "scale_label_font_weight": null,
+    "scale_label_font_family": null,
+    "scale_label_font_factor": null, 
+    "upper_labels_font_weight": null,
+    "upper_labels_font_family": null,
+    "upper_labels_font_factor": null,
+    "bottom_labels_font_weight": null,
+    "bottom_labels_font_family": null,
+    "bottom_labels_font_factor": null,
+    "side_labels_font_weight": null,
+    "side_labels_font_family": null,
+    "side_labels_font_factor": null,
+	"fretb_format": {        
+		"*":  [1.0, "black",       "1.0", "black", "1.0", "none", "3.5", "white", "1.0", "normal", "", false, false],
+		"r":  [1.0, "lightgrey",   "1.0", "black", "1.0", "none", "5.0", "black", "1.0", "bold",   "", false, false]
+	  },
+	"fret0_format": {
+		"*": [1.0, "white",     "0.7", "black", "1.0", "dashes", "3.5", "black", "1.0", "", "", false, false],
+		"r": [1.0, "lightgrey", "0.7", "black", "1.0", "dashes", "3.5", "black", "1.0", "", "", false, false]
+	  },
+    "arrows_format": [3.00, "black", "1.0", "e", true, ""]
+  },
+  "parameters": {
+    "lntk": 3.00,
+    "x_or": 20.0,
+    "y_or": 20.0,
+    "ns": 6,
+    "nf": 4,
+    "fd": 77.0,
+    "sd": 55.0,
+    "radius_factor": 0.40,
+    "padding": "none", 
+    "ncols": 2,
+    "thumb_width": "350.0px"
+  }
+}

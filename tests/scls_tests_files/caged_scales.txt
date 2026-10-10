@@ -1,0 +1,65 @@
+
+NAME		G Form
+FOLDER		./
+FILENAME	
+STRING01	x ,3 ,x ,5 ,x 		x ,b7,x ,R ,x 		%
+STRING02	x ,3 ,4 ,5 ,x 		x ,4 ,b5,5 ,x 		%
+STRING03	2 ,x ,x ,5 ,x 		R ,x ,x ,b3,x 		%
+STRING04	2 ,x ,x ,5 ,x 		5 ,x ,x ,b7,x 		%
+STRING05	x ,3 ,x ,5 ,6 		x ,b3,x ,4 ,b5		%
+STRING06	x ,3 ,x ,5 ,x 		x ,b7,x ,R ,x 		%
+FOOTER		E,A,D,G,B,e
+ARROWS		
+
+
+NAME		E Form
+FOLDER		./
+FILENAME	
+STRING01	5 ,x ,x ,8 		R ,x ,x ,b3		%
+STRING02	5 ,x ,x ,8 		5 ,x ,x ,b7		%
+STRING03	5 ,x ,7 ,8 		b3,x ,4 ,b5		%
+STRING04	5 ,x ,7 ,x 		b7,x ,R ,x 		%
+STRING05	5 ,6 ,7 ,x 		4 ,b5,5 ,x 		%
+STRING06	5 ,x ,x ,8 		R ,x ,x ,b3		%
+FOOTER		E,A,D,G,B,e
+ARROWS		
+
+
+NAME		D Form
+FOLDER		./
+FILENAME	
+STRING01	x ,8 ,x ,10,11		x ,b3,x ,4 ,b5		%
+STRING02	x ,8 ,x ,10,x 		x ,b7,x ,R ,x 		%
+STRING03	7 ,8 ,9 ,x ,x 		4 ,b5,5 ,x ,x 		%
+STRING04	7 ,x ,x ,10,x 		R ,x ,x ,b3,x 		%
+STRING05	7 ,x ,x ,10,x 		5 ,x ,x ,b7,x 		%
+STRING06	x ,8 ,x ,10,11		x ,b3,x ,4 ,b5		%
+FOOTER		E,A,D,G,B,e
+ARROWS		
+
+
+NAME		C Form
+FOLDER		./
+FILENAME	
+STRING01	x ,10,11,12,x 		x ,4 ,b5,5 ,x 		%
+STRING02	x ,10,x ,x ,13		x ,R ,x ,x ,b3		%
+STRING03	9 ,x ,x ,12,x 		5 ,x ,x ,b7,x 		%
+STRING04	x ,10,x ,12,13		x ,b3,x ,4 ,b5		%
+STRING05	x ,10,x ,12,x 		x ,b7,x ,R ,x 		%
+STRING06	x ,10,11,12,x 		x ,4 ,b5,5 ,x 		%
+FOOTER		E,A,D,G,B,e
+ARROWS		
+
+
+NAME		A Form
+FOLDER		./
+FILENAME	
+STRING01	12,x ,x ,15,x 		5 ,x ,x ,b7,x 		%
+STRING02	x ,13,x ,15,16		x ,b3,x ,4 ,b5		%
+STRING03	12,x ,14,x ,x 		b7,x ,R ,x ,x 		%
+STRING04	12,13,14,x ,x 		4 ,b5,5 ,x ,x 		%
+STRING05	12,x ,x ,15,x 		R ,x ,x ,b3,x 		%
+STRING06	12,x ,x ,15,x 		5 ,x ,x ,b7,x 		%
+FOOTER		E,A,D,G,B,e
+ARROWS		
+
