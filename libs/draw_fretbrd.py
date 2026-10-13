@@ -34,6 +34,10 @@ def shift_down_trasf(pt, delta):
     Trasformation function for a point (x,y) -> (x,y+delta)
     shift down the point
 
+    Note: not used at the moment anywhere in the codebase (programs,
+    libraries, examples or tests); kept as an alternative transformation
+    for apply_trasf_matrix(), like rotate_shift_trasf()
+
     pt: Tuple, point to shift
     delta: shist amount
 
