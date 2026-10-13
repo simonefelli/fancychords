@@ -230,7 +230,7 @@ default_params = {
 # (python3 fancychords.py ...), not when it is imported by another module
 if __name__ == "__main__":
 
-    program_version = '0.7'
+    program_version = '0.8'
     program_author = 'Simone Felli'
     
     # parser declaration
