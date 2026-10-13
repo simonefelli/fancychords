@@ -8,10 +8,10 @@
 Both write **SVG** images (and optionally **PNG**), can build an **HTML gallery** of everything they drew, and can be styled in detail with a **JSON config file**.
 
 <p>
-<img src="./assets/C%20Major.v02.svg" alt="C Major chord" width="150">
-<img src="./assets/C7.v02.svg" alt="C7 barre chord" width="150">
-<img src="./assets/G7.svg" alt="G7 chord" width="150">
-<img src="./assets/D%20Form.svg" alt="A minor blues scale, D form of the CAGED system" width="300">
+<img src="./assets/png/C%20Major.v02.png" alt="C Major chord" width="150">
+<img src="./assets/png/C7.v02.png" alt="C7 barre chord" width="150">
+<img src="./assets/png/G7.png" alt="G7 chord" width="150">
+<img src="./assets/png/D%20Form.png" alt="A minor blues scale, D form of the CAGED system" width="300">
 </p>
 
 ## Contents
@@ -102,7 +102,7 @@ Here is the simplest example for using fancychords via command line:
 
 By doing that you get a file called `C Major.svg` that looks like this:
 
-<img src="./assets/C%20Major.svg" alt="C Major" width="200">
+<img src="./assets/png/C%20Major.png" alt="C Major" width="200">
 
 `--cli_in` tells fancychords to get the chord from the command line (the other possibility is a text file, with `--file_in`, see [Chord list files](#chord-list-files)).
 
@@ -118,13 +118,13 @@ Now let's add some stuff like fingers and intervals. We also want to highlight t
 
 and `C Major.v02.svg` looks like this:
 
-<img src="./assets/C%20Major.v02.svg" alt="C Major with fingers, root and footer" width="200">
+<img src="./assets/png/C%20Major.v02.png" alt="C Major with fingers, root and footer" width="200">
 
 Open strings can also be drawn as dots above the nut with `--nut`:
 
 `fancychords --cli_in="C Major.v03|x,3,2,0,1,0|x,3,2,x,1,x|x,R,3,5,R,3" --nut --root-diff`
 
-<img src="./assets/C%20Major.v03.svg" alt="C Major with open string dots" width="200">
+<img src="./assets/png/C%20Major.v03.png" alt="C Major with open string dots" width="200">
 
 But what about barre chords? Let's try with the C7 chord:
 
@@ -138,13 +138,13 @@ This time we also want the chord to be horizontal (`--horizontal`), the interval
 
 `fancychords --cli_in="C7|x,3,5,3,5,3|x,1,3,1,4,1|x,R,3,b7,3,5|x,R,3,b7,3,5|x,1,3,1,4,1" --horizontal --root-diff --footer`
 
-<img src="./assets/C7.svg" alt="C7 horizontal" width="230">
+<img src="./assets/png/C7.png" alt="C7 horizontal" width="230">
 
 Fancier looking chords can be drawn using a config file:
 
 `fancychords --cli_in="C7.v02|x,3,5,3,5,3|x,1,3,1,4,1|x,R,3,b7,3,5|x,R,3,b7,3,5|x,1,3,1,4,1" --config_file="./config_v01.json"`
 
-<img src="./assets/C7.v02.svg" alt="C7 with config file" width="230">
+<img src="./assets/png/C7.v02.png" alt="C7 with config file" width="230">
 
 [config_v01.json](./assets/config_v01.json) uses all the available options (see [Config file](#config-file)): the root is a grey square, thirds are salmon colored, and the chord label is drawn with its own font.
 
@@ -152,7 +152,7 @@ Below another example, with the open strings drawn above the nut and the chord n
 
 `fancychords --cli_in="G7|3,2,0,0,0,1|3,2,x,x,x,1|R,3,5,R,5,b7|R,3,5,1,5,b7|3,2,x,x,x,1" --config_file="./config_v02.json"`
 
-<img src="./assets/G7.svg" alt="G7 with config file" width="200">
+<img src="./assets/png/G7.png" alt="G7 with config file" width="200">
 
 with [config_v02.json](./assets/config_v02.json).
 
@@ -302,7 +302,7 @@ FancyScales draws scale diagrams over any range of frets. It reads the scales fr
 
 `fancyscales d_form.txt --config_file=./config_scales.json`
 
-<img src="./assets/D%20Form.svg" alt="A minor blues scale, D form of the CAGED system" width="360">
+<img src="./assets/png/D%20Form.png" alt="A minor blues scale, D form of the CAGED system" width="360">
 
 ([d_form.txt](./assets/d_form.txt), [config_scales.json](./assets/config_scales.json)): the A minor blues scale in the D form of the CAGED system, from frets 7 to 11 (see the [CAGED example](#example-the-a-minor-blues-scale-in-caged-forms) below for all the five forms).
 
@@ -349,7 +349,7 @@ overlapping positions, each one built around a chord shape (C, A, G, E
 and D forms). FancyScales can draw both the whole neck and every single
 form on the same neck, so the positions line up and are easy to compare:
 
-<img src="./tests/test_caged/blues_scale/caged_blues_complete.png" alt="A minor blues scale all over the neck and in its five CAGED forms" width="600">
+<img src="./assets/png/caged_blues_complete.png" alt="A minor blues scale all over the neck and in its five CAGED forms" width="600">
 
 The sheet is made of six diagrams drawn by two FancyScales commands (run
 from the [tests/test_caged](./tests/test_caged) folder, as
