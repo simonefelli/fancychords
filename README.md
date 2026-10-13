@@ -270,7 +270,7 @@ With `--root-diff` and no dot formats in the config file, the root gets a grey d
 
 ### Size parameters
 
-`parameters` sets the geometry. The most useful ones are `sd` (distance between strings, the overall size of the image), `fd` (distance between frets), `lntk` (line thickness), `radius_factor` (dot radius = `sd * radius_factor`), `nf` (number of frets drawn, default 4; more are added when a chord needs them), `x_or` / `y_or` (margins), `barre_strk_wdth` (barre thickness), and for the HTML report `ncols` (columns of the gallery) and `thumb_width` (thumbnail width, ie `"250px"`). When `sd` and `lntk` are given, missing `fd`, `radius_factor` and `barre_strk_wdth` are computed from them, keeping the default proportions.
+`parameters` sets the geometry (every parameter is explained with a drawing in [docs/chord_geometry.md](./docs/chord_geometry.md)). The most useful ones are `sd` (distance between strings, the overall size of the image), `fd` (distance between frets), `lntk` (line thickness), `radius_factor` (dot radius = `sd * radius_factor`), `nf` (number of frets drawn, default 4; more are added when a chord needs them), `x_or` / `y_or` (margins), `barre_strk_wdth` (barre thickness), and for the HTML report `ncols` (columns of the gallery) and `thumb_width` (thumbnail width, ie `"250px"`). When `sd` and `lntk` are given, missing `fd`, `radius_factor` and `barre_strk_wdth` are computed from them, keeping the default proportions.
 
 ## PNG images and HTML report
 
@@ -374,6 +374,7 @@ libs/                   the libraries used by both programs
                                                          moving chord shapes
   helper_functions.py     use the libraries from your own Python scripts
 assets/                 images, config files and scale file of this README
+docs/                   more documentation (chord_geometry.md: how a chord image is built)
 tests/                  automatic tests, test data and developer scripts
 ```
 

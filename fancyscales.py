@@ -124,7 +124,7 @@ default_params = {
     , 'padding': None                    # tuple (lower_fret, higher_fret) for padding scales with 'x', None to disable
     , 'scale_label_font_family': None    # main scale label font family: default is global font family
     , 'scale_label_font_weight': None    # main scale label font weight: default is global font weight
-    , 'scale_label_font_factor': None    # main scale label font size factor: default is 0.70
+    , 'scale_label_font_factor': None    # main scale label font size factor: default is 0.80
     , 'upper_labels_font_family': None   # upper labels font family: default is global font family
     , 'upper_labels_font_weight': None   # upper labels font weight: default is global font weight
     , 'upper_labels_font_factor': None   # upper labels font factor: default is 1.15
