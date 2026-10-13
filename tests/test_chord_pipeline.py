@@ -39,8 +39,10 @@ import unittest
 # local application imports
 from libs import autofingers
 from libs import chord_parser
+from libs import chord_tree_merge
 from libs import draw_scales
 from libs import global_utilities
+from libs import helper_functions
 from libs import intervals
 from libs import music_utilities
 from libs import scale_parser
@@ -343,6 +345,50 @@ class TestMusicTheory(unittest.TestCase):
         self.assertEqual(chords[0][:2], ('C7', [None, 3, 2, 3, 1, 0]))
         # shifted chords drop open strings (they cannot move with the shape)
         self.assertEqual(chords[1][:2], ('C#7', [None, 4, 3, 4, 2, None]))
+
+
+class TestLibraryTools(unittest.TestCase):
+    '''helper_functions, chord_tree_merge, global_utilities extras'''
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.out = self.tmp.name
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_normalize_all_muted_chord(self):
+        # min() of an empty list raised ValueError
+        self.assertEqual(global_utilities.frets_int_normalize([None] * 6), (False, [None] * 6, 0))
+
+    def test_generate_scale_file_in_current_dir(self):
+        # a bare file name (no dir part) raised FileNotFoundError
+        my_scale = helper_functions.generate_scale('A', 'minor_pentatonic', 5, print_output=False)
+        cwd = os.getcwd()
+        os.chdir(self.out)
+        try:
+            helper_functions.generate_scale_file(my_scale, 'scale.txt', False, print_output=False)
+        finally:
+            os.chdir(cwd)
+        self.assertTrue(os.path.isfile(os.path.join(self.out, 'scale.txt')))
+
+    def test_process_chordsfile_report_only(self):
+        # report='only' raised UnboundLocalError
+        config = os.path.join(REPO_DIR, 'tests', 'json_cfg_tests_files', 'default_chords_config.json')
+        chords = os.path.join(REPO_DIR, 'tests', 'crds_test_files', 'chord-list.txt')
+        result = helper_functions.process_chordsfile_by_config_json(
+            config, chords, report='only', dir_output=self.out)
+        self.assertEqual(result, ('', [], []))
+
+    def test_merge_chord_tree_versions(self):
+        src, dst = os.path.join(self.out, 'src', 'A'), os.path.join(self.out, 'dst', 'A')
+        os.makedirs(src); os.makedirs(dst)
+        for name in ('Gmin.v12.svg', 'C Major. 2nd Inversion.svg'):
+            open(os.path.join(src, name), 'w').close()
+        open(os.path.join(dst, 'Gmin.v12.svg'), 'w').close()
+        # 'C Major. 2nd Inversion' raised ValueError, v12 was read as v2
+        chord_tree_merge.merge_chord_tree(os.path.join(self.out, 'src'), os.path.join(self.out, 'dst'), ('.svg',))
+        self.assertEqual(sorted(os.listdir(dst)), ['C Major. 2nd Inversion.svg', 'Gmin.v12.svg', 'Gmin.v13.svg'])
 
 
 if __name__ == '__main__':

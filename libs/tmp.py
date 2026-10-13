@@ -15,6 +15,13 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+
+"""
+tmp: scratch script (not a library, nothing imports it). It transposes a
+few chord shapes with transportables.transport() and prints them as chord
+file rows. It could be moved to tests/test_transportables.
+"""
+
 from libs import global_constants
 from libs import global_utilities
 from libs import music_utilities

@@ -16,6 +16,13 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+import_tvk_json: read chords from a tvk json file (a dict
+{chord_name: [{'positions': [...], 'fingerings': [[...]]}, ...]}) and turn
+them into chord lists for chord_parser.get_crd_list_from_str_list().
+"""
+
+
 # standard library imports
 import os
 import json
@@ -38,7 +45,7 @@ def study_tvk_json_chords(infile):
     '''
     crdnames_list = []
     crdqual_dict = {}    
-    with open(infile, mode='r') as infile:
+    with open(infile, mode='r', encoding='utf-8') as infile:
         # data is a dict {chord_name:[...]}
         data = json.load(infile)
         chord_name, note, quality, detail = '', '', '', ''
@@ -65,16 +72,17 @@ def parse_tvk_json_file(input_jsonf):
     
     input_jsonf: String, input tvk json in style
     
-    return tuple (crd_list, msg_str)
+    return tuple (msg_str, crd_list)   (note the order: message first)
     where crd_list is 
     [
-        [chord_name, frets, fingers, dlabels, footer, subfolder]
+        [chord_name, frets, fingers, intervals, dlabels, footer, subfolder]
         , ...
     ]
+    with '%' for intervals, dlabels and footer and 'note/quality' as subfolder
     '''
     crd_list = []
     msg_str = ''   
-    with open(input_jsonf, mode='r') as input_jsonf:
+    with open(input_jsonf, mode='r', encoding='utf-8') as input_jsonf:
         # data is a dict {chord_name:[...]}
         data = json.load(input_jsonf)
         for chord_name, chord_forms in list(data.items()):
@@ -85,15 +93,19 @@ def parse_tvk_json_file(input_jsonf):
             chord_name = tvk_chord_name[0]
             note = tvk_chord_name[1]
             quality = tvk_chord_name[2]
-            dirout = dirout = os.path.join(note, quality)
+            dirout = os.path.join(note, quality)
             my_row = '\n' + '-' * 42 + '\n'
             msg_str += my_row + '\nChord: ' + chord_name + '\n' * 2
             for form in chord_forms:
+                # reset for every form: a form without 'positions' or
+                # 'fingerings' must not reuse the values of the previous one
+                frets, fingers = '', '%'
                 for fret_fing_str, fret_fing_lst in list(form.items()):
                     if fret_fing_str == 'positions':
                         frets = ",".join([el for el in fret_fing_lst])
                         msg_str += 'pos: ' + frets + '\t'
-                    elif fret_fing_str == 'fingerings':
+                    elif fret_fing_str == 'fingerings' and fret_fing_lst:
+                        # only the first fingering is used, '0' (no finger) -> 'x'
                         fing_lst = [el for el in fret_fing_lst[0]]
                         fing_lst_fltrd = [el if el != '0' else 'x' for el in fing_lst]
                         fingers = ",".join(fing_lst_fltrd)

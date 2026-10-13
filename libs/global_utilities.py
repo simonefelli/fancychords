@@ -317,6 +317,9 @@ def frets_int_normalize(frets_int):
     # keep only numbers from frets_int (filter None)
     # frets_int = [None, 4, 6, 5, 6, 4] -> frets_int_flt = [4, 6, 5, 6, 4]    
     frets_int_flt = list_filter(frets_int, False)
+    # all strings muted (x,x,x,x,x,x): nothing to normalize
+    # (min() of an empty list raised ValueError)
+    if not frets_int_flt: return (False, list(frets_int), 0)
     # compute min_fret: number, min fret present in chord
     min_fret = min(frets_int_flt)
     # if min_fret is > 0 then chord form is movable
@@ -630,7 +633,11 @@ def overload_config_json(json_file_path, chords_scale_flag='chords', **overload_
     args = {}
     
     # handle json config file
-    with open(json_file_path, 'r') as jsonfile: db_dict_jdump = json.load(jsonfile)
+    # note: unlike fancychords.py / fancyscales.py there are no defaults
+    # here, so the json file must be complete (all 4 sections and all the
+    # params), like tests/json_cfg_tests_files/default_chords_config.json.
+    # Keyword arguments with a name that is not a known param are ignored
+    with open(json_file_path, 'r', encoding='utf-8') as jsonfile: db_dict_jdump = json.load(jsonfile)
     
     # get all subsections dicts
     io_dict = db_dict_jdump['i/o']
