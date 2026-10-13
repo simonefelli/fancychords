@@ -16,6 +16,24 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+autofingers: guess a fingering (1..4 for the left hand fingers) for a chord.
+
+chord_autofingers(['x','2','4','4','3','2']) -> ['x','1','3','4','2','1']
+
+How it works:
+    1. make_frets_cluster(): group the strings by fret number
+    2. make_frets_clst_barre(): find possible barres, a fret pressed on
+       more strings with no lower fret in between ("shadowing")
+    3. valid_frets_cluster() / check_fingers_consistence(): check that 4
+       fingers are enough, splitting a barre if needed
+    4. chord_autofingers(): assign fingers from the lowest fret up
+
+The result is a guess: it can give odd fingerings, and when a shape needs
+more than 4 fingers the strings that cannot be fingered stay 'x'.
+"""
+
+
 # local application imports
 from libs import global_utilities
 
@@ -108,7 +126,11 @@ def expand_fr_clst(fr_clst):
         expanded_fr_clst.append((fret, [new_position], new_fret_slice))
         expanded_fr_clst.append((fret, positions, fret_slice))
     else:
-        expanded_fr_clst = fr_clst
+        # nothing to split: return a list with the original tuple, so the
+        # caller can always do 'list += expand_fr_clst(...)'. It returned
+        # the bare tuple, and 'list += tuple' added its 3 elements one by
+        # one, ie chord 3,2,x,3,4,5 raised TypeError
+        expanded_fr_clst = [fr_clst]
     return expanded_fr_clst
 
 
@@ -345,6 +367,21 @@ def check_fingers_consistence(frets_cluster):
                  
 
 
+def next_finger(fngs_avail):
+    '''
+    take the next free finger (the lowest number) out of fngs_avail.
+    Return None when all 4 fingers are already used: this happens for shapes
+    that cannot be played with 4 fingers (ie frets 1,2,3,4,5,6), which used
+    to raise "IndexError: pop from empty list"
+    
+    fngs_avail: List of numbers, free fingers, ie [4, 3, 2, 1]
+    
+    return: Number or None
+    '''
+    # pop() removes and returns the last element: [4, 3, 2, 1] -> 1
+    return fngs_avail.pop() if fngs_avail else None
+
+
 def chord_autofingers(frets_str):
     '''
     Given a fret list of strings try to calculate its finger list.
@@ -393,12 +430,13 @@ def chord_autofingers(frets_str):
                 # remove that finger from avaiable fingerslist
                 # pop() with no argument remove last element (right) 
                 # from fngs_avail and return it
-                act_finger = fngs_avail.pop()
+                act_finger = next_finger(fngs_avail)
                 # decrease number of avaiable fingers
                 n_fngs_avail -= 1
                 # modify fingers list with that finger
                 for pos in positions:
-                    fingers[pos] = str(act_finger)
+                    # (no finger left: the string stays 'x', see next_finger)
+                    if act_finger: fingers[pos] = str(act_finger)
                     # decrease number of strings fingered
                     n_strg_fng -= 1
             # if no barre is needed, just add fingers in order
@@ -408,19 +446,19 @@ def chord_autofingers(frets_str):
                 for pos in positions:
                     # use first avaiable finger on lower fret
                     # remove that finger from avaiable fingerslist
-                    act_finger = fngs_avail.pop()
+                    act_finger = next_finger(fngs_avail)
                     # decrease number of avaiable fingers
                     n_fngs_avail -= 1
                     # modify fingers list with that finger
-                    fingers[pos] = str(act_finger)
+                    if act_finger: fingers[pos] = str(act_finger)
                     # decrease number of strings fingered
                     n_strg_fng -= 1
         # if a fret is repeated only once
         # just add an avaiable fingers
         else:
-            act_finger = fngs_avail.pop()         
+            act_finger = next_finger(fngs_avail)         
             n_fngs_avail -= 1
-            fingers[positions[0]] = str(act_finger)
+            if act_finger: fingers[positions[0]] = str(act_finger)
             n_strg_fng -= 1
     
     return fingers

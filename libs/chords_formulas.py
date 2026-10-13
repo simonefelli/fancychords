@@ -16,6 +16,18 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+chords_formulas: helpers to work with chord formulas.
+
+A formula is a tuple of intervals, ie ('R', '3', '5', 'b7', '(9)', '11').
+An interval in parentheses is optional: the chord is still recognized
+without it. formula_expander() turns one formula with optional intervals
+into all its variants (with and without each optional interval, up to 3
+optional intervals), formula_omitter() removes intervals (ie the 5th) and
+formula_extender() adds the half-steps tuples used by intervals.formula_matcher().
+"""
+
+
 # standard library imports
 import re
 
@@ -30,7 +42,10 @@ def formula_omitter(frml_interv, omitting_interv):
     ie: f(('R','b3','5','7','(9)','11','13'), (13)) -> ('R', 'b3', '5', '7', '(9)', '11')
     
     frml_interv: Tuple, chord interval formula
-    omitting_interv: Tuple, intervals to be erased in original formula
+    omitting_interv: Tuple, intervals to be erased in original formula.
+        Note: a single interval must be written ('5',) with the comma:
+        ('5') is just the string '5' (it works only by chance, because
+        'in' then checks for a substring)
     
     return: Tuple, string tuple of original formula with omitting_interv intervals erased
     ''' 
@@ -185,7 +200,7 @@ def formula_to_exp_rhsteps(frml_interv):
                     , music_utilities.intervals_to_rhsteps(elem)
                     )
                 )
-        # sorting return_list for rhsteps tuple, ie: bigger tuples first
+        # sort return_list by the sorted rhsteps tuple (ascending order)
         return_list = sorted(return_list, key=lambda x: x[1])
         return_tuple = tuple(return_list)
     return return_tuple, extend

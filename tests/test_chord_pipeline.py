@@ -37,10 +37,14 @@ import tempfile
 import unittest
 
 # local application imports
+from libs import autofingers
 from libs import chord_parser
 from libs import draw_scales
 from libs import global_utilities
+from libs import intervals
+from libs import music_utilities
 from libs import scale_parser
+from libs import transportables
 
 
 # repository root dir and fancychords.py path, to run the program as a user would
@@ -297,6 +301,48 @@ class TestFancyscalesEndToEnd(unittest.TestCase):
         result = run_fancyscales(os.path.join(self.out, 'nope.txt'), '-o', self.out)
         self.assertEqual(result.returncode, 1)
         self.assertIn('fancyscales error', result.stderr)
+
+
+class TestMusicTheory(unittest.TestCase):
+    '''music_utilities, intervals, autofingers, transportables'''
+
+    def test_latin_chord_without_slash(self):
+        # 'LAm7' used to become 'Am7/' (with a stray slash)
+        self.assertEqual(music_utilities.is_latin_chord('LAm7'), (True, 'Am7'))
+        self.assertEqual(music_utilities.is_latin_chord('SOLb/REb'), (True, 'Gb/Db'))
+
+    def test_note_on_24th_fret(self):
+        # low E string, 24th fret is E again (two octaves up); it raised IndexError
+        self.assertEqual(music_utilities.singl_fret_to_note(6, 24, 'sharp'), 'E')
+
+    def test_lowest_root_with_unknown_quality(self):
+        # a quality not in formulas_list used to raise KeyError
+        self.assertEqual(music_utilities.lowest_root_in_chord('Cxyz', [None, 3, 2, 0, 1, 0]), 5)
+
+    def test_chord_finder_no_match_keeps_bass_note(self):
+        # no formula matches this chord: bass note is still C, the root
+        result = intervals.chord_finder('C', [None, 3, 2, 3, 0, 7])[0]
+        self.assertIsNone(result[0])
+        self.assertEqual((result[9], result[10]), (True, 'C'))
+        self.assertEqual(result[4][1], 'C')
+
+    def test_autofingers_common_chords(self):
+        self.assertEqual(autofingers.chord_autofingers(['x', '2', '4', '4', '3', '2']), ['x', '1', '3', '4', '2', '1'])
+
+    def test_autofingers_shadowed_two_strings_barre(self):
+        # raised TypeError (expand_fr_clst returned a tuple instead of a list)
+        self.assertEqual(autofingers.chord_autofingers(['3', '2', 'x', '3', '4', '5']), ['2', '1', 'x', '3', '4', 'x'])
+
+    def test_autofingers_more_than_4_fingers(self):
+        # raised IndexError: strings that cannot be fingered stay 'x'
+        self.assertEqual(autofingers.chord_autofingers(['1', '2', '3', '4', '5', '6']), ['1', '2', '3', '4', 'x', 'x'])
+
+    def test_transport_keeps_open_strings_of_original_chord(self):
+        chords = transportables.transport(('C7', [None, 3, 2, 3, 1, 0], ['x', '3', '2', '4', '1', 'x'], 5, 'major'))
+        # the chord itself keeps its open high e
+        self.assertEqual(chords[0][:2], ('C7', [None, 3, 2, 3, 1, 0]))
+        # shifted chords drop open strings (they cannot move with the shape)
+        self.assertEqual(chords[1][:2], ('C#7', [None, 4, 3, 4, 2, None]))
 
 
 if __name__ == '__main__':

@@ -16,6 +16,26 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+intervals: chord recognition, from frets to a chord name.
+
+chord_finder(root_note, frets) is the entry point: it tries several
+strategies and returns all the matches, best first. Every strategy turns
+the frets into half-steps from the root and looks for that set of
+half-steps in global_constants.formulas_list (formula_matcher):
+
+    strategy      score  what it tries
+    matcher        100   the chord as it is
+    matcher_no5     90   the chord without the 5th
+    slash           85   lowest note as slash note (ie D7/F#)
+    slash_no5       70   slash chord without the 5th
+    matcher_no3     60   the chord without the 3rd
+    slash_no3       50   slash chord without the 3rd
+
+A strategy loses 20 points when the bass note is not the root.
+"""
+
+
 # local application imports
 from libs import global_constants
 from libs import global_utilities
@@ -482,6 +502,15 @@ def chord_finder(root_note, frets):
              , flsh
              , notes
             ) = frets_formula_matcher(root_note, frets)
+            # keep the plain analysis of the chord: if no strategy matches,
+            # it is what we return (see the end of the function). The other
+            # strategies overwrite these variables with values computed on
+            # trimmed frets (ie without the bass note)
+            nomatch_result = (
+                None, None, 0,
+                intervals_lst, notes, hsteps_grpnormsort_lst,
+                None, None, None,
+                root_is_bass, bass_note)
             if quality:
                 found_match = True
                 # bestchoice = 100
@@ -555,7 +584,7 @@ def chord_finder(root_note, frets):
              , majmin
              , flsh
              , notes
-            ) = frets_formula_matcher(root_note, frets, ('5'))
+            ) = frets_formula_matcher(root_note, frets, ('5',))
             # if a match is found
             if no5_quality:
                 found_match = True
@@ -588,7 +617,7 @@ def chord_finder(root_note, frets):
              , majmin
              , flsh
              , notes
-            ) = chrd_fndr_slshrdcr(root_note, frets, ('5'))
+            ) = chrd_fndr_slshrdcr(root_note, frets, ('5',))
             # if a slash match is found
             if slno5_quality:
                 found_match = True
@@ -617,7 +646,7 @@ def chord_finder(root_note, frets):
              , majmin
              , flsh
              , notes
-            ) = frets_formula_matcher(root_note, frets, ('3'))
+            ) = frets_formula_matcher(root_note, frets, ('3',))
             # if a match is found
             if no5_quality:
                 found_match = True
@@ -650,7 +679,7 @@ def chord_finder(root_note, frets):
              , majmin
              , flsh
              , notes
-            ) = chrd_fndr_slshrdcr(root_note, frets, ('3'))
+            ) = chrd_fndr_slshrdcr(root_note, frets, ('3',))
             # if a slash match is found
             if slno3_quality:
                 found_match = True
@@ -674,11 +703,12 @@ def chord_finder(root_note, frets):
         results = sorted(results, key=lambda x: x[2], reverse=True)
         return results
     else:
-        results.append((
-                    None, None, bestchoice,
-                    intervals_lst, notes, hsteps_grpnormsort_lst,
-                    None, None, None,
-                    root_is_bass, bass_note))
+        # no match: return the plain analysis of the whole chord (from the
+        # 'matcher' plan). It used to return notes, bass_note and
+        # root_is_bass left over by the last plan ('slash_no3'), computed
+        # without the bass note, ie for C [None,3,2,3,0,7] the bass note was
+        # 'E' instead of 'C' and 'C' was missing from the notes
+        results.append(nomatch_result)
         return results
 
 

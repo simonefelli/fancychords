@@ -15,6 +15,16 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+
+"""
+transportables: move a chord shape up the neck to get the same chord on
+every root, ie from F (E form, 1st fret) get F#, G, G#, ... up to fret 12.
+
+find_rootstring_majmin() finds the string with the lowest root and the
+major/minor nature of a chord; transport() shifts all the frets by 1, 2,
+... half-steps and renames the chord (also its enharmonic name, ie F#/Gb).
+"""
+
 from libs import global_constants
 from libs import global_utilities
 from libs import music_utilities
@@ -90,6 +100,9 @@ def transport(trasp_chord):
     root_note, quality, detail, slash_note = chord_parser.parse_chord_name(chord_name)
     # chord is flat or sharp throughout music circle based on root_note, majmin
     # flsh_root = 'flat'
+    # (majmin is None for an unknown chord quality: assume 'major' like
+    # intervals.frets_formula_matcher, otherwise the next calls crash)
+    if not majmin: majmin = 'major'
     flsh_root = music_utilities.music_circle_flsh(root_note, majmin)
     # root_fret = 3
     root_fret = frets_int[6 - root_string]
@@ -101,7 +114,16 @@ def transport(trasp_chord):
         new_root_note = music_utilities.singl_fret_to_note(root_string, root_fret + delta_step, flsh_root)
         # scale frets_int by delta_step
         # new_frets_int =  [4, 4, 6, 4, 5, 4]
-        new_frets_int = [fret + delta_step if fret else None for fret in frets_int]
+        # open strings (fret 0) cannot move with the shape, so they are
+        # dropped (muted) when the chord is shifted: C7 x,3,2,3,1,0 ->
+        # C#7 x,4,3,4,2,x (the playable voicing, not x,4,3,4,2,1).
+        # The chord itself (delta_step 0) must stay as it is: before, its
+        # open strings were dropped too (0 is False in python, so 'if fret'
+        # treated it as muted), ie C7 was output as x,3,2,3,1,x
+        if delta_step == 0:
+            new_frets_int = list(frets_int)
+        else:
+            new_frets_int = [fret + delta_step if fret else None for fret in frets_int]
         # interv =  ['5', 'R', '5', 'b7', 'b3', '5']
         interv = music_utilities.frets_to_intervals(new_root_note, new_frets_int)
         
