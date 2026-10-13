@@ -49,7 +49,7 @@ Both write **SVG** images (and optionally **PNG**), can build an **HTML gallery*
 
 ## Installation
 
-> **No Python?** Ready-to-run executables for Linux and Windows are available too: see [Building standalone executables](#building-standalone-executables) below, or download them from the [Releases](https://github.com/simonefelli/fancychords/releases) page. You still need to install the [required font](#required-font-ubuntu-mono-derivative-fchords).
+> **No Python?** Ready-to-run executables for Linux and Windows are available too: see [Building standalone executables](#building-standalone-executables) below, or download them from the [Releases](https://github.com/simonefelli/fancychords/releases) page: each archive also has the font, examples and a README.txt with the install steps.
 
 You need **Python 3** and two Python libraries:
 
@@ -388,9 +388,9 @@ packaging\build_binaries.bat           # Windows
 
 The executables (`fancychords`, `fancyscales`, or `.exe` on Windows) are written in the `dist` folder; use them exactly like the Python scripts, ie `./dist/fancychords --cli_in="C|x,3,2,0,1,0"`. The build settings are in [packaging/fancychords.spec](./packaging/fancychords.spec) and [packaging/fancyscales.spec](./packaging/fancyscales.spec), the same files for both systems.
 
-- The font is not included in the executables: install it as described in [Required font](#required-font-ubuntu-mono-derivative-fchords).
+- The font is not included in the executables themselves: install it as described in [Required font](#required-font-ubuntu-mono-derivative-fchords). The release archives (see below) have it in a `font` folder.
 - PyInstaller cannot cross compile: build the Windows executables on Windows and the Linux ones on Linux.
-- Or let GitHub build them: the [Build executables](./.github/workflows/build-binaries.yml) workflow runs the tests and builds and tests the Linux and Windows executables at every push. Download them from the **Actions** tab (open a run, then **Artifacts**). When you push a version tag (ie `git tag v0.8 && git push origin v0.8`, or `0.8`), or publish a GitHub release with a new tag, they are also attached to that release (a few minutes later). The Linux ones are built on Ubuntu 22.04, so they also run on Debian 12.
+- Or let GitHub build them: the [Build executables](./.github/workflows/build-binaries.yml) workflow runs the tests and builds and tests the Linux and Windows executables at every push. Download them from the **Actions** tab (open a run, then **Artifacts**). When you push a version tag (ie `git tag v0.8 && git push origin v0.8`, or `0.8`), or publish a GitHub release with a new tag, they are also attached to that release (a few minutes later), one archive per platform: the two executables, the font, the examples `d_form.txt` and `config_scales.json`, the `LICENSE` and a `README.txt` with the install steps and a quick start (made by [packaging/make_release_archive.sh](./packaging/make_release_archive.sh)). The Linux ones are built on Ubuntu 22.04, so they also run on Debian 12.
 - The Cairo library must be installed on the build machine (on Windows, `libcairo-2.dll` must be in the `PATH`, see the [CairoSVG documentation](https://cairosvg.org/documentation/)).
 - A Linux executable runs on distributions with the same or a newer C library (glibc) than the build machine: build on the oldest distribution you want to support.
 - The `tests/test_fancychords/test_fancychords_bin.*` scripts run the executable from the repository root (`../../fancychords`): copy it there from `dist` to use them.
@@ -434,6 +434,6 @@ The `tests` folder also has developer scripts and shell/batch scripts that draw 
 
 ## License
 
-FancyChords and FancyScales are free software, released under the [GNU General Public License](https://www.gnu.org/licenses/) version 3 or (at your option) any later version. Copyright (C) 2026 Simone Felli.
+FancyChords and FancyScales are free software, released under the [GNU General Public License](./LICENSE) version 3 or (at your option) any later version. Copyright (C) 2026 Simone Felli.
 
 Have fun playing guitar!

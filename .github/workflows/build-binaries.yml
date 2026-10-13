@@ -7,7 +7,8 @@
 #   (Actions tab -> the run -> Artifacts)
 # - on a version tag like v0.7 or 0.7 (pushed, or made with a new GitHub
 #   release): the executables are also attached to the GitHub release of
-#   that tag (created if missing)
+#   that tag (created if missing), one archive per platform with the font,
+#   examples, LICENSE and README.txt (packaging/make_release_archive.sh)
 #
 # The Linux build runs on Ubuntu 22.04 (glibc 2.35), so the executables
 # also run on older distributions, ie Debian 12 (glibc 2.36) and Debian 13.
@@ -166,6 +167,20 @@ jobs:
           # and the newer font is really installed and different
           "$py" $ref/compare_png.py --differ default2404/png new2404/png
 
+      # the release archive (made only on version tags) must work too: build
+      # it from this run's executables and follow its README.txt quick start
+      - name: Release archive check (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          packaging/make_release_archive.sh dist linux-amd64 test archive-check
+          cd archive-check
+          tar -xJf fancychords-linux-amd64-test.tar.xz
+          cd fancychords-linux-amd64-test
+          test -f README.txt && test -f LICENSE && ls font/*.ttf examples/d_form.txt
+          ./fancychords --cli_in="C Major|x,3,2,0,1,0|x,3,2,x,1,x|x,R,3,5,R,3" --convert > /dev/null
+          ./fancyscales examples/d_form.txt --config_file=examples/config_scales.json --convert > /dev/null
+          test -f "png/C Major.png" && test -f "png/D Form.png"
+
       - name: Install the FChords font (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
@@ -235,25 +250,23 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v5
+
       - uses: actions/download-artifact@v7
         with:
           path: artifacts
 
+      # one archive per platform, with the executables, the font, examples,
+      # LICENSE and a README.txt (see packaging/make_release_archive.sh)
       - name: Make one archive per platform
         run: |
-          cd artifacts
-          for dir in fancychords-*; do
-            chmod +x "$dir"/fancy* || true
-            if [ "$dir" = "fancychords-windows-amd64" ]; then
-              (cd "$dir" && zip -9 "../$dir-${GITHUB_REF_NAME}.zip" fancy*)
-            else
-              tar -C "$dir" -cJf "$dir-${GITHUB_REF_NAME}.tar.xz" fancychords fancyscales
-            fi
+          for platform in linux-amd64 windows-amd64; do
+            packaging/make_release_archive.sh "artifacts/fancychords-$platform" "$platform" "$GITHUB_REF_NAME" release
           done
-          ls -l
+          ls -l release
 
       - uses: softprops/action-gh-release@v2
         with:
           files: |
-            artifacts/*.zip
-            artifacts/*.tar.xz
+            release/*.zip
+            release/*.tar.xz
