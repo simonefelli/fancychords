@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -14,6 +14,14 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+"""
+global_constants: constant values shared by the libs: note names (english
+and latin), chromatic scales, circle of fifths, the sets of allowed chars
+for fingers and intervals used to validate input chords, interval names,
+chord formulas, scales library and CAGED shapes.
+"""
 
 
 
@@ -271,7 +279,8 @@ caged_dict = {
             )
         }
     , 'A': {
-            'blues_scale': (
+            # key must match a scales_library key (it was renamed from 'blues_scale')
+            'minor_blues_scale': (
               ('G Form', 2,  6)
             , ('E Form', 5,  8)
             , ('D Form', 7,  11)

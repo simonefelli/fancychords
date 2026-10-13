@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -16,6 +16,14 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+myshapes: basic svg shapes (circle, square, arrows) used by the other libs.
+
+square2font() and circle2font() give the font size that fits a given number
+of chars inside a square or a circle, so dot labels always fit their dot.
+"""
+
+
 def square2font(square, nchars):
     """
     Given dot square get font size
@@ -25,8 +33,12 @@ def square2font(square, nchars):
     
     return font size
     """       
+    # empiric factors for labels of 1..4 chars. Longer labels (that used to
+    # raise KeyError) extend the 4 chars factor: font size shrinks with
+    # the number of chars, so the label still fits the dot
     weight_dict = {1: 1.95, 2: 1.15, 3: 1.10, 4: 1.10}
-    return (square/weight_dict[nchars])
+    weight = weight_dict[nchars] if nchars in weight_dict else weight_dict[4] * nchars / 4
+    return (square/weight)
 
 
 def circle2font(radius, nchars):
@@ -38,8 +50,11 @@ def circle2font(radius, nchars):
     
     return font size
     """           
+    # empiric factors for labels of 1..4 chars, longer labels extend the
+    # 4 chars factor (see square2font)
     weight_dict = {1: 1.10, 2: 0.70, 3: 0.61, 4: 0.65}
-    return (radius/weight_dict[nchars])
+    weight = weight_dict[nchars] if nchars in weight_dict else weight_dict[4] * nchars / 4
+    return (radius/weight)
 
 
 def mycircle(dwg, mycenter, radius, stroke_width,
@@ -129,6 +144,11 @@ def add_arrow_endmarker(dwg, marker_name,
     return: String, marker FuncIRI reference of the object. (i.e. 'url(#id)')
             used in myarrow() function to reference marker end arrow
     '''
+    # add the marker only once per drawing: every arrow of the same color
+    # used to add a new copy with the same id (invalid svg)
+    added_markers = dwg.__dict__.setdefault('_added_markers', set())
+    if marker_name in added_markers: return 'url(#' + marker_name + ')'
+    added_markers.add(marker_name)
     marker_w = 4.5
     marker_h = marker_w
     # 'M0,0 L0,4 L6,2 z'
@@ -167,6 +187,10 @@ def add_arrow_startmarker(dwg, marker_name,
     return: String, marker FuncIRI reference of the object. (i.e. 'url(#id)')
             used in myarrow() function to reference marker start arrow
     '''
+    # add the marker only once per drawing (see add_arrow_endmarker)
+    added_markers = dwg.__dict__.setdefault('_added_markers', set())
+    if marker_name in added_markers: return 'url(#' + marker_name + ')'
+    added_markers.add(marker_name)
     marker_w = 4.5
     marker_h = marker_w
     # 'M6,4 L6,0 L0,2 z'
@@ -223,11 +247,17 @@ def basic_arrow(dwg, start, end, bezier, bez_median, strk_wdth,
     # if start_end_flag = 'e' -> end arrow only
     # if start_end_flag = 'se' -> start arrow + end arrow
     # if start_end_flag = '' -> no arrows
+    # marker ids must be valid xml ids, unique in the svg file. The color
+    # is part of the id (one marker per color) but a color like '#cc0000'
+    # cannot be used as it is ('#' is not allowed): keep only letters and
+    # digits. Opacity is part of the id too, as it changes the marker look
+    marker_key = ''.join(ch if ch.isalnum() else '_' for ch in
+                         str(line_stroke_color) + '_' + str(line_stroke_opacity))
     if 's' in start_end_flag:
         # arrow_fstart: FuncIRI reference of the start marker object (see add_arrow_xx() funct.)
         arrow_fstart = add_arrow_startmarker(
               dwg
-            , 'marker_' + line_stroke_color + '_start'
+            , 'marker_' + marker_key + '_start'
             , arrow_fill_color=line_stroke_color
             , arrow_fill_opacity=line_stroke_opacity
             )
@@ -235,7 +265,7 @@ def basic_arrow(dwg, start, end, bezier, bez_median, strk_wdth,
         #  arrow_fend: FuncIRI reference of the end  marker object (see add_arrow_xx() funct.)
         arrow_fend = add_arrow_endmarker(
               dwg
-            , 'marker_' + line_stroke_color + '_end'
+            , 'marker_' + marker_key + '_end'
             , arrow_fill_color=line_stroke_color
             , arrow_fill_opacity=line_stroke_opacity
             )

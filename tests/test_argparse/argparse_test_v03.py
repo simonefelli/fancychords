@@ -7,9 +7,9 @@ default_params = {
     , 'lntk': 3.04
     , 'fretb_format': {
               '*': (1.0, 'black', 'black', 'none', '3', 'white', 
-                  'bold', 'Ubuntu Mono Legacy', False, False)
+                  'bold', 'Ubuntu Mono derivative FChords', False, False)
             , 'r': (1.0, 'lightgrey', 'black', 'none', '5', 'black', 
-                    'bold', 'Ubuntu Mono Legacy', False, False)
+                    'bold', 'Ubuntu Mono derivative FChords', False, False)
         }
     }
 

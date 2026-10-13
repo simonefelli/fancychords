@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     enable_footer = True                   # if True enable footer labels
     convert_flag = True                     # if true output also png file     
     font_weight = 'normal'                  # global font weight: [ 'normal' | 'bold' ]
-    font_family = 'Ubuntu Mono Legacy'             # global font family: ['Courier New' | 'Ubuntu Mono' | 
+    font_family = 'Ubuntu Mono derivative FChords'             # global font family: ['Courier New' | 'Ubuntu Mono' | 
                                             # 'DejaVu Sans Mono' | 'Liberation Mono']
     # --- appearance  parameters
     scale_label_font_weight = None          # main scale label, font weight
@@ -89,46 +89,46 @@ if __name__ == "__main__":
     fretb_format = {
           '*': (1.0, 'black', '1.0', 
                 'black', '1.0', 'none', fair_stroke_str, 
-                'white', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                'white', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , 'r': (0.9, 'lightgrey', '1.0', 
                 'black', '1.0', 'none', fat_stroke_str, 
-                'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
                 True, False)
         , 'b3':(1.0, 'lightsalmon', '1.0', 
                 'black', '1.0', 'none', fair_stroke_str, 
-                'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , 'b5':(1.0, 'skyblue', '1.0', 
                 'black', '1.0', 'none', fair_stroke_str, 
-                'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , 'b7': (1.0, 'lightgreen', '1.0', 
                 'black', '1.0', 'none', fair_stroke_str, 
-                'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
     }
     
     fret0_format = {
           '*': (1.05, 'black', '0.7', 
                 'black', '0.0', 'dashes', fair_stroke_str, 
-                'white', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                'white', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , 'r': (0.9, 'lightgrey', '0.7', 
                 'black', '1.0', 'dashes', fair_stroke_str, 
-                'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
                 True, False)
         , 'b3': (1.0, 'lightsalmon', '0.7', 
                  'black', '1.0', 'dashes', fair_stroke_str, 
-                 'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                 'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                  False, False)
         , 'b5': (1.0, 'skyblue', '0.7', 
                  'black', '1.0', 'dashes', fair_stroke_str, 
-                 'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                 'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                  False, False)
         , 'b7':  (1.0, 'lightgreen', '0.7', 
                  'black', '1.0', 'dashes', fair_stroke_str, 
-                 'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                 'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                  False, False)
     }
 

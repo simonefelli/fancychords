@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -16,8 +16,18 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+chord_tree_merge: copy a tree of chord images into another one.
+
+Files keep their relative dir. When a file with the same name already
+exists in the target (and overwrite is False) the copy gets the next free
+version postfix, ie Gmin.svg -> Gmin.v02.svg, Gmin.v02.svg -> Gmin.v03.svg
+(the same '.vXX' convention used by chord_parser for duplicate names).
+"""
+
 # standard library imports
 import os
+import re
 import shutil
 
 
@@ -96,12 +106,15 @@ def merge_chord_tree(dir_source, dir_target, file_exts, overwrite=False):
                     # splitext split the pathname path into a pair (root, ext)
                     # Gmin.v02.svg -> ('Gmin.v02', 'svg')
                     (fname, fext) = os.path.splitext(myfile)
-                    # if there is one or more dot in fname (Gmin.v02)
-                    if fname.count('.') >= 1:
-                        # Gmin.v02 -> ('Gmin', 'v02')
-                        (chord_name, chord_postfix) = fname.split('.', 1)
-                        # 'v02' -> 2
-                        chord_version = int(chord_postfix[-1])
+                    # version postfix: 'Gmin.v02' -> ('Gmin', 2), 'Gmin.v12' -> ('Gmin', 12)
+                    # only a final '.v' + digits is a version. Any other name
+                    # (ie 'C Major. 2nd Inversion') is a plain name, version 1.
+                    # Before, the version was int() of the last char after the
+                    # first '.', so v12 was read as 2 and 'C Major. 2nd
+                    # Inversion' raised ValueError
+                    version_match = re.fullmatch(r'(.+)\.v(\d+)', fname)
+                    if version_match:
+                        (chord_name, chord_version) = (version_match.group(1), int(version_match.group(2)))
                     else:
                         (chord_name, chord_version) = (fname, 1)
                     # meaningful names
@@ -110,7 +123,11 @@ def merge_chord_tree(dir_source, dir_target, file_exts, overwrite=False):
                     # '../dirin/Major/Gmin.v02.svg'
                     source_chord_path = os.path.join(act_path, myfile)
                     # '../dirout/Major'
-                    target_chord_dir = os.path.normpath(act_path.replace(dir_source, dir_target))
+                    # same relative position in dir_target. relpath is used
+                    # instead of str.replace(dir_source, dir_target), which also
+                    # replaced dir_source text found deeper in the path
+                    target_chord_dir = os.path.normpath(
+                        os.path.join(dir_target, os.path.relpath(act_path, dir_source)))
                     # '.svg'
                     source_chord_ext = fext
                     # ('Gmin', 2)

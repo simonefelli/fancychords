@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -18,6 +18,7 @@
 
 # standard library imports
 import argparse
+import sys
 
 # local application imports
 from libs import global_utilities
@@ -113,7 +114,7 @@ default_params = {
     , 'nutline': True                       # draw nut line ticker
     , 'fret0': False                        # draw virtual dots above nut
     , 'root_is_different': False            # draw different dots for root note
-    , 'font_family': 'Ubuntu Mono Legacy'   # global font family
+    , 'font_family': global_utilities.DEFAULT_FONT_FAMILY   # global font family
     , 'font_weight': 'normal'               # global font weight
     , 'convert_flag': False                 # convert images to png files 
     , 'report': 'disable'                   # generate html report
@@ -123,7 +124,7 @@ default_params = {
     , 'padding': None                    # tuple (lower_fret, higher_fret) for padding scales with 'x', None to disable
     , 'scale_label_font_family': None    # main scale label font family: default is global font family
     , 'scale_label_font_weight': None    # main scale label font weight: default is global font weight
-    , 'scale_label_font_factor': None    # main scale label font size factor: default is 0.70
+    , 'scale_label_font_factor': None    # main scale label font size factor: default is 0.80
     , 'upper_labels_font_family': None   # upper labels font family: default is global font family
     , 'upper_labels_font_weight': None   # upper labels font weight: default is global font weight
     , 'upper_labels_font_factor': None   # upper labels font factor: default is 1.15
@@ -272,9 +273,9 @@ if __name__ == "__main__":
         , action='store'
         , dest='font_family'
         , default=None
-        , choices=['Ubuntu Mono', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New']
-        , help='global font family: [\'Ubuntu Mono\'|\'Liberation Mono\'' \
-               '|\'DejaVu Sans Mono\'|\'Courier New\'], default is \'' 
+        , choices=global_utilities.FONT_FAMILIES
+        , help='global font family: [\'' + '\'|\''.join(global_utilities.FONT_FAMILIES)
+               + '\'], default is \'' 
                + str(default_params['font_family']) + '\''
         )    
     parser.add_argument(
@@ -301,7 +302,7 @@ if __name__ == "__main__":
         , default=None
         , choices=['only', 'enable', 'disable']
         , help='generate html report (\'enable\'/\'disable\') if \'only\' generate ' \
-               'report but don not draw scales, default is \'' 
+               'report but do not draw scales, default is \'' 
                 + str(default_params['report']) + '\''
         )
 
@@ -342,7 +343,7 @@ if __name__ == "__main__":
                 # load its content in db_dict_jdump
                 import json
                 json_file = args.json_file
-                with open(json_file, 'r') as jsonfile:
+                with open(json_file, 'r', encoding='utf-8') as jsonfile:
                     db_dict_jdump = json.load(jsonfile)
                     # add missing parameters if any (see fill_jdump function: take the json config file 
                     # db_dict_jdump and check if there are missing parameters that can be calculated 
@@ -598,5 +599,9 @@ if __name__ == "__main__":
             app_msg_str += htmlreport.generate_htmlreport(dir_output, file_exts, ncols, thumb_width)
 
 
+    # any error ends the program with a short message on stderr and exit
+    # status 1, so that scripts calling fancyscales can tell a failed run
+    # from a good one (before, the error was printed on stdout with status 0)
     except Exception as e:
-        print(e)
+        print('fancyscales error: ' + str(e), file=sys.stderr)
+        sys.exit(1)

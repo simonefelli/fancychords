@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -14,6 +14,23 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+"""
+helper_functions: high level helpers to use the libs from other python
+scripts (they are not used by fancychords.py / fancyscales.py).
+
+    trunk_scales / pad_scales       cut or extend a scale to a fret range
+    generate_scale                  build a whole-neck scale from a formula
+                                    (global_constants.scales_library)
+    generate_scale_file             write it as a scale file for fancyscales
+    process_*_by_config_json        draw chords/scales with all the options
+                                    taken from a json config file (options
+                                    can be overridden by keyword arguments)
+
+Note on scale lists: column i of every string list is fret (min_fret + i),
+so all the strings of a scale have the same number of columns.
+"""
 
 
 # standard library imports
@@ -215,7 +232,7 @@ def generate_scale(root_note, scale_type, up_to_fret, print_output=True):
         'sharp': guitar_neck_sharp_notes
         }
     
-    # scale_type= 'blues_scale' -> ('R','b3','4','b5','5','b7'), 'minor', 'Blues Scale'
+    # scale_type= 'minor_blues_scale' -> ('R','b3','4','b5','5','b7'), 'minor', 'Minor Blues Scale'
     intervals, majmin, scale_name = global_constants.scales_library[scale_type]
     flsh = music_utilities.music_circle_flsh(root_note, majmin)
     # neck notes in correct flat or sharp based on music circle
@@ -353,8 +370,11 @@ def generate_scale_file(my_scale, my_scale_file, display_notes, print_output=Tru
         msg += 'File content:\n**********\n' + file_content + '\n**********'
         print(msg)
 
-    os.makedirs(os.path.dirname(my_scale_file), exist_ok=True)
-    with open(my_scale_file, 'w') as f1:
+    # create the file dir if needed. A bare file name ('myscale.txt') has no
+    # dir part, and os.makedirs('') raised FileNotFoundError
+    scale_file_dir = os.path.dirname(my_scale_file)
+    if scale_file_dir: os.makedirs(scale_file_dir, exist_ok=True)
+    with open(my_scale_file, 'w', encoding='utf-8') as f1:
         f1.write(file_content)
 
 
@@ -431,6 +451,10 @@ def process_chords_by_config_json(json_file_path, crd_list, **overload_params):
         print('{:<15} {:<35} {}'.format(chord_name, str(frets), str(interv)))
         
     # ----------------------------------------------------
+
+    # return values, they stay empty when report is 'only' (nothing is drawn).
+    # Before, report='only' raised UnboundLocalError at the return statement
+    chord_list_to_files_msg_str, svg_file_path_list, png_file_path_list = '', [], []
 
     # check if report has to be done and process chords
     if report != 'only':
@@ -534,6 +558,10 @@ def process_chordsfile_by_config_json(json_file_path, input_crdf, **overload_par
 
     # variable for chords2files.process_chords function
     input_way = 'file'
+
+    # return values, they stay empty when report is 'only' (nothing is drawn).
+    # Before, report='only' raised UnboundLocalError at the return statement
+    chord_list_to_files_msg_str, svg_file_path_list, png_file_path_list = '', [], []
 
     # check if report has to be done and process chords
     if report != 'only':
@@ -644,6 +672,10 @@ def process_scales_by_config_json(json_file_path, scl_list, **overload_params):
         
     # ----------------------------------------------------
 
+    # return values, they stay empty when report is 'only' (nothing is drawn).
+    # Before, report='only' raised UnboundLocalError at the return statement
+    process_scales_msg_str, svg_file_path_list, png_file_path_list = '', [], []
+
     # check if report has to be done and process chords
     if report != 'only':
         # main function call
@@ -723,6 +755,10 @@ def process_scalesfile_by_config_json(json_file_path, input_sclf, **overload_par
     #     , arrows 
     #   ], ..
     # ]
+
+    # return values, they stay empty when report is 'only' (nothing is drawn).
+    # Before, report='only' raised UnboundLocalError at the return statement
+    process_scales_msg_str, svg_file_path_list, png_file_path_list = '', [], []
 
     # check if report has to be done and process chords
     if report != 'only':

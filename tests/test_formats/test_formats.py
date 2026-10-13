@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -43,66 +43,66 @@ radius = 25.0  # dot radius, radius = sd * radius_factor
 fretb_format = {
       '*': (1.0, 'black', '1.0', 
             'black', '1.0', 'none', '3.5', 
-            'white', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+            'white', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
             False, False)
     , 'r': (0.9, 'lightgrey', '1.0', 
             'black', '1.0', 'none', '5', 
-            'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+            'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
             True, False)
     , 'rh': (0.9, 'white', '1.0', 
              'grey', '1.0', 'dashes', '3.5', 
-             'grey', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+             'grey', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
              True, False)
     , '3': (1.0, 'lightsalmon', '1.0', 
             'black', '1.0', 'none', '5', 
-            'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+            'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
             False, False)
     , '3h': (1.0, 'white', '1.0', 
              'grey', '1.0', 'dashes', '3.5', 
-             'grey', '1.0', 'bold', 'Ubuntu Mono Legacy',
+             'grey', '1.0', 'bold', 'Ubuntu Mono derivative FChords',
               False, False)
     , '5': (1.0, 'skyblue', '1.0', 
             'black', '1.0', 'none', '5', 
-            'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+            'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
             False, False) 
     , 'b5': (1.0, 'skyblue', '1.0', 
             'black', '0.3', 'none', '5', 
-            'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+            'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
             False, False)
     , '6': (1.0, 'yellow', '1.0', 
             'black', '1.0', 'none', '5', 
-            'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+            'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
             False, False) 
     , 'b6': (1.0, 'yellow', '1.0', 
             'black', '1.0', 'none', '5', 
-            'black', '0.3', 'normal', 'Ubuntu Mono Legacy', 
+            'black', '0.3', 'normal', 'Ubuntu Mono derivative FChords', 
             False, False) 
     , '7': (1.0, 'lightgreen', '1.0', 
              'black', '1.0', 'none', '5', 
-             'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+             'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
              False, False)
     , 'b7': (1.0, 'lightgreen', '0.3', 
              'black', '1.0', 'none', '5', 
-             'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+             'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
              False, False)
     , '9': (1.0, 'violet', '1.0', 
              'black', '1.0', 'none', '5', 
-             'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+             'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
              False, False)
     , 'b9': (1.0, 'violet', '0.3', 
              'black', '0.3', 'none', '5', 
-             'black', '0.3', 'normal', 'Ubuntu Mono Legacy', 
+             'black', '0.3', 'normal', 'Ubuntu Mono derivative FChords', 
              False, False)
 }
 
 fret0_format = {
       '*': (1.0, 'white', '1.0', 
             'black', '1.0', 'dashes', '3.5', 
-            'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+            'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
             False, False)
     , 'r': (1.0, 'lightgrey', '1.0', 
             'black', '1.0', 'dashes', '3.5', 
-            'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+            'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
             True, False)
 }
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -14,6 +14,20 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+"""
+chords_library_manage: checks for big chord list files (chord libraries).
+
+    check_duplicate_rows_infile    same name, frets and fingers more times
+    check_duplicate_chords_infile  same frets with different names
+                                   (ie Bm11 and Dsus2/B)
+    check_movable_chords_infile    group chords by shape (movable shapes
+                                   are compared after moving them to fret 1)
+
+All of them print their report and use chord_parser to read the file, so
+chords with syntax errors are skipped.
+"""
 
 
 # local application imports
@@ -33,7 +47,10 @@ def check_duplicate_rows_infile(input_crdf):
     
     return: Text output
         Duplicate Rows:
-        dm9   | Rows:  [348, 405]
+        dm9   | Chords n.:  [348, 405]
+    note: the numbers are positions among the chords loaded from the file
+    (1 = first chord), not line numbers of the file: header, comments,
+    empty lines and chords with errors are not counted
     '''
     # get_crd_list_from_file -> (crd_list, msg_str)
     # where crd_list is    
@@ -67,7 +84,7 @@ def check_duplicate_rows_infile(input_crdf):
     # duplicate rows are chords with list of positions longer than 1 element
     for key, val in chords_dupes_dict.items():
         if len(val) > 1:
-            print(key[0] + '\t | Rows: ', val)
+            print(key[0] + '\t | Chords n.: ', val)
 
 
 def check_duplicate_chords_infile(input_crdf):

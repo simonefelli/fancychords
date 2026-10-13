@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -15,8 +15,33 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+
+"""
+global_utilities: small helpers shared by fancychords and fancyscales.
+
+Main groups of functions:
+    - strings:     sanitize_str (safe file names), lower_and_underscore, ...
+    - chord lists: crd_str2slst ('x,3,2' -> ['x','3','2']), crd_slst2ilst
+                   (['x','3'] -> [None, 3]), max_min_fret_slst, ...
+    - config:      fill_jdump (complete a json config), param_check
+                   (cli > json config > default precedence)
+"""
+
 # standard library imports
 import json
+
+
+# Fonts.
+# The default font is Ubuntu Mono 0.80 (from ubuntu-font-family-0.83),
+# renamed 'Ubuntu Mono derivative FChords' as the Ubuntu Font Licence asks
+# for modified fonts: it never mixes with the newer Ubuntu Mono of recent
+# systems (bolder, larger) and works the same on Linux and Windows. The font
+# files are in the fonts/ folder of the repository.
+DEFAULT_FONT_FAMILY = 'Ubuntu Mono derivative FChords'
+# fonts accepted by --font-family; 'Ubuntu Mono Legacy' is the name used by
+# chords made with older versions (a locally renamed copy of the same font)
+FONT_FAMILIES = [DEFAULT_FONT_FAMILY, 'Ubuntu Mono Legacy', 'Ubuntu Mono',
+                 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New']
 
 
 def lower_and_underscore(instr):
@@ -61,13 +86,17 @@ def sanitize_str(instr):
             , '|', '~', '`', '´'
             , '{', '}', '%'
             ]
-        # safe encoding for windows
+        # safe encoding for windows: keep only plain ascii chars.
+        # encode('latin1', 'ignore') drops chars that are not latin1 (ie '♯'),
+        # then decode('utf8', 'ignore') drops the remaining non ascii bytes
+        # (ie 'è'), so 'DOè♯' -> 'DO'
         instr = instr.encode('latin1', 'ignore').decode('utf8', 'ignore')
         for char in forb_chars:
             if char == '\n':
                 instr = instr.replace(char, repl_char_for_newline)
             else:
                 instr = instr.replace(char, repl_char)
+        # very long names are cut, as some file systems limit name length
         if len(instr) > max_chars: instr = instr[:max_chars]
     return instr
 
@@ -87,6 +116,81 @@ def mytuplechange(mytuple, myindex, myvalue):
     '''
     
     return tuple(myvalue if idx==myindex else elem for idx, elem in enumerate(mytuple))
+
+
+def fill_format_fonts(fretx_format, font_weight, font_family):
+    """
+    return a copy of a fretx_format dict where every format tuple without
+    dot_labelfont_weight (index 9) or dot_labelfont_family (index 10)
+    gets the global font_weight / font_family.
+    
+    A copy is returned (instead of changing fretx_format in place) because
+    the dict received may be shared, ie it may be the default dict defined in
+    fancychords.py: changing it would leak values into the following chords.
+    All the keys are processed, so a format like 'b3' or 'rh' coming from the
+    json config file gets the global fonts too, and a dict without 'r' is fine.
+    
+    ie: fill_format_fonts({'*': (1.0, ..., '', '', False, False)}, 'bold', 'Ubuntu Mono')
+            -> {'*': (1.0, ..., 'bold', 'Ubuntu Mono', False, False)}
+    
+    fretx_format: Dict, {interval: format tuple}, see draw_chord() docs
+    font_weight: String, global font weight
+    font_family: String, global font family
+    
+    return: Dict, new fretx_format dict
+    """
+    new_format = {}
+    for interval, fmt in fretx_format.items():
+        # json config files give lists, not tuples: mytuplechange()
+        # handles both and always returns a tuple
+        if not fmt[9]: fmt = mytuplechange(fmt, 9, font_weight)
+        if not fmt[10]: fmt = mytuplechange(fmt, 10, font_family)
+        new_format[interval] = fmt
+    return new_format
+
+
+def fix_duplicate_filenames(items, name_index):
+    '''
+    make every output file name unique, in place. Used for chords
+    (chord_parser) and scales (scale_parser).
+    items is a list of lists and items[i][name_index] is a file name
+    (without extension). The first item keeps its name, the following
+    ones with the same name get a '.vXX' postfix (starting from .v02):
+        Cm, Cm, Cm -> Cm, Cm.v02, Cm.v03
+    - names are compared ignoring upper/lower case, because on Windows and
+      macOS 'Cm7.svg' and 'CM7.svg' are the same file and one image would
+      silently overwrite the other
+    - a generated name is never one already used by another item, ie:
+      Cm, Cm.v02 (given by the user), Cm -> Cm, Cm.v02, Cm.v03
+    
+    items: List of lists
+    name_index: Integer, index of the file name in every inner list
+    
+    return: items (same list, modified in place)
+    '''
+    # set of all filenames already taken, compared in lower case (casefold).
+    # It is filled with every name given in input, so that a generated
+    # '.vXX' name can never clash with a name chosen by the user
+    used_names = {item[name_index].casefold() for item in items}
+    # set of names already assigned to an item while scanning the list
+    assigned_names = set()
+    for item in items:
+        filename = item[name_index]
+        # first time we meet this name: the item keeps it
+        if filename.casefold() not in assigned_names:
+            assigned_names.add(filename.casefold())
+            continue
+        # name already assigned to a previous item: look for the first
+        # free version number, starting from 2 (the original is version 1)
+        vers = 2
+        while (filename + '.v' + str(vers).zfill(2)).casefold() in used_names:
+            vers += 1
+        new_filename = filename + '.v' + str(vers).zfill(2)
+        # modify original items and remember the new name as taken
+        item[name_index] = new_filename
+        used_names.add(new_filename.casefold())
+        assigned_names.add(new_filename.casefold())
+    return items
 
 
 def chain(my_elem, prefix = '', postfix = '', nullvalue = ''):
@@ -226,6 +330,9 @@ def frets_int_normalize(frets_int):
     # keep only numbers from frets_int (filter None)
     # frets_int = [None, 4, 6, 5, 6, 4] -> frets_int_flt = [4, 6, 5, 6, 4]    
     frets_int_flt = list_filter(frets_int, False)
+    # all strings muted (x,x,x,x,x,x): nothing to normalize
+    # (min() of an empty list raised ValueError)
+    if not frets_int_flt: return (False, list(frets_int), 0)
     # compute min_fret: number, min fret present in chord
     min_fret = min(frets_int_flt)
     # if min_fret is > 0 then chord form is movable
@@ -539,7 +646,11 @@ def overload_config_json(json_file_path, chords_scale_flag='chords', **overload_
     args = {}
     
     # handle json config file
-    with open(json_file_path, 'r') as jsonfile: db_dict_jdump = json.load(jsonfile)
+    # note: unlike fancychords.py / fancyscales.py there are no defaults
+    # here, so the json file must be complete (all 4 sections and all the
+    # params), like tests/json_cfg_tests_files/default_chords_config.json.
+    # Keyword arguments with a name that is not a known param are ignored
+    with open(json_file_path, 'r', encoding='utf-8') as jsonfile: db_dict_jdump = json.load(jsonfile)
     
     # get all subsections dicts
     io_dict = db_dict_jdump['i/o']
@@ -694,11 +805,14 @@ def param_check(db_dict_jdump, args_param, param_name, param_section, default_pa
     if db_dict_jdump:
         # get section (None if it is not present in json file)
         j_sect = db_dict_jdump.get(param_section)
-        # if section exist
-        if j_sect:
-            # get param (None if it is not present in json file)
-            j_param = db_dict_jdump[param_section].get(param_name)
-        if (j_sect is not None) and (j_param is not None): 
+        # get param (None if section or param are not present in json file).
+        # note: j_param must always be defined here, even when the section
+        # exists but is empty (ie: "flags": {}), otherwise the check below
+        # would raise an UnboundLocalError
+        j_param = j_sect.get(param_name) if j_sect else None
+        # a param explicitly set to null in json file counts as "not set"
+        # so the default value is kept
+        if j_param is not None:
             # copy the value in final_params dict
             final_params[param_name] = j_param
 

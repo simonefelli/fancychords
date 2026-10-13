@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -14,6 +14,18 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+"""
+mylabels: single line text labels.
+
+svgwrite does not measure text, so label sizes are estimated: for a
+monospace font every char has the same width, and width/height are
+proportional to the font size with a factor that depends on the font
+(see get_labelparams). From one known value (font size, label width or
+label height) the other ones are computed, so a label can be fitted in a
+given width (mylabel_given_wdth) or a given height (mylabel_given_hght).
+"""
 
 
 # local application imports
@@ -40,6 +52,13 @@ def get_labelparams(mystr, labelfont_family, myfont_size=None, label_w=None, lab
     return a tuple of (font size, label width, label height) 
     '''
     nchar = len(mystr)
+    # empiric factors for every supported monospace font:
+    #   label_w = (font_size * nchar) / label_w_factor
+    #   label_h = font_size / label_h_factor
+    # ie with label_w_factor = 2.00 every char is half font size wide.
+    # Any other font (ie 'Ubuntu Mono derivative FChords', 'Ubuntu Mono',
+    # 'Ubuntu Mono Legacy') uses the
+    # last (else) factors
     if labelfont_family.lower() == 'courier new':
         label_w_factor = 1.67
         label_h_factor = 1.60
@@ -309,37 +328,37 @@ if __name__ == "__main__":
 
     lbls_str_lst = ['K', 'j', '7', '5', 'X', 'Qx']
 
-    # font_family='Ubuntu Mono Legacy'
+    # font_family='Ubuntu Mono derivative FChords'
     font_family='Courier New'
     # font_family='Liberation Mono'
     # font_family='DejaVu Sans Mono'
     
-    print('get_labelparams("QO#", "Ubuntu Mono Legacy", label_w=50)')
-    print(get_labelparams('QO#', 'Ubuntu Mono Legacy', label_w=50))
-    print('get_labelparams("QO#", "Ubuntu Mono Legacy", label_h=20.833)')
-    print(get_labelparams('QO#', 'Ubuntu Mono Legacy', label_h=20.833))
+    print('get_labelparams("QO#", "Ubuntu Mono derivative FChords", label_w=50)')
+    print(get_labelparams('QO#', 'Ubuntu Mono derivative FChords', label_w=50))
+    print('get_labelparams("QO#", "Ubuntu Mono derivative FChords", label_h=20.833)')
+    print(get_labelparams('QO#', 'Ubuntu Mono derivative FChords', label_h=20.833))
     
-    print('mylabel_given_wdth(dwg, (75, 20), "QO#", 50, ... "Ubuntu Mono Legacy")')
+    print('mylabel_given_wdth(dwg, (75, 20), "QO#", 50, ... "Ubuntu Mono derivative FChords")')
     print(mylabel_given_wdth(dwg, (75, 20), 'QO#', 50,
-                       font_weight='bold', font_family='Ubuntu Mono Legacy', edge_debug=True)
+                       font_weight='bold', font_family='Ubuntu Mono derivative FChords', edge_debug=True)
         )
     print('mylabel_given_wdth(dwg, (75, 50), "QO#", 50, ... font_family)')
     print(mylabel_given_wdth(dwg, (75, 50), 'QO#', 50,
                        font_weight='bold', font_family=font_family, edge_debug=True)
         )
 
-    print('mylabel_given_wdth(dwg, (40, 80), "QO#", 50, ... "Ubuntu Mono Legacy")')
+    print('mylabel_given_wdth(dwg, (40, 80), "QO#", 50, ... "Ubuntu Mono derivative FChords")')
     print(mylabel_given_wdth(dwg, (40, 80), 'QO#', 50,
-                       font_weight='bold', font_family='Ubuntu Mono Legacy', edge_debug=True)
+                       font_weight='bold', font_family='Ubuntu Mono derivative FChords', edge_debug=True)
         )
     print('mylabel_given_wdth(dwg, (110, 80), "QO#", 50, ... font_family)')
     print(mylabel_given_wdth(dwg, (110, 80), 'QO#', 50,
                        font_weight='bold', font_family=font_family, edge_debug=True)   
         )
 
-    print('mylabel_given_wdth(dwg, (75, 110), "Align left", 72, ... "Ubuntu Mono Legacy")')
+    print('mylabel_given_wdth(dwg, (75, 110), "Align left", 72, ... "Ubuntu Mono derivative FChords")')
     print(mylabel_given_wdth(dwg, (75, 110), 'Align left', 72,
-          align_center_flag=False, font_weight='bold', font_family='Ubuntu Mono Legacy', edge_debug=True)
+          align_center_flag=False, font_weight='bold', font_family='Ubuntu Mono derivative FChords', edge_debug=True)
         )
 
     print('mylabel_given_hght(dwg, (75, 135), "Align left", 7.5, ... font_family)')
@@ -347,18 +366,18 @@ if __name__ == "__main__":
           align_center_flag=False, font_weight='bold', font_family=font_family, edge_debug=True)
         )
 
-    print('mylabel_given_hght(dwg, (40, 160), "Qj7b5", 12.5, ... "Ubuntu Mono Legacy")')
+    print('mylabel_given_hght(dwg, (40, 160), "Qj7b5", 12.5, ... "Ubuntu Mono derivative FChords")')
     print(mylabel_given_hght(dwg, (40, 160), '#Qj7b5', 12.5,
-                       font_weight='bold', font_family='Ubuntu Mono Legacy', edge_debug=True)
+                       font_weight='bold', font_family='Ubuntu Mono derivative FChords', edge_debug=True)
         )
     print('mylabel_given_hght(dwg, (110, 160), "Qj7b5", 12.5, ... font_family)')
     print(mylabel_given_hght(dwg, (110, 160), '#Qj7b5', 12.5,
                        font_weight='bold', font_family=font_family, edge_debug=True)
         )
 
-    print('mylabel_given_hght(dwg, (75, 190), "Qj7be", 12.5, ... "Ubuntu Mono Legacy")')
+    print('mylabel_given_hght(dwg, (75, 190), "Qj7be", 12.5, ... "Ubuntu Mono derivative FChords")')
     print(mylabel_given_hght(dwg, (75, 190), '#Qj7be', 12.5,
-                       font_weight='bold', font_family='Ubuntu Mono Legacy', edge_debug=True)
+                       font_weight='bold', font_family='Ubuntu Mono derivative FChords', edge_debug=True)
         )
     print('mylabel_given_hght(dwg, (75, 220), "Qj7be", 12.5, ... font_family)')
     print(mylabel_given_hght(dwg, (75, 220), 'Qj7be', 12.5,
@@ -369,12 +388,12 @@ if __name__ == "__main__":
     draw_labels(lbls_str_lst, (crcl_rad * 0.7),
                 labels_centers_vector, dwg,
                 label_len_is_h=True,
-                font_weight='bold', font_family='Ubuntu Mono Legacy',
+                font_weight='bold', font_family='Ubuntu Mono derivative FChords',
                 fill_opacity='0.5', edge_debug=True)
     
     print('mylabel_given_hght(dwg, (75, 280), "   Xy45@   ", 12.5, ... "Ubuntu Mono")')
     print(mylabel_given_hght(dwg, (75, 280), '   Xy45@   ', 12.5,
-                       font_weight='bold', font_family='Ubuntu Mono Legacy', edge_debug=True)
+                       font_weight='bold', font_family='Ubuntu Mono derivative FChords', edge_debug=True)
         )
     
     dwg.save()

@@ -20,7 +20,7 @@
   },
   "generic_formats": {
     "font_weight": "normal",
-    "font_family": "Ubuntu Mono Legacy",
+    "font_family": "Ubuntu Mono derivative FChords",
     "chord_label_font_weight": null,
     "chord_label_font_family": null,
     "chord_label_font_factor": null, 
@@ -34,18 +34,18 @@
     "side_labels_font_family": null,
     "side_labels_font_factor": null,
 	"fretb_format": {
-		"*":  [1.0, "black",       "1.0", "black", "1.0", "none",   "3.5", "white", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
-		"rh": [0.9, "white",       "1.0", "grey",  "1.0", "dashes", "3.5", "grey",  "1.0", "bold",   "Ubuntu Mono Legacy", true,  false],
-		"r":  [0.9, "lightgrey",   "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "bold",   "Ubuntu Mono Legacy", true,  false],
-		"3":  [1.0, "lightsalmon", "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
-		"b3": [1.0, "lightsalmon", "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
-        "5h": [1.0, "white",       "1.0", "grey",  "1.0", "dashes", "3.5", "grey",  "1.0", "normal", "Ubuntu Mono Legacy", false, false],
-		"b7": [1.0, "lightgreen",  "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false],  
-		"7":  [1.0, "lightgreen",  "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false]
+		"*":  [1.0, "black",       "1.0", "black", "1.0", "none",   "3.5", "white", "1.0", "normal", "Ubuntu Mono derivative FChords", false, false],
+		"rh": [0.9, "white",       "1.0", "grey",  "1.0", "dashes", "3.5", "grey",  "1.0", "bold",   "Ubuntu Mono derivative FChords", true,  false],
+		"r":  [0.9, "lightgrey",   "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "bold",   "Ubuntu Mono derivative FChords", true,  false],
+		"3":  [1.0, "lightsalmon", "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "normal", "Ubuntu Mono derivative FChords", false, false],
+		"b3": [1.0, "lightsalmon", "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "normal", "Ubuntu Mono derivative FChords", false, false],
+        "5h": [1.0, "white",       "1.0", "grey",  "1.0", "dashes", "3.5", "grey",  "1.0", "normal", "Ubuntu Mono derivative FChords", false, false],
+		"b7": [1.0, "lightgreen",  "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "normal", "Ubuntu Mono derivative FChords", false, false],  
+		"7":  [1.0, "lightgreen",  "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "normal", "Ubuntu Mono derivative FChords", false, false]
 	  },
 	"fret0_format": {
-		"*": [1.0, "white",     "1.0", "black", "1.0", "dashes", "3.5", "black", "1.0", "normal", "Ubuntu Mono Legacy", false, false],
-		"r": [0.9, "lightgrey", "1.0", "black", "1.0", "dashes", "3.5", "black", "1.0", "bold",   "Ubuntu Mono Legacy", true,  false]
+		"*": [1.0, "white",     "1.0", "black", "1.0", "dashes", "3.5", "black", "1.0", "normal", "Ubuntu Mono derivative FChords", false, false],
+		"r": [0.9, "lightgrey", "1.0", "black", "1.0", "dashes", "3.5", "black", "1.0", "bold",   "Ubuntu Mono derivative FChords", true,  false]
 	  }
   },
   "parameters": {

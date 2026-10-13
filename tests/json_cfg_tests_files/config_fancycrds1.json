@@ -1,6 +1,6 @@
 {
   "i/o": {
-    "dir_output": "/home/simone/Documents/dev/python/py3/pychords/app/tests/test_fancychords/output"
+    "dir_output": "./output"
   },  
   "flags": {
     "horiz": false,
@@ -28,23 +28,23 @@
     "upper_labels_font_family": "Liberation Mono",
     "upper_labels_font_factor": 1.15,
     "bottom_labels_font_weight": "normal",
-    "bottom_labels_font_family": "Ubuntu Mono Legacy",
+    "bottom_labels_font_family": "Ubuntu Mono derivative FChords",
     "bottom_labels_font_factor": 1.00,
     "side_labels_font_weight": "normal",
-    "side_labels_font_family": "Ubuntu Mono Legacy",
+    "side_labels_font_family": "Ubuntu Mono derivative FChords",
     "side_labels_font_factor": 0.90,
 	"fretb_format": {
-		"*":   [1.0, "black",       "1.0", "black", "1.0", "none",   "3.0", "white", "1.0", "bold", "Ubuntu Mono Legacy", false, false],
-		"r":   [0.9, "lightgrey",   "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "bold", "Ubuntu Mono Legacy", true,  false],
-		"rh":  [0.9, "white",       "1.0", "grey",  "1.0", "dashes", "3.0", "grey",  "1.0", "bold", "Ubuntu Mono Legacy", true,  false],
-		"3":   [1.0, "lightsalmon", "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "bold", "Ubuntu Mono Legacy", false, false],
-		"b3":  [1.0, "lightsalmon", "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "bold", "Ubuntu Mono Legacy", false, false],
-		"b3h": [1.0, "white",       "1.0", "grey",  "1.0", "dashes", "3.0", "grey",  "1.0", "bold", "Ubuntu Mono Legacy", false, false],
-		"b7h": [1.0, "white",       "1.0", "grey",  "1.0", "dashes", "3.0", "grey",  "1.0", "bold", "Ubuntu Mono Legacy", false, false]
+		"*":   [1.0, "black",       "1.0", "black", "1.0", "none",   "3.0", "white", "1.0", "bold", "Ubuntu Mono derivative FChords", false, false],
+		"r":   [0.9, "lightgrey",   "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "bold", "Ubuntu Mono derivative FChords", true,  false],
+		"rh":  [0.9, "white",       "1.0", "grey",  "1.0", "dashes", "3.0", "grey",  "1.0", "bold", "Ubuntu Mono derivative FChords", true,  false],
+		"3":   [1.0, "lightsalmon", "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "bold", "Ubuntu Mono derivative FChords", false, false],
+		"b3":  [1.0, "lightsalmon", "1.0", "black", "1.0", "none",   "5.0", "black", "1.0", "bold", "Ubuntu Mono derivative FChords", false, false],
+		"b3h": [1.0, "white",       "1.0", "grey",  "1.0", "dashes", "3.0", "grey",  "1.0", "bold", "Ubuntu Mono derivative FChords", false, false],
+		"b7h": [1.0, "white",       "1.0", "grey",  "1.0", "dashes", "3.0", "grey",  "1.0", "bold", "Ubuntu Mono derivative FChords", false, false]
 	  },
 	"fret0_format": {
-		"*": [1.0, "white",     "1.0", "black", "1.0", "dashes", "3.0", "black", "1.0", "bold", "Ubuntu Mono Legacy", false, false],
-		"r": [0.9, "lightgrey", "1.0", "black", "1.0", "dashes", "3.0", "black", "1.0", "bold", "Ubuntu Mono Legacy", true,  false]
+		"*": [1.0, "white",     "1.0", "black", "1.0", "dashes", "3.0", "black", "1.0", "bold", "Ubuntu Mono derivative FChords", false, false],
+		"r": [0.9, "lightgrey", "1.0", "black", "1.0", "dashes", "3.0", "black", "1.0", "bold", "Ubuntu Mono derivative FChords", true,  false]
 	  }
   },
   "parameters": {

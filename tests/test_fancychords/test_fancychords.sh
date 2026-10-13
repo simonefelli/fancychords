@@ -1,11 +1,19 @@
 #!/bin/bash
-source /home/simone/MyApps/Dev/myvenv/bin/activate
+# run from this script dir, so relative paths work wherever the script is called from
+cd "$(dirname "$0")" || exit 1
+# absolute path of the tests dir, used by the "absolute path" test cases
+TESTS_DIR="$(cd .. && pwd)"
+# activate a python virtualenv if present: by default .venv in the repository
+# root (python3 -m venv .venv), or any other one with: VENV=/my/venv ./script.sh
+# (without a virtualenv the system python3 is used)
+VENV="${VENV:-../../.venv}"
+if [ -f "$VENV/bin/activate" ]; then source "$VENV/bin/activate"; fi
 
 # --file_in and check absolute/relative paths
 
-python3 ../../fancychords.py --file_in=../crds_test_files/chord-list_fancycrds1.txt -c -rd -r='enable' -o='/home/simone/Documents/dev/python/py3/pychords/app/tests/test_fancychords/output'
+python3 ../../fancychords.py --file_in=../crds_test_files/chord-list_fancycrds1.txt -c -rd -r='enable' -o="$TESTS_DIR/test_fancychords/output"
 
-python3 ../../fancychords.py --file_in='/home/simone/Documents/dev/python/py3/pychords/app/tests/crds_test_files/chord-list_fancycrds2.txt' -c -rd -r='enable' -cf='/home/simone/Documents/dev/python/py3/pychords/app/tests/json_cfg_tests_files/config_fancycrds1.json'
+python3 ../../fancychords.py --file_in="$TESTS_DIR/crds_test_files/chord-list_fancycrds2.txt" -c -rd -r='enable' -cf="$TESTS_DIR/json_cfg_tests_files/config_fancycrds1.json"
 
 
 # --cli_in & duplicate chord name & -cf=./config.json
@@ -62,5 +70,6 @@ python3 ../../fancychords.py --cli_in='E7CouN|x,1,3,3,2,1|x,1,3,4,2,1|x,R,5,R,b3
 
 python3 ../../fancychords.py --cli_in='E8CouB|x,1,3,3,2,1|x,1,3,4,2,1|x,R,5,R,b3,5|%|x,R,5,R,b3,5|Eb/Sus' -c -r='enable' -o='./output' -ft -rd -fw='bold' -ff='Courier New'
 
-deactivate
+# deactivate only if a virtualenv was activated
+if type deactivate >/dev/null 2>&1; then deactivate; fi
 echo 'Job Done!'

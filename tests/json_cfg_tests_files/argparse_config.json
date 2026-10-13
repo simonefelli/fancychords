@@ -9,12 +9,12 @@
     "lntk": 88
   },
   "generic_formats": {
-    "chord_label_font_family": "Ubuntu Mono Legacy",
+    "chord_label_font_family": "Ubuntu Mono derivative FChords",
 	"fretb_format": {
-		"*":  [1.0, "black",       "1.0", "black", "1.0", "none", "3", "white", "1.0", "bold", "Ubuntu Mono Legacy", false, false],
-		"r":  [1.0, "lightgrey",   "1.0", "black", "1.0", "none", "5", "black", "1.0", "bold", "Ubuntu Mono Legacy", false, false],
-		"3":  [1.0, "lightsalmon", "1.0", "black", "1.0", "none", "5", "black", "1.0", "bold", "Ubuntu Mono Legacy", false, false],
-		"b3": [1.0, "lightsalmon", "1.0", "black", "1.0", "none", "5", "black", "1.0", "bold", "Ubuntu Mono Legacy", false, false]
+		"*":  [1.0, "black",       "1.0", "black", "1.0", "none", "3", "white", "1.0", "bold", "Ubuntu Mono derivative FChords", false, false],
+		"r":  [1.0, "lightgrey",   "1.0", "black", "1.0", "none", "5", "black", "1.0", "bold", "Ubuntu Mono derivative FChords", false, false],
+		"3":  [1.0, "lightsalmon", "1.0", "black", "1.0", "none", "5", "black", "1.0", "bold", "Ubuntu Mono derivative FChords", false, false],
+		"b3": [1.0, "lightsalmon", "1.0", "black", "1.0", "none", "5", "black", "1.0", "bold", "Ubuntu Mono derivative FChords", false, false]
 	  }
   }
 }

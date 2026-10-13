@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     convert_flag = True                     # if true output also png file    
     fret0 = True                            # if True you can draw dots above nut  
     font_weight = 'normal'                  # global font weight: [ 'normal' | 'bold' ]
-    font_family = 'Ubuntu Mono Legacy'             # global font family: ['Courier New' | 'Ubuntu Mono' | 
+    font_family = 'Ubuntu Mono derivative FChords'             # global font family: ['Courier New' | 'Ubuntu Mono' | 
                                             # 'DejaVu Sans Mono' | 'Liberation Mono']
     chord_label_font_weight = None          # main chord label, font weight
     chord_label_font_family = None          # main chord label, font family 
@@ -101,46 +101,46 @@ if __name__ == "__main__":
     fretb_format = {
           '*':  (1.0, 'black', '1.0', 
                  'black', '1.0', 'none', slim_stroke_str, 
-                 'white', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                 'white', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                  False, False)
         , 'rh': (0.9, 'white', '1.0', 
                  'grey', '1.0', 'dashes', fair_stroke_str, 
-                 'grey', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+                 'grey', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
                  True, False)
         , 'r':  (0.9, 'lightgrey', '1.0', 
                  'black', '1.0', 'none', fat_stroke_str, 
-                 'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+                 'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
                  True, False)
         , '3':  (1.0, 'lightsalmon', '1.0', 
                  'black', '1.0', 'none', fat_stroke_str, 
-                 'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                 'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , 'b3': (1.0, 'lightsalmon', '1.0', 
                  'black', '1.0', 'none', fat_stroke_str, 
-                 'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                 'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                  False, False)
         , '5h': (1.0, 'white', '1.0', 
                  'grey', '1.0', 'dashes', fair_stroke_str, 
-                 'grey', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                 'grey', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                  False, False)
         , 'b7': (1.0, 'lightgreen', '1.0', 
                  'black', '1.0', 'none', fat_stroke_str, 
-                 'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                 'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                  False, False)
         , '7':  (1.0, 'lightgreen', '1.0', 
                  'black', '1.0', 'none', fat_stroke_str, 
-                 'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                 'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                  False, False)
     }
     
     fret0_format = {
           '*': (1.0, 'white', '1.0', 
                 'black', '1.0', 'dashes', fair_stroke_str, 
-                'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , 'r': (0.9, 'lightgrey', '1.0', 
                 'black', '1.0', 'dashes', fair_stroke_str, 
-                'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
                 True, False)
     }
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -15,6 +15,37 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+"""
+chord_parser: turn raw user input into a clean, validated chord list.
+
+This is the first stage of the fancychords pipeline:
+
+    fancychords.py  (cli args + json config)
+        -> chords2files.process_chords()
+            -> chord_parser.get_crd_list_from_str_list()   (--cli_in input)
+               chord_parser.get_crd_list_from_file()       (--file_in input)
+                -> apply_check_crd_params()  pick the 7 columns of a chord
+                -> check_crd_params()        validate and normalize each column
+                -> fix_duplicate_chordnames() make every output filename unique
+            -> draw_chords.chord_to_file()  (one svg per chord)
+
+Every validated chord is represented as a list with 12 elements, always in
+this order (other modules access them by index, so the order matters):
+
+    index  name            example
+    0      chord_name      'G#dim7(no5)/F#'   label drawn on the image
+    1      root_note       'G#'
+    2      chord_filename  'G#dim7no5_F#'     file name without extension
+    3      frets           ['2','2','0','1','0','1']
+    4      fingers         ['3','4','x','1','x','2']  or []
+    5      intervals       ['b7','b3','b5','R','b3','bb7']  or []
+    6      dlabels         labels drawn inside the dots, or []
+    7      footer          labels drawn under the fretboard, or []
+    8      subfolder       'Diminished/'  or ''  (always ends with '/')
+    9      chord_quality   'dim7'
+    10     chord_detail    '(no5)'
+    11     chord_slash     'F#'
+"""
 
 # local application imports
 from libs import global_constants
@@ -34,6 +65,9 @@ def parse_chord_name(chord_name):
     return: root_note, quality, detail, slash_note
     '''
     len_chord_name = len(chord_name)
+    # first 2 letters of every latin note name ('SO' stands for 'SOL', the
+    # only latin note with 3 letters). Note: chord names are case sensitive,
+    # latin notes must be written in upper case ('LA7', not 'la7')
     notes_latin_chk = ['DO', 'RE', 'MI', 'FA', 'SO', 'LA', 'SI']
     root_note, quality_detail_slash, quality, detail, slash_note = '', '', '', '', ''
     # if chord_name is just 1 letter then it's english notation
@@ -42,6 +76,7 @@ def parse_chord_name(chord_name):
     # handle latin notation case
     elif chord_name[:2] in notes_latin_chk:
         if chord_name[:2] == 'SO':
+            # 'SOLm7' -> root 'SOL', rest 'm7' (skip 3 chars, not 2)
             root_note = 'SOL'
             quality_detail_slash = chord_name[3:]
         else:
@@ -52,6 +87,8 @@ def parse_chord_name(chord_name):
         root_note = chord_name[0]
         quality_detail_slash = chord_name[1:]
     # check if chord name has sharp or flat
+    # 'C#m7' -> root 'C#', rest 'm7'. Note: only one '#' or 'b' is
+    # taken, so 'Cbb' gives root 'Cb' and quality 'b'
     if quality_detail_slash:
         if quality_detail_slash[0] in ('b', '#'):
             # add 'b's or '#'s to root_note
@@ -94,6 +131,7 @@ def check_fretlist_correct(fretlist):
     
     return boolean correct variable
     '''
+    # start from True and turn it to False at the first wrong element
     correct = True
     if len(fretlist) != 6:
         correct = False
@@ -149,6 +187,11 @@ def check_crd_params(chord_name, frets, fingers, intervals, dlabels, footer, sub
     error_in_chord = False
     # error message in case of errors
     error_message = '' 
+    # chord name derived values. They are set to safe defaults here, so that
+    # the return statement below always works, even when chord_name is blank
+    # (otherwise python would raise UnboundLocalError and stop the whole run)
+    root_note, chord_filename = '', ''
+    chord_quality, chord_detail, chord_slash = '', '', ''
     
     # ======== chord_name checks ========
     # check if chord_name is null or only whitespaces
@@ -169,8 +212,12 @@ def check_crd_params(chord_name, frets, fingers, intervals, dlabels, footer, sub
         chord_detail = parsed_chord_name[2]
         chord_slash = parsed_chord_name[3]
         # sanitize chord_filename
+        # '/' and '\\' would be read as directory separators, so they become
+        # '_' instead of being removed: 'C/G' -> 'C_G' (and not 'CG')
         for forbidd_char in '/\\':
             chord_filename = chord_filename.replace(forbidd_char, '_', 9)
+        # sanitize_str() also removes accented and other non ascii chars
+        # ('DOè' -> 'DO'), see global_utilities.sanitize_str()
         # remove the other forbidden chars now, before duplicate filenames
         # are checked, so that names differing only by a forbidden char
         # (ie 'C(add9)' and 'Cadd9') do not overwrite each other
@@ -272,7 +319,9 @@ def check_crd_params(chord_name, frets, fingers, intervals, dlabels, footer, sub
     else:
         footer = []
     # ======== subfolder checks ========
-    # check if subfolder is null or only whitespaces    
+    # check if subfolder is null or only whitespaces
+    # a subfolder can have more levels ('G/Minor'), it always ends with '/'
+    # so that it can be joined to dir_output and to the file name
     if subfolder.strip():
         # if it is be a single '%' then reset
         if (subfolder == '%'):
@@ -330,6 +379,10 @@ def apply_check_crd_params(onechord_str_list):
         )  
     '''
     # strip empty elements (nulls or whitespaces)
+    # this is needed for text files, where columns are aligned with many tabs
+    # ('C\t\t\tx,3,2,0,1,0' -> ['C', '', '', 'x,3,2,0,1,0'] -> ['C', 'x,3,2,0,1,0']).
+    # The consequence is that a field can never be "just empty": to skip
+    # an optional field '%' must be used, otherwise the next fields shift
     onechord_str_list_flt = [x for x in onechord_str_list if x.strip()]
     len_onechord_str_list_flt = len(onechord_str_list_flt)
     # if onechord_str_list has 1 element then it should be chord_name
@@ -373,7 +426,15 @@ def apply_check_crd_params(onechord_str_list):
 
 def fix_duplicate_chordnames(crd_list):
     '''
-    process chord list and fix duplicate chord_filenames. ie: Cm, Cm, Cm -> Cm, Cm.v01, Cm.v02
+    process chord list and fix duplicate chord_filenames. ie: Cm, Cm, Cm -> Cm, Cm.v02, Cm.v03
+    
+    The first chord keeps its name, the following ones get a '.vXX' postfix
+    (starting from .v02). Two details matter here:
+    - names are compared ignoring upper/lower case, because on Windows and
+      macOS 'Cm7.svg' and 'CM7.svg' are the same file and one chord would
+      silently overwrite the other
+    - a generated name is never one already used by another chord, ie:
+      Cm, Cm.v02 (given by the user), Cm -> Cm, Cm.v02, Cm.v03
     
     crd_list: List, [[chord_name, root_note, chord_filename, frets, ...], ...]
         ie:         [['Cmaj7', 'C', 'Cmaj7', ['x', '3', '5',   ...], ...], ...]
@@ -383,42 +444,9 @@ def fix_duplicate_chordnames(crd_list):
     
     return modified crd_list
     '''
-    chord_filenames_list = [(elem[0], elem[1][2]) for elem in enumerate(crd_list)]    
-    '''
-    if crd_list has duplicate chord_filenames we try to fix it using postfix ".vXX". 
-    Let'say crd_list is [[chord_name, root_note, chord_filename, frets, ...], ...]
-    [
-    ['G',     'G',    'G',       ['3', '2', '0',   ...], ...], 
-    ['C',     'C' ,   'C' ,      ['x', '3', '2',   ...], ...], 
-    ['C',     'C',    'C',       ['x', '3', '5',   ...], ...], 
-    ['C',     'C',    'C',       ['8', '10', '10', ...], ...], 
-    ['D#m',   'D#',   'D#m',     ['x', '6', '8',   ...], ...], 
-    ['Cmaj7', 'C',    'Cmaj7',   ['x', '3', '5',   ...], ...], 
-    ]
-    now take only list index (implict from enumarete) and chord_filenames  
-    chord_filenames_list = [(0, 'G'), (1, 'C'), (2, 'C'), (3, 'C'), (4, 'D#m'), (5, 'Cmaj7')]
-    now sort by chord_filename
-    '''     
-    # chord_filenames_list_sorted =
-    # [(1, 'C'), (2, 'C'), (3, 'C'), (5, 'Cmaj7'), (4, 'D#m'), (0, 'G')]
-    chord_filenames_list_sorted = sorted(chord_filenames_list, key=lambda lst: lst[1])
-    
-    # now iterate over chord_filenames_list_sorted
-    # and check if actual chordfilename is equal to preceding chordfilename
-    # if so create a newchordfilename = AB.vXX
-    # and modify original crd_list consequently
-    preced_chordfilename = ''
-    preced_vers = 1
-    for elem in chord_filenames_list_sorted:
-        (index, chordfilename) = elem
-        if chordfilename == preced_chordfilename:
-            newchordfilename = chordfilename + '.v' + str(preced_vers + 1).zfill(2)
-            crd_list[index][2] = newchordfilename
-            preced_chordfilename = chordfilename
-            preced_vers += 1
-        else:
-            preced_chordfilename = chordfilename
-            preced_vers = 1
+    # the work is done by a generic helper shared with scale_parser
+    # (chord_filename is element 2 of every chord list)
+    global_utilities.fix_duplicate_filenames(crd_list, 2)
     return crd_list
 
 
@@ -548,7 +576,12 @@ def get_crd_list_from_file(input_crdf, print_output=True):
              'Processing chords file: ' + input_crdf
     if print_output: print(header)
     msg_str = header    
-    with open(input_crdf, mode='r') as infile:
+    # read the file as utf-8 so that the result is the same on every OS
+    # (Windows would otherwise use its own legacy encoding). 'utf-8-sig'
+    # also removes the invisible BOM char that some Windows editors (ie Notepad,
+    # Excel) put at the start of the file, which would otherwise hide a
+    # '//' comment on the first line
+    with open(input_crdf, mode='r', encoding='utf-8-sig') as infile:
         for infile_line in infile: 
             # strip start and final spaces
             infile_line_strip = infile_line.strip()
@@ -557,7 +590,8 @@ def get_crd_list_from_file(input_crdf, print_output=True):
             linenumber += 1
             # make listelem list by tabs splitting
             listelem = infile_line_strip.split('\t')
-            # strip header line
+            # strip header line: the first line that is not empty and not a
+            # comment is always the header (NAME FRETS FINGERS ...) and is skipped
             if linenumber > 1:
                 (
                  error_in_chord, status_str,
@@ -577,7 +611,7 @@ def get_crd_list_from_file(input_crdf, print_output=True):
     
     len_crd_list = len(crd_list)
     
-    body = ">>> " + str(len_crd_list) + " chords loaded form file <<<"
+    body = ">>> " + str(len_crd_list) + " chords loaded from file <<<"
     if print_output: print(body)
     msg_str += '\n' + body
     

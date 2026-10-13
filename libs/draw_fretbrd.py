@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -14,6 +14,19 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+"""
+draw_fretbrd: fretboard geometry and fretboard grid drawing.
+
+get_basic_params() computes dot radius and fretboard sizes from a few
+parameters (sd string distance, fd fret distance, ns strings, nf frets, ...).
+get_crd_params() turns them into lists of points: grid lines vertices, the
+centers_matrix with the center of every possible dot (centers_matrix[fret][string])
+and the centers of upper, side and bottom labels. For horizontal chords
+all points are rotated (rotate_shift_trasf) instead of computing a second
+geometry. draw_fretbrd() draws grid lines and nut using those points.
+"""
 
 
 def shift_down_trasf(pt, delta):
@@ -94,8 +107,12 @@ def get_basic_params(radius_factor, lntk, ns, nf, fd, sd,
     enable_barre: Boolean, if true draw barre/s on chord
     enable_fretnum: Boolean, if true enable side labels
 
-    return a tuple: radius, (ftbrd_w, ftbrd_h), (ftbrd_box_w, ftbrd_box_h), offset_upper_labels, 
-                    offset_forbarre, offset_side_labels, offset_bottom_labels    
+    return a tuple: radius, (ftbrd_w, ftbrd_h), (ftbrd_box_w, ftbrd_box_h), offset_forfret0,
+                    offset_upper_labels, offset_forbarre, offset_side_labels, offset_bottom_labels
+    
+    ftbrd_w/h is the grid itself, ftbrd_box_w/h is the grid plus the room
+    needed around it (dots above the nut, upper labels or barre arcs,
+    footer labels, side fret numbers)
     """
     
     # ====== Computing Parameters ======

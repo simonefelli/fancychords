@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -14,6 +14,16 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+"""
+mymultilabels: chord name labels on one or two lines.
+
+A main label (chord or scale name) can contain one newline to be drawn on
+two lines, ie fancyscales titles like 'Am Pentatonic Scale\\nPosition 1'.
+These functions extend mylabels to measure and draw such labels, centered
+or left aligned. A label without newline is drawn on a single line.
+"""
 
 from libs import myshapes
 from libs import mylabels
@@ -47,6 +57,11 @@ def isvalid_multiline(mystr):
     return valid_multiline, splitted_mystr
 
 
+# note on align_center_flag (all the functions below): mycenter is always the
+# center of the whole label, also for left aligned chord labels (the caller
+# moves mycenter instead). The flag only decides where the shorter line of a
+# 2 lines label goes: centered under the longer one (True) or starting at
+# the same left edge (False). A single line label does not need it.
 def get_multilabelparams(mystr, labelfont_family, align_center_flag,
                          multi_label_w=None, multi_label_h=None):
     '''

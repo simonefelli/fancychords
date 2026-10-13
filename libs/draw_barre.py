@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -14,6 +14,15 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+"""
+draw_barre: find and draw barres (one finger pressing more strings).
+
+A barre is drawn as an arc over the dots when the same finger number is
+used on more strings at the same fret, ie: fingers 1,3,4,2,1,1 on frets
+8,10,10,9,8,8 -> finger 1 on fret 8 makes a barre from string 6 to string 1.
+"""
 
 # library to handle chord barre
 

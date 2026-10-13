@@ -37,7 +37,7 @@ if __name__ == "__main__":
     enable_fretnum = True             # if true enable side labels
     nutline = True                    # if True draw nut line ticker   
     font_weight = 'normal'            # global font weight: [ 'normal' | 'bold' ]
-    font_family = 'Ubuntu Mono Legacy'       # global font family: ['Courier New' | 'Ubuntu Mono' |  'DejaVu Sans Mono' | 'Liberation Mono']
+    font_family = 'Ubuntu Mono derivative FChords'       # global font family: ['Courier New' | 'Ubuntu Mono' |  'DejaVu Sans Mono' | 'Liberation Mono']
     fret0_format = {}                 # fret0_format, for fret0 dots
     fretb_format = {}                 # fretb_format, for fretboard dots
     arrows_format = ()    

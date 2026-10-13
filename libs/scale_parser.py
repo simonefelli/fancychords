@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -15,6 +15,31 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+
+"""
+scale_parser: read and validate scale files for fancyscales.
+
+A scale file is a sequence of blocks, one per scale. Every block has 11
+lines, always in this order (tab separated, '//' starts a comment line):
+
+    NAME        scale label ('\\n' gives a 2 lines label)
+    FOLDER      output subfolder, '%' for none
+    FILENAME    file name without extension, '%' to derive it from NAME
+    STRING01    frets <tab> intervals <tab> dlabels   (1st string, high e)
+    ...
+    STRING06    frets <tab> intervals <tab> dlabels   (6th string, low E)
+    FOOTER      up to 6 labels under the fretboard, '%' for none
+    ARROWS      python tuple of arrows, ie ( ((5,2), (8,2)), ), '%' for none
+
+Every STRING line holds comma separated lists with one element per fret
+column, 'x' where there is no note, ie: 'x,8,x,10,11'. All 6 strings must
+have the same number of columns.
+
+Functions, from file to validated scale list:
+    parse_scales_from_file()    check the block structure, return raw dicts
+    get_scales_list()           validate every scale with check_scl_params()
+    get_scales_list_from_file() both steps, used by scales2files
+"""
 
 # standard imports
 import ast
@@ -299,7 +324,7 @@ def check_strngs_params(
     # if dlabels lenght lists exist check len fret is equal to len dlabels
     if (not chk_1fret_1dlabel) and len_strgs_dlabels_list:
         error_in_scale = True
-        error_message += 'some string has not its own intervals defined or viceversa;'
+        error_message += 'some string has not its own dlabels defined or viceversa;'
  
     # if Intervals and Frets lists exist and all elements of lists (Strings, Intervals) have the same lenght
     # then check if this lenght is the same for the two lists
@@ -308,9 +333,12 @@ def check_strngs_params(
             if strgs_frets_len_list[0] != strgs_intervals_len_list[0]:
                 error_in_scale = True
                 error_message += 'frets and interval elements are not all of same lenght;'
-    # if Intervals and DLabels lists exist and all elements of lists (Strings, DLabels) have the same lenght
-    # then check if this lenght is the same for the two lists
-    if len_strgs_intervals_list and len_strgs_dlabels_list:
+    # if Frets and DLabels lists exist and all elements of lists (Strings, DLabels) have the same lenght
+    # then check if this lenght is the same for the two lists.
+    # note: this must not depend on intervals (it used to check
+    # len_strgs_intervals_list, so a scale with dlabels but without
+    # intervals was never checked)
+    if len_strgs_dlabels_list and len_strgs_frets_list:
         if chk_frets_all_same_len and chk_dlabels_all_same_len:        
             if strgs_frets_len_list[0] != strgs_dlabels_len_list[0]:
                 error_in_scale = True
@@ -424,8 +452,10 @@ def check_scl_params(
     # if '\n' is present in scale_name then change it to newline
     if '\\n' in scale_name: scale_name = scale_name.replace('\\n', '\n')
     
-    # filename is given, then sanitize it and assign it to scale_filename
-    if filename:
+    # filename is given, then sanitize it and assign it to scale_filename.
+    # '%' means "not given" (like in the other fields): without this check
+    # sanitize_str('%') returned '' and the image was saved as '.svg'
+    if filename and filename.strip() != '%':
         scale_filename = global_utilities.sanitize_str(filename)
     # else derive scale_filename from scale_name (use also 
     # scale_postfix from above)
@@ -492,7 +522,8 @@ def check_scl_params(
         # from every single footer label
         footer = global_utilities.crd_str2slst(footer)
         # if a footer elem has more than 3 chars then it is an error
-        if (len(footer[0]) > 3):
+        # (every element is checked, not only the first one)
+        if any(len(elem) > 3 for elem in footer):
             error_in_scale = True
             error_message += 'error in footer syntax no more of 3 chars allowed per element '
         # if footer has more than 6 elements then it is an error
@@ -523,7 +554,9 @@ def check_scl_params(
             else:
                 error_in_scale = True
                 error_message += 'error in arrows syntax  ' 
-        except:
+        # literal_eval raises different exceptions for different syntax errors
+        # (ValueError, SyntaxError, ...): all of them mean wrong arrows
+        except Exception:
             error_in_scale = True
             error_message += 'error in arrows syntax  ' 
     
@@ -597,7 +630,7 @@ def get_scales_list(scales_lst, print_output=True):
             ...
             ]
         ]
-        , 'Getting Scales form File ...'
+        , 'Getting Scales from File ...'
     )
     '''
     msg_str = ''
@@ -657,6 +690,11 @@ def get_scales_list(scales_lst, print_output=True):
                  , arrows                    
                 ]
             )
+    
+    # make every output file name unique (ie two scales with the same name
+    # would overwrite each other): Am, Am -> Am, Am.v02.
+    # scale_filename is element 3 of every scale list
+    global_utilities.fix_duplicate_filenames(scl_list, 3)
             
     return (scl_list, msg_str)
 
@@ -741,12 +779,13 @@ def parse_scales_from_file(input_sclf, print_output=True):
     footer = None
     arrows = None
     
-    header = '\nGetting Scales form File\n========================\n' + \
+    header = '\nGetting Scales from File\n========================\n' + \
              'Processing scales file: ' + input_sclf
     msg_str = header
     if print_output: print(header)
     
-    with open(input_sclf, mode='r') as infile:
+    # utf-8 on every OS ('utf-8-sig' also removes the BOM some Windows editors add)
+    with open(input_sclf, mode='r', encoding='utf-8-sig') as infile:
         
         for infile_line in infile:
             
@@ -984,7 +1023,9 @@ def parse_scales_from_file(input_sclf, print_output=True):
                 error_message += 'block not complete, '
                 error_line = linenumber + 1
     
-    status_str = 'Error in scale file: ' + str(error_in_file)
+    # file structure status (it used to print 'Error in scale file: False'
+    # when everything was fine, which read like an error)
+    status_str = 'Scale file structure: ' + ('ERROR' if error_in_file else 'OK')
     status_str += '\nComplete scales loaded from file: ' + str(block_number)
     msg_str += '\n' + status_str + '\n'
     if print_output: print(status_str)
@@ -1058,7 +1099,7 @@ def get_scales_list_from_file(input_sclf, print_output=True):
             ...
             ]
         ]
-        , 'Getting Scales form File ...'
+        , 'Getting Scales from File ...'
     )
     '''
     msg_str = ''

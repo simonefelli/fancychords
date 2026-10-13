@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -14,6 +14,15 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+"""
+mydots: draw one dot (circle or square, optionally with a label inside).
+
+Lowest level helper used by draw_dots: it only knows how to
+put a shape and its text on the svg Drawing, all decisions about formats
+are taken by the callers.
+"""
 
 
 # local application imports
@@ -102,7 +111,7 @@ if __name__ == "__main__":
     test_label2 = 'X'
     test_label3 = 'X'
     test_label4 = 'X'
-    font_family='Ubuntu Mono Legacy'
+    font_family='Ubuntu Mono derivative FChords'
     # font_family='Courier New'
     # font_family='Liberation Mono'
     # font_family = 'DejaVu Sans Mono'

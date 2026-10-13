@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -14,6 +14,13 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+"""
+tmp: scratch script (not a library, nothing imports it). It transposes a
+few chord shapes with transportables.transport() and prints them as chord
+file rows. It could be moved to tests/test_transportables.
+"""
 
 from libs import global_constants
 from libs import global_utilities

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -14,6 +14,27 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+"""
+music_utilities: basic music theory helpers (notes, intervals, frets).
+
+Vocabulary used in the whole project:
+    note       'C', 'F#', 'Bb' (english) or 'DO', 'FA#', 'SIb' (latin)
+    flsh       'flat' or 'sharp': which spelling to use for black keys
+               (ie 'Gb' or 'F#'), chosen with the circle of fifths
+    hstep      half-steps (semitones) from the root: 0 = R, 3 = b3, 7 = 5
+    rhstep     hstep reduced to the first octave (14 -> 2)
+    interval   interval name: 'R', 'b3', '5', 'b7', '9', '#11', ...
+    frets      list of 6 fret numbers, from low E (6th string) to high e,
+               None for a muted string, ie C major: [None, 3, 2, 0, 1, 0]
+
+Main groups of functions:
+    - note names:  normalize, latin <-> english, flat <-> sharp
+    - intervals:   interval <-> hstep conversions
+    - frets:       frets -> notes / hsteps / intervals of a chord
+    - autocomplete_chord(): guess fingers and intervals of a chord
+"""
 
 
 # local application imports
@@ -126,7 +147,7 @@ def conv_note_en2latin(en_note):
 def conv_chordname_en2latin(en_chordname):
     '''
     turn english chord name into a latin notation chord
-    ie: conv_chordname_en2latin('Cm7/G#') -> 'SOLb'
+    ie: conv_chordname_en2latin('Cm7/G#') -> 'DOm7/SOL#'
     
     en_chordname: String, chord english name
     
@@ -324,7 +345,9 @@ def is_latin_chord(chord):
         is_latin = True
         root_note = conv_note_latin2en(root_note)
         if slash_note: slash_note = conv_note_latin2en(slash_note)
-    if is_latin: chord = root_note + quality + detail + '/' + slash_note
+    # rebuild the english name. '/' is added only for slash chords
+    # (it was always added, so 'LAm7' became 'Am7/' instead of 'Am7')
+    if is_latin: chord = root_note + quality + detail + ('/' + slash_note if slash_note else '')
     return (is_latin, chord)
 
 
@@ -340,8 +363,10 @@ def lowest_root_in_chord(chord_name, frets_int):
     root_note, quality = parsed_chord_name[0], parsed_chord_name[1]
     # for a major chord quality is '' so replace it with 'major'
     if not quality: quality = 'major'
-    # mb6(Add11) -> 'minor'
-    majmin = quality_to_majmin(quality)
+    # mb6(Add11) -> 'minor'. A quality not in formulas_list gives None:
+    # assume 'major' then (as intervals.frets_formula_matcher does),
+    # otherwise music_circle_flsh() returns None and frets_to_notes() crashes
+    majmin = quality_to_majmin(quality) or 'major'
     # chord is flat or sharp throughout music circle based on root_note, majmin    
     flsh_root = music_circle_flsh(root_note, majmin)
     # ([None, 4, 6, 5, 6, 4], 'flat') -> [None, 'Db', 'Ab', 'C', 'F', 'Ab']
@@ -453,13 +478,8 @@ def reduce_hstep_to_first_octave(hstep):
     
     return Number, semitone distance reduced to first ocatve (rhstep)
     '''    
-    if hstep > 11:
-        # mod division: get the remainder of a division problem.
-        rhstep = (hstep % 12)
-        return (hstep % 12)
-    else:
-        rhstep = hstep
-    return rhstep
+    # mod division (remainder of hstep / 12): 18 -> 6, 7 -> 7
+    return hstep % 12
 
 
 def intervals_to_rhsteps(frml_interv):
@@ -511,8 +531,11 @@ def hstep_to_note(root_note, hstep, flsh):
     
     return String note corresponding to root note + hsteps in 'flat'/'sharp' style
     '''
-    root_note_2octaves = n_octaves(root_note, 2, flsh)
-    return root_note_2octaves[hstep]
+    # one octave of notes starting from root_note. Notes repeat every 12
+    # half-steps, so hstep % 12 works for any distance (it used a 2 octaves
+    # list, so hstep 24 - ie the 24th fret, allowed in chords - raised IndexError)
+    root_note_octave = n_octaves(root_note, 1, flsh)
+    return root_note_octave[hstep % 12]
 
 
 def notes_to_hstep(root_note, second_note):
@@ -760,7 +783,8 @@ def frets_to_intervals(root_note, frets):
         
         # general rules
         
-        # sus chords
+        # chords with a third: 2nd and 4th are extensions (9th and 11th),
+        # not suspensions, ie R,3,5,2 is add9 and not sus2
         if third_is_present:
             if '2' in intervals: intervals = modify_intervals_lst(intervals, '2', '9')
             if 'b2' in intervals: intervals = modify_intervals_lst(intervals, 'b2', 'b9')

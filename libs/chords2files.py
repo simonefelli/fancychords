@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2025 Simone Felli
+# Copyright (C) 2026 Simone Felli
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -14,6 +14,25 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+"""
+chords2files: main engine of fancychords, from input chords to image files.
+
+process_chords() is called by fancychords.py and runs the whole job:
+
+    1. prints an options summary (nice_print_options)
+    2. reads the chords, from a cli string or from a text file, using
+       chord_parser (validation, duplicate filenames fix)
+    3. chord_list_to_files():
+       - for every chord creates its output dir (dir_output + subfolder)
+         and calls draw_chords.chord_to_file() to write the svg file
+       - if convert_flag is True converts the svg files just drawn to png,
+         in a 'png' subdir next to them (convert_svg2png)
+
+Every function returns a message string with what was done, so that the
+caller can collect a log of the whole run.
+"""
 
 
 # standard library imports
@@ -179,10 +198,13 @@ def chord_list_to_files(
     header = "\nDrawing SVG Chords\n=================="
     print(header)
     svg_msg_str = header
-    chord_filenames_list = []
+    # chords drawn in every output dir, used for png conversion:
+    # {'./dirout/C/Major/': ['C', 'C.v02'], './dirout/': ['G'], ...}
+    chord_filenames_by_dir = {}
     svg_file_path_list = []
     png_file_path_list = []
     for crd in crd_list:
+        # unpack chord list by index (see chord_parser module docs)
         chord_name = crd[0]
         chord_filename = crd[2]
         frets = crd[3]
@@ -191,13 +213,13 @@ def chord_list_to_files(
         dlabels = crd[6]
         footer = crd[7]
         subfolder = crd[8]
-        chord_filenames_list.append(chord_filename)
         # check if subfolder exist
         if subfolder:
             path_output = os.path.join(dir_output, subfolder)
         else:
             path_output = dir_output + '/'
         # if path_output does not exist then create it
+        # (makedirs also creates every missing parent dir)
         if not os.path.isdir(path_output): os.makedirs(path_output)
         print_label1 = "* " + chord_filename
         print_label2 = " --> "
@@ -222,7 +244,9 @@ def chord_list_to_files(
             side_labels_font_weight, side_labels_font_family, side_labels_font_factor,
             lntk, x_or, y_or, ns, nf, fd, sd, radius_factor, debug
             )
+        # remember what was written, for the return value and png conversion
         svg_file_path_list.append(svg_file_path)
+        chord_filenames_by_dir.setdefault(path_output, []).append(chord_filename)
 
     svg_info_str = '>>> ' + str(len(svg_file_path_list))  + ' svg files processed <<<'
     print(svg_info_str)
@@ -231,28 +255,21 @@ def chord_list_to_files(
     
     # converting to png part
     if convert_flag:
-        # convert_list = [('./dirout/Seventh/', './dirout/Seventh/png/'), ...]
-        convert_list = []
-        # os.walk returns a generator, that creates a tuple of values 
-        # (current_path, directories in current_path, files in current_path).
-        for oswalk_triplet in os.walk(dir_output):
-            root_path = oswalk_triplet[0]
-            # basename = last dir in root_path: ./dirout/Nine/png/ -> png
-            root_dir = os.path.basename(root_path)
-            # filter only svg files
-            files = [elem for elem in oswalk_triplet[2] if elem.endswith('svg')]
-            # avoid png dir scanning
-            if files and (root_dir != 'png'):
-                curr_dir_out = root_path + '/'
-                png_path = os.path.join(root_path, 'png/')
-                convert_list.append((curr_dir_out, png_path))
+        # convert only the svg files drawn in this run, each one into a 'png'
+        # subdir of its own dir. Note: other svg files that may already be in
+        # dir_output (ie from a previous run) are left untouched
+        # convert_list = [('./dirout/Seventh/', './dirout/Seventh/png/', ['C7', ...]), ...]
+        convert_list = [
+            (curr_dir_out, os.path.join(curr_dir_out, 'png/'), filenames)
+            for curr_dir_out, filenames in chord_filenames_by_dir.items()
+            ]
         convert_msg_str = ''
         header = "\nConverting SVG Chords to PNG\n============================"
         print(header)
         convert_msg_str += header
-        for curr_dir_out, curr_png_path in convert_list:
+        for curr_dir_out, curr_png_path, filenames in convert_list:
             cmsg_str, png_fp_list = convert_svg2png.convert_svg2png(
-                curr_dir_out, curr_png_path, chord_filenames_list
+                curr_dir_out, curr_png_path, filenames
                 )
             convert_msg_str += cmsg_str
             png_file_path_list += png_fp_list
@@ -367,6 +384,7 @@ def process_chords(
     # mylongnamedvar=mylongnamedvar if mylongnamedvar is not None else 'default'
     # turn into: 
     # mylongnamedvar=shortenop(mylongnamedvar)
+    # (used only for printing: None means "use the global value")
     shortenop = lambda x: x if x is not None else 'default'
 
     # outputs a useful option summary for information
@@ -407,15 +425,29 @@ def process_chords(
         )
     print(option_summary)
 
-    # os normalize dir
+    # os normalize dir: './out//a/../b/' -> 'out/b'
+    # (also turns '/' into '\\' on Windows)
     dir_output = os.path.normpath(dir_output)
     
     if input_way == 'string':
         
-        # ';' splitting
+        # ';' splitting: one string for every chord
+        # 'C|x,3,2,0,1,0;G|3,2,0,0,0,3' -> ['C|x,3,2,0,1,0', 'G|3,2,0,0,0,3']
         chords_str_split = input_crds.split(';')
         
-        chords_str_list = [onechord_str.strip().split('|') for onechord_str in chords_str_split if onechord_str]
+        # '|' splitting: one list of fields for every chord
+        # ['C|x,3,2,0,1,0', ...] -> [['C', 'x,3,2,0,1,0'], ...]
+        # - blank chunks (ie a trailing ';' or '; ') are skipped, otherwise they
+        #   would be parsed as a chord without a name
+        # - an empty field between two '|' (ie 'C|x,3,2,0,1,0||x,R,3,5,R,3')
+        #   means "skip this field", exactly like '%'. It must be turned into
+        #   '%' here because chord_parser drops empty fields (needed for text
+        #   files, where many tabs are used just to align columns) and every
+        #   following field would shift one column to the left
+        chords_str_list = [
+            [field if field.strip() else '%' for field in onechord_str.strip().split('|')]
+            for onechord_str in chords_str_split if onechord_str.strip()
+            ]
 
         # crd_list = [[chord_name, chord_filename, frets, fingers, dlabels, footer, subfolder], ...]
         # crd_list_msg_str -> (crd_list, msg_str)
@@ -448,7 +480,7 @@ def process_chords(
         (crd_list, crd_list_msg_str) = chord_parser.get_crd_list_from_file(input_crdf)    
 
     # print some info
-    info_msg_str = '\ncrd_list_from_file (' + str(len(crd_list)) + \
+    info_msg_str = '\nChords to draw (' + str(len(crd_list)) + \
           ' chords):\n==============================='
     for elem in crd_list:
         chord_name = elem[0]
@@ -535,7 +567,7 @@ if __name__ == "__main__":
     fret0 = True                            # if True you can draw dots above nut
     convert_flag = True                     # if true output also png file
     font_weight = 'normal'                  # global font weight: [ 'normal' | 'bold' ]
-    font_family = 'Ubuntu Mono Legacy'             # global font family: ['Courier New' | 'Ubuntu Mono' | 
+    font_family = 'Ubuntu Mono derivative FChords'             # global font family: ['Courier New' | 'Ubuntu Mono' | 
                                             # 'DejaVu Sans Mono' | 'Liberation Mono']
 
     # --- appearance  parameters
@@ -568,22 +600,22 @@ if __name__ == "__main__":
     fretb_format = {
           '*': (1.0, 'black', '1.0', 
                 'black', '1.0', 'none', slim_stroke_str, 
-                'white', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                'white', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , 'r': (1.0, 'lightgrey', '1.0', 
                 'black', '1.0', 'none', fat_stroke_str,
-                 'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                 'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                  False, False)
     }
     
     fret0_format = {
           '*': (1.0, 'white', '1.0', 
                 'black', '1.0', 'dashes', slim_stroke_str, 
-                'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , 'r': (1.0, 'lightgrey', '1.0', 
                 'black', '1.0', 'dashes', slim_stroke_str, 
-                'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
     }
 
