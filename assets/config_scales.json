@@ -19,18 +19,18 @@
   },
   "generic_formats": {
     "font_weight": "normal",
-    "font_family": "Ubuntu Mono Legacy",
+    "font_family": "Ubuntu Mono derivative FChords",
     "scale_label_font_weight": "normal",
-    "scale_label_font_family": "Ubuntu Mono Legacy",
+    "scale_label_font_family": "Ubuntu Mono derivative FChords",
     "scale_label_font_factor": 0.8,
     "upper_labels_font_weight": "normal",
-    "upper_labels_font_family": "Ubuntu Mono Legacy",
+    "upper_labels_font_family": "Ubuntu Mono derivative FChords",
     "upper_labels_font_factor": 1.15,
     "bottom_labels_font_weight": "normal",
-    "bottom_labels_font_family": "Ubuntu Mono Legacy",
+    "bottom_labels_font_family": "Ubuntu Mono derivative FChords",
     "bottom_labels_font_factor": 0.8,
     "side_labels_font_weight": "normal",
-    "side_labels_font_family": "Ubuntu Mono Legacy",
+    "side_labels_font_family": "Ubuntu Mono derivative FChords",
     "side_labels_font_factor": 0.7,
     "fretb_format": {
       "*": [
@@ -44,7 +44,7 @@
         "white",
         "1.0",
         "normal",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         false,
         false
       ],
@@ -59,7 +59,7 @@
         "black",
         "1.0",
         "bold",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         true,
         false
       ],
@@ -74,7 +74,7 @@
         "black",
         "1.0",
         "normal",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         false,
         false
       ],
@@ -89,7 +89,7 @@
         "black",
         "1.0",
         "normal",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         false,
         false
       ],
@@ -104,7 +104,7 @@
         "black",
         "1.0",
         "normal",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         false,
         false
       ],
@@ -119,7 +119,7 @@
         "black",
         "1.0",
         "normal",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         false,
         false
       ],
@@ -134,7 +134,7 @@
         "black",
         "1.0",
         "normal",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         false,
         false
       ]
@@ -151,7 +151,7 @@
         "white",
         "1.0",
         "normal",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         false,
         false
       ],
@@ -166,7 +166,7 @@
         "black",
         "1.0",
         "bold",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         true,
         false
       ],
@@ -181,7 +181,7 @@
         "black",
         "1.0",
         "normal",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         false,
         false
       ],
@@ -196,7 +196,7 @@
         "black",
         "1.0",
         "normal",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         false,
         false
       ],
@@ -211,7 +211,7 @@
         "black",
         "1.0",
         "normal",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         false,
         false
       ],
@@ -226,7 +226,7 @@
         "black",
         "1.0",
         "normal",
-        "Ubuntu Mono Legacy",
+        "Ubuntu Mono derivative FChords",
         false,
         false
       ]

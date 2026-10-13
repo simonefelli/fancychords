@@ -111,7 +111,7 @@ if __name__ == "__main__":
     test_label2 = 'X'
     test_label3 = 'X'
     test_label4 = 'X'
-    font_family='Ubuntu Mono Legacy'
+    font_family='Ubuntu Mono derivative FChords'
     # font_family='Courier New'
     # font_family='Liberation Mono'
     # font_family = 'DejaVu Sans Mono'

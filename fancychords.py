@@ -187,7 +187,7 @@ default_params = {
     , 'nutline': True                       # draw nut line ticker
     , 'fret0': False                        # draw virtual dots above nut
     , 'root_is_different': False            # draw different dots for root note
-    , 'font_family': 'Ubuntu Mono Legacy'   # global font family
+    , 'font_family': global_utilities.DEFAULT_FONT_FAMILY   # global font family
     , 'font_weight': 'normal'               # global font weight
     , 'convert_flag': False                 # convert images to png files 
     , 'report': 'disable'                   # generate html report
@@ -373,9 +373,9 @@ if __name__ == "__main__":
         , action='store'
         , dest='font_family'
         , default=None
-        , choices=['Ubuntu Mono Legacy', 'Ubuntu Mono', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New']
-        , help='global font family: [\'Ubuntu Mono Legacy\'|\'Ubuntu Mono\'|\'Liberation Mono\'' \
-               '|\'DejaVu Sans Mono\'|\'Courier New\'], default is \'' 
+        , choices=global_utilities.FONT_FAMILIES
+        , help='global font family: [\'' + '\'|\''.join(global_utilities.FONT_FAMILIES)
+               + '\'], default is \'' 
                + str(default_params['font_family']) + '\''
         )    
     parser.add_argument(

@@ -192,22 +192,22 @@ if __name__ == "__main__":
     fretb_format = {
           '*': (1.0, 'black', '1.0', 
                 'black', '1.0', 'none', slim_stroke_str, 
-                'white', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                'white', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , 'r': (1.0, 'lightgrey', '1.0', 
                 'black', '1.0', 'none', fat_stroke_str,
-                 'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                 'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                  False, False)
     }
     
     fret0_format = {
           '*': (1.0, 'white', '1.0', 
                 'black', '1.0', 'dashes', slim_stroke_str, 
-                'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , 'r': (1.0, 'lightgrey', '1.0', 
                 'black', '1.0', 'dashes', slim_stroke_str, 
-                'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
                 False, False)
     }
 

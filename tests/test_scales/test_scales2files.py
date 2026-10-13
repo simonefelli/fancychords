@@ -30,7 +30,7 @@ enable_fretnum = True                   # if true enable side labels
 nutline = True                          # if True draw nut line ticker
 convert_flag = True                     # if true output also png file
 font_weight = 'normal'                  # global font weight: [ 'normal' | 'bold' ]
-font_family = 'Ubuntu Mono Legacy'             # global font family: ['Courier New' | 'Ubuntu Mono' | 
+font_family = 'Ubuntu Mono derivative FChords'             # global font family: ['Courier New' | 'Ubuntu Mono' | 
                                         # 'DejaVu Sans Mono' | 'Liberation Mono']
 
 # --- appearance  parameters
@@ -79,34 +79,34 @@ padding = None                         # tuple (lower_fret, higher_fret) for pad
 fretb_format = {
       '*':  (1.0, 'black', '1.0', 
              'black', '1.0', 'none', fair_stroke_str, 
-             'white', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+             'white', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
              False, False)
     , 'r':  (0.9, 'lightgrey', '1.0', 
              'black', '1.0', 'none', fat_stroke_str, 
-             'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+             'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
              True, False)
     , '3': (1.0, 'lightsalmon', '1.0', 
              'black', '1.0', 'none', fair_stroke_str, 
-             'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+             'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
              False, False)
     , '5': (1.0, 'lightgreen', '1.0', 
              'black', '1.0', 'none', fair_stroke_str, 
-             'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+             'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
              False, False)
     , 'b7':  (1.0, 'skyblue', '1.0', 
              'black', '1.0', 'none', fair_stroke_str, 
-             'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+             'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
              False, False)
 }
 
 fret0_format = {
       '*': (1.0, 'white', '1.0', 
             'black', '1.0', 'dashes', fair_stroke_str, 
-            'black', '1.0', 'normal', 'Ubuntu Mono Legacy', 
+            'black', '1.0', 'normal', 'Ubuntu Mono derivative FChords', 
             False, False)
     , 'r': (0.9, 'lightgrey', '1.0', 
             'black', '1.0', 'dashes', fair_stroke_str, 
-            'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+            'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
             True, False)
 }
 

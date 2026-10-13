@@ -54,26 +54,26 @@ if __name__ == "__main__":
     fretb_format = {
           '*': (1.0, 'black', '1.0', 
                 'black', '1.0', 'none', '3', 
-                'white', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+                'white', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , 'r': (1.0, 'lightgrey', '1.0', 
                 'black', '1.0', 'none', '5', 
-                'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , '3': (1.0, 'lightsalmon', '1.0', 
                 'black', '1.0', 'none', '5', 
-                'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
                 False, False)
     }
     
     fret0_format = {
           '*': (1.0, 'white', '1.0', 
                 'black', '1.0', 'dashes', '3', 
-                'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
                 False, False)
         , 'r': (1.0, 'lightgrey', '1.0', 
                 'black', '1.0', 'dashes', '3', 
-                'black', '1.0', 'bold', 'Ubuntu Mono Legacy', 
+                'black', '1.0', 'bold', 'Ubuntu Mono derivative FChords', 
                 True, False)
     }
 
@@ -94,13 +94,13 @@ if __name__ == "__main__":
         ]
 
     upper_labels_font_weight = 'bold'   # upper labels, font weight
-    upper_labels_font_family = 'Ubuntu Mono Legacy'   # upper labels, font family 
+    upper_labels_font_family = 'Ubuntu Mono derivative FChords'   # upper labels, font family 
     upper_labels_font_factor = 1.15   # upper labels, font size factor: default is 1.15       
     bottom_labels_font_weight = 'bold'  # bottom labels, font weight
-    bottom_labels_font_family = 'Ubuntu Mono Legacy'  # bottom labels, font family 
+    bottom_labels_font_family = 'Ubuntu Mono derivative FChords'  # bottom labels, font family 
     bottom_labels_font_factor = 1.00  # bottom labels, font size factor: default is 1.00       
     side_labels_font_weight = 'bold'    # side labels, font weight
-    side_labels_font_family = 'Ubuntu Mono Legacy'    # side labels, font family
+    side_labels_font_family = 'Ubuntu Mono derivative FChords'    # side labels, font family
     side_labels_font_factor = 0.70    # side labels, font size factor  : default is 0.70
 
     if not os.path.isdir('./dirout/'): os.makedirs('./dirout/')

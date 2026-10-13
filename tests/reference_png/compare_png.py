@@ -41,10 +41,11 @@ right font up to about 0.5% of the pixels differ by more than 64/255
 1.5%. This works only on Linux: Windows draws text with its own font
 system, so its images differ more from Linux ones.
 
-The --same / --differ checks work everywhere: drawn on the same computer,
-chords with font 'Ubuntu Mono Legacy' must be identical to chords with
-font 'Ubuntu Mono' (the name alias works) and different from chords with
-a font that does not exist (Ubuntu Mono is really installed).
+The --same / --differ checks work everywhere (images drawn on the same
+computer): chords drawn with the default font 'Ubuntu Mono derivative
+FChords' must be different from chords drawn with a font that does not
+exist (the font is really installed and used), and must not change when
+other fonts are installed too (ie the newer Ubuntu Mono of Ubuntu 24.04).
 """
 
 # standard library imports

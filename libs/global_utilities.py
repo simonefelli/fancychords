@@ -31,6 +31,19 @@ Main groups of functions:
 import json
 
 
+# Fonts.
+# The default font is Ubuntu Mono 0.80 (from ubuntu-font-family-0.83),
+# renamed 'Ubuntu Mono derivative FChords' as the Ubuntu Font Licence asks
+# for modified fonts: it never mixes with the newer Ubuntu Mono of recent
+# systems (bolder, larger) and works the same on Linux and Windows. The font
+# files are in the fonts/ folder of the repository.
+DEFAULT_FONT_FAMILY = 'Ubuntu Mono derivative FChords'
+# fonts accepted by --font-family; 'Ubuntu Mono Legacy' is the name used by
+# chords made with older versions (a locally renamed copy of the same font)
+FONT_FAMILIES = [DEFAULT_FONT_FAMILY, 'Ubuntu Mono Legacy', 'Ubuntu Mono',
+                 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New']
+
+
 def lower_and_underscore(instr):
     '''
     given an input string this function replace spaces with underscores

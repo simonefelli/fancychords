@@ -18,7 +18,7 @@ Both write **SVG** images (and optionally **PNG**), can build an **HTML gallery*
 
 - [Features](#features)
 - [Installation](#installation)
-  - [Required font: Ubuntu Mono Legacy](#required-font-ubuntu-mono-legacy)
+  - [Required font: Ubuntu Mono derivative FChords](#required-font-ubuntu-mono-derivative-fchords)
 - [FancyChords tutorial](#fancychords-tutorial)
 - [Chord notation reference](#chord-notation-reference)
 - [Chord list files](#chord-list-files)
@@ -67,29 +67,24 @@ python3 fancychords.py --help
 python3 fancyscales.py --help
 ```
 
-### Required font: Ubuntu Mono Legacy
+### Required font: Ubuntu Mono derivative FChords
 
-The diagrams are drawn by default with **`Ubuntu Mono Legacy`**: the Ubuntu Mono font of the
-ubuntu-font-family **0.83** release, under its own name. **Install it before using the programs**
-(Python scripts or executables). An SVG only stores the font *name*, so the font must be
-installed on the computer that shows or converts the image; without it another font is used and
-the labels look different.
+The diagrams are drawn by default with **`Ubuntu Mono derivative FChords`**: the Ubuntu Mono font of
+the ubuntu-font-family **0.83** release with its own name. **Install it before using the programs**
+(Python scripts or executables): the four `.ttf` files in
+[fonts/ubuntu-mono-derivative-fchords](./fonts/ubuntu-mono-derivative-fchords), installed like any
+other font on Linux or Windows. Nothing else is needed. An SVG only stores the font *name*, so
+the font must be installed on the computer that shows or converts the image; without it another
+font is used and the labels look different.
 
-- It is the older Ubuntu Mono on purpose: the newer Ubuntu Mono shipped with recent systems
-  (Ubuntu 24.04 and later) draws bolder and larger characters. The separate name makes sure only
-  the 0.83 font is used, even where the newer one is installed.
-- The [fonts](./fonts) folder has the original ubuntu-font-family-0.83 (Ubuntu Font Licence) and the
-  install steps:
-  - **Linux**: install the four `UbuntuMono-*.ttf` files and the small fontconfig file
-    [60-ubuntu-mono-legacy.conf](./fonts/60-ubuntu-mono-legacy.conf), which makes the name
-    `Ubuntu Mono Legacy` use them. This also works next to the newer Ubuntu Mono of Ubuntu 24.04:
-    other programs keep using the newer one.
-  - **Windows**: install the four `UbuntuMono-*.ttf` files and draw with `--font-family "Ubuntu Mono"`
-    (or `"font_family": "Ubuntu Mono"` in a config file), because the `Ubuntu Mono Legacy` name
-    cannot be mapped on Windows.
+It is the older Ubuntu Mono on purpose: the newer Ubuntu Mono of recent systems (ie Ubuntu 24.04)
+draws bolder and larger characters. With its own name the right font is always used, also where
+the newer one is installed. See [fonts](./fonts) for the install steps, the licence (Ubuntu Font
+Licence 1.0) and how the font was made.
 
 Other available fonts: `Ubuntu Mono`, `Liberation Mono`, `DejaVu Sans Mono` and `Courier New`
-(option `-ff`).
+(option `-ff`). `Ubuntu Mono Legacy`, the font name of chords made with older versions, is still
+accepted.
 
 > In the examples below `fancychords` stands for `python3 fancychords.py` (or for the packaged executable, if you built one). The same goes for `fancyscales`.
 
@@ -229,7 +224,7 @@ More examples are in [tests/crds_test_files](./tests/crds_test_files).
 | `-nb`, `--no-barre` | Do not draw barres |
 | `-nfn`, `--no-fretnumb` | Do not draw the fret number on the side |
 | `-nnl`, `--no-nut-line` | Draw the nut as a normal (thin) line |
-| `-ff`, `--font-family FONT` | `Ubuntu Mono Legacy` (default), `Ubuntu Mono`, `Liberation Mono`, `DejaVu Sans Mono`, `Courier New` |
+| `-ff`, `--font-family FONT` | `Ubuntu Mono derivative FChords` (default), `Ubuntu Mono Legacy`, `Ubuntu Mono`, `Liberation Mono`, `DejaVu Sans Mono`, `Courier New` |
 | `-fw`, `--font-weight W` | `normal` (default) or `bold` |
 | `-c`, `--convert` | Also write PNG images |
 | `-r`, `--report MODE` | HTML report: `disable` (default), `enable`, or `only` (just rebuild the report, draw nothing) |
@@ -391,7 +386,7 @@ packaging\build_binaries.bat           # Windows
 
 The executables (`fancychords`, `fancyscales`, or `.exe` on Windows) are written in the `dist` folder; use them exactly like the Python scripts, ie `./dist/fancychords --cli_in="C|x,3,2,0,1,0"`. The build settings are in [packaging/fancychords.spec](./packaging/fancychords.spec) and [packaging/fancyscales.spec](./packaging/fancyscales.spec), the same files for both systems.
 
-- The font is not included in the executables: install it as described in [Required font](#required-font-ubuntu-mono-legacy).
+- The font is not included in the executables: install it as described in [Required font](#required-font-ubuntu-mono-derivative-fchords).
 - PyInstaller cannot cross compile: build the Windows executables on Windows and the Linux ones on Linux.
 - Or let GitHub build them: the [Build executables](./.github/workflows/build-binaries.yml) workflow runs the tests and builds and tests the Linux and Windows executables at every push. Download them from the **Actions** tab (open a run, then **Artifacts**). When you push a version tag (ie `git tag v0.8 && git push origin v0.8`) they are also attached to a GitHub release. The Linux ones are built on Ubuntu 22.04, so they also run on Debian 12.
 - The Cairo library must be installed on the build machine (on Windows, `libcairo-2.dll` must be in the `PATH`, see the [CairoSVG documentation](https://cairosvg.org/documentation/)).
@@ -418,6 +413,7 @@ libs/                   the libraries used by both programs
   helper_functions.py     use the libraries from your own Python scripts
 assets/                 images, config files and scale file of this README
 packaging/              PyInstaller spec files and build scripts for standalone executables
+fonts/                  the default font (Ubuntu Mono derivative FChords) and the original it comes from
 docs/                   more documentation (chord_geometry.md: how a chord image is built)
 tests/                  automatic tests, test data and developer scripts
 ```

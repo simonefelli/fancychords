@@ -56,7 +56,7 @@ nutline = True                      # if True draw nut line ticker
 fret0 = False                       # if True you can draw dots above nut
 
 font_weight = 'normal'              # global font weight: [ 'normal' | 'bold' ]
-font_family = 'Ubuntu Mono Legacy'         # global font family: ['Courier New' | 'Ubuntu Mono' | 
+font_family = 'Ubuntu Mono derivative FChords'         # global font family: ['Courier New' | 'Ubuntu Mono' | 
                                     # 'DejaVu Sans Mono' | 'Liberation Mono']
 fret0_format = {}                   # fret0_format, for fret0 dots
 fretb_format = {}                   # fretb_format, for fretboard dots
