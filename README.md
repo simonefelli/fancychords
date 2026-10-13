@@ -25,6 +25,7 @@ Both write **SVG** images (and optionally **PNG**), can build an **HTML gallery*
 - [Config file](#config-file)
 - [PNG images and HTML report](#png-images-and-html-report)
 - [FancyScales](#fancyscales)
+  - [Example: the A minor blues scale in CAGED forms](#example-the-a-minor-blues-scale-in-caged-forms)
 - [Errors and exit status](#errors-and-exit-status)
 - [Project layout](#project-layout)
 - [Running the tests](#running-the-tests)
@@ -321,6 +322,34 @@ FancyScales has the same options as FancyChords except `--cli_in`, `--file_in` (
 
 - `arrows_format` (in `generic_formats`): `[width, color, opacity, heads, curved, style]`, where heads is `""`, `"s"` (start), `"e"` (end) or `"se"` (both), curved is `true` for a small arc, and style is `"dashes"` for a dashed arrow or `""`.
 - `padding` (in `parameters`): `[from_fret, to_fret]` draws every scale on the same range of frets, handy to compare positions of a scale; `"none"` to disable.
+
+### Example: the A minor blues scale in CAGED forms
+
+The CAGED system splits a scale played all over the neck into five
+overlapping positions, each one built around a chord shape (C, A, G, E
+and D forms). FancyScales can draw both the whole neck and every single
+form on the same neck, so the positions line up and are easy to compare:
+
+<img src="./tests/test_caged/blues_scale/caged_blues_complete.png" alt="A minor blues scale all over the neck and in its five CAGED forms" width="600">
+
+The sheet is made of six diagrams drawn by two FancyScales commands (run
+from the [tests/test_caged](./tests/test_caged) folder, as
+[caged_scales.sh](./tests/test_caged/caged_scales.sh) does):
+
+```bash
+# the whole neck, frets 0 to 16
+fancyscales ../scls_tests_files/scales-all-neck.txt --config_file=../json_cfg_tests_files/config_scales_all_neck.json --output-dir=./dirout/scales_all_neck
+
+# the five CAGED forms, each one padded to the same frets 0 to 16
+fancyscales ../scls_tests_files/caged_scales.txt --config_file=../json_cfg_tests_files/config_scales_all_neck_padded.json --output-dir=./dirout/scales_all_neck
+```
+
+- [scales-all-neck.txt](./tests/scls_tests_files/scales-all-neck.txt) has one scale block with the whole neck, and [caged_scales.txt](./tests/scls_tests_files/caged_scales.txt) has one block per form (`G Form`, `E Form`, `D Form`, `C Form`, `A Form`), each with only the frets of that position.
+- The trick is `"padding": [0, 16]` in [config_scales_all_neck_padded.json](./tests/json_cfg_tests_files/config_scales_all_neck_padded.json): every form is drawn on frets 0 to 16 instead of only on its own frets, so all the diagrams have the same size and each form appears exactly where it is on the neck.
+- Both configs draw horizontal diagrams with the root (`R`) as a grey square and its own color for `b3`, `b5` and `b7` (the other notes use the default black dot); the string names (`E A D G B e`) under the diagrams are the `FOOTER` line of the scale files.
+- The six images were then placed on a single page with [Inkscape](https://inkscape.org/) (the font used there is Ubuntu Mono). The sheet is also available as [SVG](./tests/test_caged/blues_scale/caged_blues_complete.svg) and [PDF](./tests/test_caged/blues_scale/caged_blues_complete.pdf).
+
+The same folder has the G major scale ([major_scale](./tests/test_caged/major_scale)) and the G minor 7 arpeggios ([arpeggios](./tests/test_caged/arpeggios)) done the same way. You do not have to write the frets of a whole-neck scale by hand: [tests/test_generate_scales/generate_scale.py](./tests/test_generate_scales/generate_scale.py) builds the scale file from a formula (ie `minor_blues_scale` in `libs/global_constants.py`) and also cuts it into CAGED forms.
 
 ## Errors and exit status
 
