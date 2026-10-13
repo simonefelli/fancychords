@@ -47,7 +47,9 @@ To use the original font with the name of the SVG files, map the name:
 - **Windows**: install the four `UbuntuMono-*.ttf` files (right click,
   *Install for all users*), and choose `Ubuntu Mono` as font: with
   `--font-family "Ubuntu Mono"` on the command line, or `"font_family":
-  "Ubuntu Mono"` in a config file.
+  "Ubuntu Mono"` in a config file. A Windows font substitute (registry key
+  `FontSubstitutes`, 'Ubuntu Mono Legacy' = 'Ubuntu Mono') does **not**
+  work: Cairo ignores it (checked in the GitHub Actions workflow).
 
 ## Checked by the tests
 
@@ -55,14 +57,14 @@ The GitHub Actions workflow installs these fonts and draws the chords of
 [tests/reference_png/reference_chords.txt](../tests/reference_png/reference_chords.txt)
 three times, with the packaged executable:
 
-1. with the default font name `Ubuntu Mono Legacy`,
+1. with the default font name `Ubuntu Mono Legacy` (Linux only),
 2. with `Ubuntu Mono`,
 3. with a font that does not exist.
 
-1 and 2 must be identical pixel by pixel (the name alias works) and 2 must
-differ from 3 (the Ubuntu Mono font is really installed and used). On
-Linux the images must also look like the reference images in the same
-folder, made on Simone's computer with the original "Ubuntu Mono Legacy"
+On Linux 1 and 2 must be identical pixel by pixel (the name alias works).
+On both Linux and Windows 2 must differ from 3 (the Ubuntu Mono font is
+really installed and used). On Linux the images must also look like the
+reference images in the same folder, made on Simone's computer with the original "Ubuntu Mono Legacy"
 setup (see [compare_png.py](../tests/reference_png/compare_png.py) for the
 tolerance). Checked on 583 chords: the original font and the renamed copy
 give the same images, apart from the anti-aliasing of the text edges that

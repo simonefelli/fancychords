@@ -144,21 +144,21 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          # install for the whole machine and make 'Ubuntu Mono Legacy' (the
-          # name used in the svg files) a substitute of 'Ubuntu Mono'
-          $reg = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
+          # install for the whole machine
+          $reg = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts'
           foreach ($f in Get-ChildItem fonts\ubuntu-font-family-0.83\UbuntuMono-*.ttf) {
             Copy-Item $f.FullName "$env:SystemRoot\Fonts\"
             $style = @{ 'UbuntuMono-R' = ''; 'UbuntuMono-B' = ' Bold'; 'UbuntuMono-RI' = ' Italic'; 'UbuntuMono-BI' = ' Bold Italic' }[$f.BaseName]
-            New-ItemProperty -Path "$reg\Fonts" -Name "Ubuntu Mono$style (TrueType)" -Value $f.Name -Force | Out-Null
+            New-ItemProperty -Path $reg -Name "Ubuntu Mono$style (TrueType)" -Value $f.Name -Force | Out-Null
           }
-          New-ItemProperty -Path "$reg\FontSubstitutes" -Name 'Ubuntu Mono Legacy' -Value 'Ubuntu Mono' -Force | Out-Null
 
+      # font check (Windows): chords drawn with 'Ubuntu Mono' must differ from
+      # chords drawn with a font that does not exist (the installed font is
+      # really used). The 'Ubuntu Mono Legacy' name is not checked here: Cairo
+      # on Windows ignores the FontSubstitutes registry entry (checked in CI),
+      # so on Windows the font must be chosen as 'Ubuntu Mono' (see fonts/)
       - name: Font check (Windows)
         if: runner.os == 'Windows'
-        # informational for now: Cairo on Windows uses the Windows font system,
-        # where the 'Ubuntu Mono Legacy' name substitution may not apply
-        continue-on-error: true
         shell: pwsh
         run: |
           $py = "${{ steps.python.outputs.python-path }}"
@@ -166,15 +166,12 @@ jobs:
           $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
           New-Item -ItemType Directory fontcheck | Out-Null
           Set-Location fontcheck
-          ..\dist\fancychords.exe --file_in=$ref\reference_chords.txt -c -o legacy | Out-Null
           ..\dist\fancychords.exe --file_in=$ref\reference_chords.txt -c -o real -ff "Ubuntu Mono" | Out-Null
+          if ($LASTEXITCODE -ne 0) { exit 1 }
           ..\dist\fancychords.exe --file_in=$ref\reference_chords.txt -c -o missing -cf $ref\missing_font.json | Out-Null
-          $failed = $false
-          & $py $ref\compare_png.py --same legacy\png real\png
-          if ($LASTEXITCODE -ne 0) { $failed = $true }
+          if ($LASTEXITCODE -ne 0) { exit 1 }
           & $py $ref\compare_png.py --differ real\png missing\png
-          if ($LASTEXITCODE -ne 0) { $failed = $true }
-          if ($failed) { exit 1 }
+          if ($LASTEXITCODE -ne 0) { exit 1 }
 
       - name: Smoke test (Windows)
         if: runner.os == 'Windows'
