@@ -430,8 +430,11 @@ def draw_dots(frets, intervals, dlabels, radius, fret0, first_fret, centers_matr
             else:
                 normfrt = int(currfrt)
             # draw a dot only if fret is > 0 or ( fret is = 0 but fret0 is enabled )
-            # if (normfrt > 0) or (fret0 and label!='x'):
             if (normfrt > 0) or fret0:
+                # a dot above the nut (open string) labelled 'x' gets no
+                # label: in the fingers list 'x' means 'no finger', but drawn
+                # inside the dot it would read like 'muted string'
+                if (normfrt == 0) and (label.lower() == 'x'): label = ''
                 mynote(
                     (normfrt, ns - idx), radius, interval, label, fret0, centers_matrix,
                     fretb_format, fret0_format,

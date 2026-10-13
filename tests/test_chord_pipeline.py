@@ -217,6 +217,18 @@ class TestFancychordsEndToEnd(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn('fancychords error', result.stderr)
 
+    def test_open_string_dots_have_no_x_label(self):
+        # with --nut open strings are dots: their finger 'x' must not be
+        # drawn inside them (it reads like 'muted string')
+        result = run_fancychords('--cli_in=C|x,3,2,0,1,0|x,3,2,x,1,x', '-n', '-o', self.out)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        with open(os.path.join(self.out, 'C.svg'), encoding='utf-8') as f:
+            svg = f.read()
+        # 5 dots (3 fretted, 2 open strings) and only one 'x': the upper
+        # label of the muted low E string
+        self.assertEqual(svg.count('<circle '), 5)
+        self.assertEqual(svg.count('>x</text>'), 1)
+
     def test_json_config_with_partial_formats(self):
         # a fretb_format with only '*' (no 'r') used to raise KeyError
         config = {'generic_formats': {'fretb_format': {
