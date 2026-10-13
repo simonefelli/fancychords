@@ -82,7 +82,8 @@ the labels look different.
   install steps:
   - **Linux**: install the four `UbuntuMono-*.ttf` files and the small fontconfig file
     [60-ubuntu-mono-legacy.conf](./fonts/60-ubuntu-mono-legacy.conf), which makes the name
-    `Ubuntu Mono Legacy` use them.
+    `Ubuntu Mono Legacy` use them. This also works next to the newer Ubuntu Mono of Ubuntu 24.04:
+    other programs keep using the newer one.
   - **Windows**: install the four `UbuntuMono-*.ttf` files and draw with `--font-family "Ubuntu Mono"`
     (or `"font_family": "Ubuntu Mono"` in a config file), because the `Ubuntu Mono Legacy` name
     cannot be mapped on Windows.

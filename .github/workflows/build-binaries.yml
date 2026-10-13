@@ -140,6 +140,29 @@ jobs:
           "$py" $ref/compare_png.py --differ real/png missing/png
           "$py" $ref/compare_png.py legacy/png
 
+      # font check with the newer Ubuntu Mono of Ubuntu 24.04 (fonts-ubuntu
+      # 0.869, bolder and larger) installed too: 'Ubuntu Mono Legacy' must
+      # still give the 0.83 font (fonts/60-ubuntu-mono-legacy.conf), so the
+      # chords must be identical to the ones drawn before
+      - name: Font check with the Ubuntu 24.04 fonts too (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          deb=fonts-ubuntu_0.869+git20240321-0ubuntu1_all.deb
+          curl -sSfLO "https://archive.ubuntu.com/ubuntu/pool/main/f/fonts-ubuntu/$deb"
+          echo "52c09a231239029c0b53167d7dffd0c9d6a714d5eaf83e758fc15c9718e3b653  $deb" | sha256sum -c
+          dpkg-deb -x $deb noble-fonts
+          sudo mkdir -p /usr/local/share/fonts/fonts-ubuntu-0.869
+          sudo cp noble-fonts/usr/share/fonts/truetype/ubuntu/*.ttf /usr/local/share/fonts/fonts-ubuntu-0.869/
+          sudo fc-cache -f
+          cd fontcheck
+          ref=../tests/reference_png
+          py="${{ steps.python.outputs.python-path }}"
+          env -i PATH=/usr/bin:/bin ../dist/fancychords --file_in=$ref/reference_chords.txt -c -o legacy2404 > /dev/null
+          env -i PATH=/usr/bin:/bin ../dist/fancychords --file_in=$ref/reference_chords.txt -c -o new2404 -ff "Ubuntu Mono" > /dev/null
+          "$py" $ref/compare_png.py --same legacy/png legacy2404/png
+          # and the newer font is really installed and different
+          "$py" $ref/compare_png.py --differ legacy2404/png new2404/png
+
       - name: Install the Ubuntu Mono font (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
