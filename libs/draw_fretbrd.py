@@ -107,8 +107,12 @@ def get_basic_params(radius_factor, lntk, ns, nf, fd, sd,
     enable_barre: Boolean, if true draw barre/s on chord
     enable_fretnum: Boolean, if true enable side labels
 
-    return a tuple: radius, (ftbrd_w, ftbrd_h), (ftbrd_box_w, ftbrd_box_h), offset_upper_labels, 
-                    offset_forbarre, offset_side_labels, offset_bottom_labels    
+    return a tuple: radius, (ftbrd_w, ftbrd_h), (ftbrd_box_w, ftbrd_box_h), offset_forfret0,
+                    offset_upper_labels, offset_forbarre, offset_side_labels, offset_bottom_labels
+    
+    ftbrd_w/h is the grid itself, ftbrd_box_w/h is the grid plus the room
+    needed around it (dots above the nut, upper labels or barre arcs,
+    footer labels, side fret numbers)
     """
     
     # ====== Computing Parameters ======

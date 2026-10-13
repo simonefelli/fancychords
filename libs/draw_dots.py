@@ -60,39 +60,56 @@ def myarrow(pt1, pt2, radius,
     arrow_stroke_dasharray: String, dot stroke pattern of dashes and gaps
                             'dashes' to enable and None to disable
     dwg: Svgwrite object
+    
+    return: Boolean, True if the arrow was drawn. An arrow with a point
+            outside the drawn fretboard is not drawn (a warning is printed)
     '''
 
-    # if first_fret > 0 and new normalized fret is not negative or 0 then normalize 
-    # fret number (we do not want negative numbers)
+    # if first_fret > 0 normalize fret numbers, like draw_dots() does for
+    # dots: fret first_fret becomes row 1, and a fret below first_fret
+    # becomes 0 (above the nut row, only drawn if fret0 is enabled).
+    # (the arrow as written in the scale file, for the warning below)
+    orig_arrow = (pt1, pt2)
+    # Before, a fret below first_fret kept its original number and the
+    # arrow was silently drawn in a wrong place
     if (first_fret > 0):
-        # calculate shifted pt1 fret for candidate new normalized fret
         shifted_pt1 = pt1[0] - (first_fret) + 1
-        # if shifted pt1 fret is > 0 then it can be the new normalized pt1 fret, else no normalization
-        pt1 = (shifted_pt1, pt1[1]) if (shifted_pt1 > 0) else (pt1[0] , pt1[1])
-        # calculate shifted pt2 fret for candidate new normalized fret
+        pt1 = (shifted_pt1 if (shifted_pt1 > 0) else 0, pt1[1])
         shifted_pt2 = pt2[0] - (first_fret) + 1
-        # if shifted pt2 fret is > 0 then it can be the new normalized pt2 fret, else no normalization
-        pt2 = (shifted_pt2, pt2[1]) if (shifted_pt2 > 0) else (pt2[0] , pt2[1])
+        pt2 = (shifted_pt2 if (shifted_pt2 > 0) else 0, pt2[1])
 
-    
-    # if fret0 is enabled adjust (dot_x, dot_y) 
-    if fret0: 
-        pt1_x = centers_matrix[pt1[0]][abs(pt1[1]-ns)][0]
-        pt1_y = centers_matrix[pt1[0]][abs(pt1[1]-ns)][1]
-        pt2_x = centers_matrix[pt2[0]][abs(pt2[1]-ns)][0]
-        pt2_y = centers_matrix[pt2[0]][abs(pt2[1]-ns)][1]   
-    else:
-        pt1_x = centers_matrix[pt1[0]-1][abs(pt1[1]-ns)][0]
-        pt1_y = centers_matrix[pt1[0]-1][abs(pt1[1]-ns)][1]  
-        pt2_x = centers_matrix[pt2[0]-1][abs(pt2[1]-ns)][0]
-        pt2_y = centers_matrix[pt2[0]-1][abs(pt2[1]-ns)][1] 
+    # centers_matrix row of each point: row 0 is the nut row when fret0 is
+    # enabled, otherwise row 0 is fret 1
+    row_shift = 0 if fret0 else 1
+    pt1_row, pt2_row = pt1[0] - row_shift, pt2[0] - row_shift
+    # centers_matrix column: string 6 (low E) is column 0
+    pt1_col, pt2_col = abs(pt1[1]-ns), abs(pt2[1]-ns)
+    # check both points are on the drawn fretboard. Without this check an
+    # arrow after the last fret raised IndexError (and stopped the whole
+    # run), and row -1 (fret 0 without fret0) silently meant the last row
+    n_rows = len(centers_matrix)
+    if not all((0 <= row < n_rows) and (0 <= col < ns)
+               for row, col in ((pt1_row, pt1_col), (pt2_row, pt2_col))):
+        print('  warning: arrow ' + str(orig_arrow) + ' is outside the fretboard, not drawn')
+        return False
 
+    pt1_x, pt1_y = centers_matrix[pt1_row][pt1_col]
+    pt2_x, pt2_y = centers_matrix[pt2_row][pt2_col]
+
+    # string distance (sd) and fret distance (fd) from the centers matrix.
+    # With a single row (one fret only) fd cannot be measured: use 2 radius
+    def centers_distance(axis, along_strings):
+        if along_strings:
+            return abs(centers_matrix[0][1][axis] - centers_matrix[0][0][axis])
+        if n_rows > 1:
+            return abs(centers_matrix[1][0][axis] - centers_matrix[0][0][axis])
+        return 2.0 * radius
 
     # if centers_matrix is not horizontal
     if not horiz:
         
-        sd = centers_matrix[0][1][0] - centers_matrix[0][0][0]
-        fd = centers_matrix[1][0][1] - centers_matrix[0][0][1]
+        sd = centers_distance(0, True)
+        fd = centers_distance(1, False)
         #print(sd, fd)
 
         # offset arrow start/end points so they do not intersect dots,
@@ -133,8 +150,8 @@ def myarrow(pt1, pt2, radius,
     # if centers_matrix is horizontal, swap x and y and adjust
     else:
         
-        sd = centers_matrix[0][0][1] - centers_matrix[0][1][1]
-        fd = centers_matrix[1][0][0] - centers_matrix[0][0][0]
+        sd = centers_distance(1, True)
+        fd = centers_distance(0, False)
         #print(sd, fd)
 
         # if pt1 and pt2 are vertical on x
@@ -194,6 +211,7 @@ def myarrow(pt1, pt2, radius,
         , start_end_flag=start_end_flag
         , arrow_stroke_dasharray=arrow_stroke_dasharray
         )
+    return True
     
 
 def mynote(dot, radius, interval, label, fret0, centers_matrix,

@@ -45,6 +45,7 @@ from libs import global_utilities
 from libs import helper_functions
 from libs import intervals
 from libs import music_utilities
+from libs import myshapes
 from libs import scale_parser
 from libs import transportables
 
@@ -389,6 +390,49 @@ class TestLibraryTools(unittest.TestCase):
         # 'C Major. 2nd Inversion' raised ValueError, v12 was read as v2
         chord_tree_merge.merge_chord_tree(os.path.join(self.out, 'src'), os.path.join(self.out, 'dst'), ('.svg',))
         self.assertEqual(sorted(os.listdir(dst)), ['C Major. 2nd Inversion.svg', 'Gmin.v12.svg', 'Gmin.v13.svg'])
+
+
+class TestDrawingHelpers(unittest.TestCase):
+    '''draw_dots arrows, myshapes fonts and arrow markers'''
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.out = self.tmp.name
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_font_size_for_long_labels(self):
+        # labels longer than 4 chars raised KeyError
+        self.assertLess(myshapes.circle2font(20, 6), myshapes.circle2font(20, 4))
+        self.assertLess(myshapes.square2font(40, 5), myshapes.square2font(40, 4))
+
+    def test_long_dot_label_in_chord(self):
+        result = run_fancychords('--cli_in=C|x,3,2,0,1,0|%|%|x,maj7b,3,x,1,x', '-o', self.out)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def write_arrow_scale(self, arrows):
+        block = scale_block('Arrows', '5,x,7,8').replace('ARROWS\t%', 'ARROWS\t' + arrows)
+        scales_file = os.path.join(self.out, 'scales.txt')
+        with open(scales_file, 'w', encoding='utf-8') as f:
+            f.write(block)
+        return scales_file
+
+    def test_arrow_outside_fretboard_is_skipped(self):
+        # fret 12 is after the last drawn fret (8): it raised IndexError
+        result = run_fancyscales(self.write_arrow_scale('( ((5,2),(12,2)), )'), '-o', self.out)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('outside the fretboard', result.stdout)
+
+    def test_arrow_markers_are_unique_and_valid(self):
+        scales_file = self.write_arrow_scale('( ((5,2),(8,2)), ((5,3),(7,3)) )')
+        result = run_fancyscales(scales_file, '-o', self.out)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        with open(os.path.join(self.out, 'Arrows.svg'), encoding='utf-8') as f:
+            svg = f.read()
+        # one marker definition shared by both arrows
+        self.assertEqual(svg.count('<marker '), 1)
+        self.assertEqual(svg.count('marker-end="url(#marker_black_1_0_end)"'), 2)
 
 
 if __name__ == '__main__':

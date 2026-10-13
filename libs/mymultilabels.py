@@ -57,6 +57,11 @@ def isvalid_multiline(mystr):
     return valid_multiline, splitted_mystr
 
 
+# note on align_center_flag (all the functions below): mycenter is always the
+# center of the whole label, also for left aligned chord labels (the caller
+# moves mycenter instead). The flag only decides where the shorter line of a
+# 2 lines label goes: centered under the longer one (True) or starting at
+# the same left edge (False). A single line label does not need it.
 def get_multilabelparams(mystr, labelfont_family, align_center_flag,
                          multi_label_w=None, multi_label_h=None):
     '''
