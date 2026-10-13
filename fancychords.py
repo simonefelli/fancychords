@@ -187,6 +187,7 @@ default_params = {
     , 'nutline': True                       # draw nut line ticker
     , 'fret0': False                        # draw virtual dots above nut
     , 'root_is_different': False            # draw different dots for root note
+    , 'auto_fingers': False                 # guess the fingers of chords without fingers
     , 'font_family': global_utilities.DEFAULT_FONT_FAMILY   # global font family
     , 'font_weight': 'normal'               # global font weight
     , 'convert_flag': False                 # convert images to png files 
@@ -369,6 +370,15 @@ if __name__ == "__main__":
             + str(default_params['root_is_different'])
         )
     parser.add_argument(
+        '-af', '--auto-fingers'
+        , action='store_true'
+        , dest='auto_fingers'
+        , default=None
+        , help='guess the fingers of the chords that have none (from their '
+            'frets: max 4 fingers plus barres), default is '
+            + str(default_params['auto_fingers'])
+        )
+    parser.add_argument(
         '-ff', '--font-family'
         , action='store'
         , dest='font_family'
@@ -520,6 +530,10 @@ if __name__ == "__main__":
         root_is_different = global_utilities.param_check(
             db_dict_jdump, args.root_is_different, 
             'root_is_different', 'flags', 
+            default_params)[0]
+        auto_fingers = global_utilities.param_check(
+            db_dict_jdump, args.auto_fingers, 
+            'auto_fingers', 'flags', 
             default_params)[0]      
         font_weight = global_utilities.param_check(
             db_dict_jdump, args.font_weight, 
@@ -715,7 +729,8 @@ if __name__ == "__main__":
                 bottom_labels_font_weight, bottom_labels_font_family, bottom_labels_font_factor, 
                 side_labels_font_weight, side_labels_font_family, side_labels_font_factor,
                 lntk, x_or, y_or, ns, nf, fd, sd, radius_factor, 
-                convert_flag, debug
+                convert_flag, debug,
+                auto_fingers=auto_fingers
                 )
 
             app_msg_str += '\n' + process_chords_msg_str

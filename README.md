@@ -21,6 +21,7 @@ Both write **SVG** images (and optionally **PNG**), can build an **HTML gallery*
   - [Required font: Ubuntu Mono derivative FChords](#required-font-ubuntu-mono-derivative-fchords)
 - [FancyChords tutorial](#fancychords-tutorial)
 - [Chord notation reference](#chord-notation-reference)
+  - [Automatic fingers](#automatic-fingers)
 - [Chord list files](#chord-list-files)
 - [FancyChords options](#fancychords-options)
 - [Config file](#config-file)
@@ -166,7 +167,7 @@ All the example images, config files and the scale file are in the [assets](./as
 |---|---|---|
 | `chord_name` | Chord name, drawn on top of the diagram and used as file name | `G#dim7(no5)/F#`, `LA7sus2` |
 | `frets` | 6 frets, from 6th (low E) to 1st string: numbers `0`..`24`, `x` for a muted string | `x,3,2,0,1,0` |
-| `fingers` | 6 fingers: `1`..`4`, `T` for the thumb, `x` for no finger | `x,3,2,x,1,x` |
+| `fingers` | 6 fingers: `1`..`4`, `T` for the thumb, `x` for no finger (or let `--auto-fingers` guess them) | `x,3,2,x,1,x` |
 | `intervals` | 6 intervals from the root, `x` for none (see the list below) | `x,R,3,5,R,3` |
 | `labels` | 6 labels drawn inside the dots (short labels, 1 to 3 characters, look best) | `x,C,E,G,C,E` |
 | `footer` | 6 labels drawn under the fretboard (needs `--footer`) | `x,R,3,5,R,3` |
@@ -184,6 +185,23 @@ All the example images, config files and the scale file are in the [assets](./as
 - The file name is the chord name. If the name has dots, the text after the **last** dot is kept in the file name but not in the label: `C Major. 2nd Inversion.v01` is drawn as "C Major. 2nd Inversion" and saved as `C Major. 2nd Inversion.v01.svg`. This is handy to have more versions of the same chord.
 - `/` and `\` become `_` (`C/G` → `C_G.svg`). Characters that are not safe in file names are removed: `` ' , ; : " ? [ ] = ^ < > & $ £ * ( ) ! | ~ ` ´ { } % `` and accented or other non-ASCII characters (`G#dim7(no5)/F#` → `G#dim7no5_F#.svg`).
 - When two chords would get the same file name, the second becomes `name.v02`, the third `name.v03` and so on, so no chord overwrites another. Names that differ only in upper/lower case (`Cm7`, `CM7`) count as the same name, because they are the same file on Windows and macOS.
+
+
+### Automatic fingers
+
+With `-af` (`--auto-fingers`, or `"auto_fingers": true` in the `flags` of a config file), the chords without fingers get a fingering guessed from their frets: the dots then show the fingers, and barres are found too. Chords that already have fingers are not changed.
+
+`fancychords --cli_in="Bm|x,2,4,4,3,2;E9|0,7,6,7,7,7" --auto-fingers`
+
+```text
+Auto Fingers
+============
+* Bm                   x,2,4,4,3,2          -> x,1,3,4,2,1
+* E9                   0,7,6,7,7,7          -> x,2,1,3,3,3
+>>> 2 chords got automatic fingers <<<
+```
+
+The guess uses at most 4 fingers plus barres, and is a starting point: check it, and write your own fingers when you prefer another one. Notes that cannot get a finger keep `x`, and the run says `not enough fingers for every note`.
 
 ## Chord list files
 
@@ -219,6 +237,7 @@ More examples are in [tests/crds_test_files](./tests/crds_test_files).
 | `-ho`, `--horizontal` | Horizontal diagram |
 | `-lb`, `--label_bottom` | Chord name at the bottom |
 | `-rd`, `--root-diff` | Different dots for the root note |
+| `-af`, `--auto-fingers` | Guess the fingers of the chords that have none (see [Automatic fingers](#automatic-fingers)) |
 | `-n`, `--nut` | Draw open strings as dots above the nut |
 | `-ft`, `--footer` | Draw the footer labels |
 | `-nh`, `--no-header` | Do not draw `x` / `0` above the nut |
@@ -253,7 +272,7 @@ Complete examples: [assets/config_v01.json](./assets/config_v01.json) and [tests
 
 ### Flags and fonts
 
-- `flags`: the same switches of the command line (`horiz`, `chord_label_isbottom`, `enable_header`, `enable_dotlabels`, `enable_footer`, `enable_barre`, `enable_fretnum`, `nutline`, `fret0`, `root_is_different`, `convert_flag`, `report`) plus `chord_label_isleft` (left aligned chord name) and `debug` (draws the construction points and boxes).
+- `flags`: the same switches of the command line (`horiz`, `chord_label_isbottom`, `enable_header`, `enable_dotlabels`, `enable_footer`, `enable_barre`, `enable_fretnum`, `nutline`, `fret0`, `root_is_different`, `auto_fingers`, `convert_flag`, `report`) plus `chord_label_isleft` (left aligned chord name) and `debug` (draws the construction points and boxes).
 - `generic_formats`: `font_family` and `font_weight` for the whole diagram, plus a font family, weight and size factor for each kind of label: `chord_label_*`, `upper_labels_*` (the `x` / `0` above the nut), `bottom_labels_*` (footer) and `side_labels_*` (fret number). `null` means "use the global font".
 
 ### Dot formats
