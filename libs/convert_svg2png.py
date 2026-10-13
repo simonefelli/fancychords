@@ -184,11 +184,9 @@ if __name__ == "__main__":
     
     svg_dir = '../dirin/svg/'       # dir (and sub-dirs) containing svg images to process
                                     # ie: '.../dirout/G/Major/' 
-    # svg_dir = 'C:\\Users\\sfelli\\simo\\dev\\python\\py3\\pychords\\app\\dirin\\svg\\'
 
     png_dir = '../dirin/svg/png/'   # placement dir for png images
                                     # ie: '.../dirout/G/Major/png/'
-    # png_dir = 'C:\\Users\\sfelli\\simo\\dev\\python\\py3\\pychords\\app\\dirin\\svg\\png\\' 
 
     chord_filenames_list = ['Am7', 'A#m7', 'Dm7']   # list with filenames to process
     
@@ -211,10 +209,10 @@ if __name__ == "__main__":
     
     # Inkscape:
     # inkscape --export-area-page --export-type="png" "./G.svg" --export-filename="./png/G.png"
-    # '/home/simone/MyApps/Graphics/inkscape/Inkscape-x86_64.AppImage' for Appimage
+    # 'inkscape' if it is in the PATH, '/path/to/Inkscape-x86_64.AppImage' for Appimage
     # 'inkscape.exe' for win
     convert_cmd = (
-          '/home/simone/MyApps/Graphics/inkscape/Inkscape-x86_64.AppImage'
+          'inkscape'
         , ' --export-area-page'
         , ' --export-type="png" '
         , ' --export-filename='

@@ -190,7 +190,6 @@ if __name__ == "__main__":
     # testing this function
     
     dir_output = '../dirout'            # directory (and all its sub-dirs) to process
-    # dir_output = 'C:\\Users\\sfelli\\simo\\dev\\python\\py3\\pychords\\app\\dirout'
     
     file_exts = (".svg", ".png")        # allowed extension for files to process, use ('.xyz',) for singleton tuple
     ncols = 4                           # number of columns for the gallery
