@@ -15,6 +15,16 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+
+"""
+mymultilabels: chord name labels on one or two lines.
+
+A main label (chord or scale name) can contain one newline to be drawn on
+two lines, ie fancyscales titles like 'Am Pentatonic Scale\\nPosition 1'.
+These functions extend mylabels to measure and draw such labels, centered
+or left aligned. A label without newline is drawn on a single line.
+"""
+
 from libs import myshapes
 from libs import mylabels
 

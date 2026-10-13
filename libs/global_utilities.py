@@ -15,6 +15,18 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+
+"""
+global_utilities: small helpers shared by fancychords and fancyscales.
+
+Main groups of functions:
+    - strings:     sanitize_str (safe file names), lower_and_underscore, ...
+    - chord lists: crd_str2slst ('x,3,2' -> ['x','3','2']), crd_slst2ilst
+                   (['x','3'] -> [None, 3]), max_min_fret_slst, ...
+    - config:      fill_jdump (complete a json config), param_check
+                   (cli > json config > default precedence)
+"""
+
 # standard library imports
 import json
 
@@ -61,13 +73,17 @@ def sanitize_str(instr):
             , '|', '~', '`', '´'
             , '{', '}', '%'
             ]
-        # safe encoding for windows
+        # safe encoding for windows: keep only plain ascii chars.
+        # encode('latin1', 'ignore') drops chars that are not latin1 (ie '♯'),
+        # then decode('utf8', 'ignore') drops the remaining non ascii bytes
+        # (ie 'è'), so 'DOè♯' -> 'DO'
         instr = instr.encode('latin1', 'ignore').decode('utf8', 'ignore')
         for char in forb_chars:
             if char == '\n':
                 instr = instr.replace(char, repl_char_for_newline)
             else:
                 instr = instr.replace(char, repl_char)
+        # very long names are cut, as some file systems limit name length
         if len(instr) > max_chars: instr = instr[:max_chars]
     return instr
 
@@ -694,11 +710,14 @@ def param_check(db_dict_jdump, args_param, param_name, param_section, default_pa
     if db_dict_jdump:
         # get section (None if it is not present in json file)
         j_sect = db_dict_jdump.get(param_section)
-        # if section exist
-        if j_sect:
-            # get param (None if it is not present in json file)
-            j_param = db_dict_jdump[param_section].get(param_name)
-        if (j_sect is not None) and (j_param is not None): 
+        # get param (None if section or param are not present in json file).
+        # note: j_param must always be defined here, even when the section
+        # exists but is empty (ie: "flags": {}), otherwise the check below
+        # would raise an UnboundLocalError
+        j_param = j_sect.get(param_name) if j_sect else None
+        # a param explicitly set to null in json file counts as "not set"
+        # so the default value is kept
+        if j_param is not None:
             # copy the value in final_params dict
             final_params[param_name] = j_param
 

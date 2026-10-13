@@ -16,7 +16,17 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+htmlreport: build an html gallery of the images in an output dir.
+
+generate_htmlreport() writes a 'fcreport.html' file in dir_output and in
+every subdir (up to 4 levels deep) with a table of thumbnails and links to
+the subdirs, so all the chords can be browsed with a web browser.
+"""
+
+
 # standard library imports
+import html
 import os
 import urllib.request
 
@@ -39,8 +49,6 @@ def generate_htmlreport(dir_output, file_exts, ncols, thumb_width):
     
     # os normalize dirs paths
     dir_output = os.path.normpath(dir_output)
-    # os absolute dirs paths
-    abs_dir_output = os.path.abspath(dir_output)
     
     # check if dir_output exist
     if os.path.isdir(dir_output):
@@ -78,22 +86,23 @@ def generate_htmlreport(dir_output, file_exts, ncols, thumb_width):
         # os.walk returns a generator, that creates a tuple of values 
         # (root path, directories in root path, files in root path).
         for rootpath, dirs, files in os.walk(dir_output):
-            # for security limit deep of os.walk to 4 subdirs
-            # if dir_output path was given absolute we need to remove it 
-            # for counting slashes (os.sep) in right way
+            # for security limit deep of os.walk to 4 subdirs.
+            # path of rootpath relative to dir_output:
+            # '../dirout' -> '.', '../dirout/G/Minor' -> 'G/Minor'
+            rel_rootpath = os.path.relpath(rootpath, dir_output)
+            # walk_deep: 0 for dir_output itself, 1 for its subdirs, ...
+            # (computed from the relative path, so it is right both for
+            # absolute and relative dir_output, ie '.', '../dirout', '/tmp/out')
+            walk_deep = 0 if rel_rootpath == os.curdir else rel_rootpath.count(os.sep) + 1
             max_deep = 4
-            if os.path.isabs(dir_output):
-                walk_deep = rootpath[len(abs_dir_output):].count(os.sep)
-            else:
-                walk_deep = rootpath.count(os.sep) - 1
-            # print(rootpath, walk_deep)
-            # exit for loop if max deep is reached
-            if walk_deep > max_deep: continue
-            # if max deep for subdirs is reached then empty dirs list
-            if walk_deep > max_deep - 1: dirs = []
+            # if max deep for subdirs is reached then empty dirs list.
+            # note: dirs must be emptied in place (dirs[:] = []) because
+            # os.walk reads this same list object to know where to go next:
+            # a plain 'dirs = []' would not stop it from scanning deeper
+            if walk_deep > max_deep - 1: dirs[:] = []
             # for breadcrumb remove from root path initial base dir
-            # ie: '../dirout/G/Minor/....' -> 'G/Minor/....'
-            breadcrumb = rootpath.replace(dir_output, '', 1)
+            # ie: '../dirout/G/Minor/....' -> '/G/Minor/....'
+            breadcrumb = '' if rel_rootpath == os.curdir else os.sep + rel_rootpath
             # sorting names
             sorted_dirs = sorted(dirs)
             n_dirs = len(sorted_dirs)
@@ -109,42 +118,45 @@ def generate_htmlreport(dir_output, file_exts, ncols, thumb_width):
                 myexts_dict[myext] += len([fname for fname in filtered_sorted_files if fname.endswith(myext)])
             if sorted_dirs or sorted_files:
                 # create index.html and populate it
-                indexfile = open(os.path.join(rootpath, html_file_name), mode='w')
-                indexfile.write(header)
-                infos = '\n      <p>Number of subdirs: ' + str(n_dirs) + '<br>' + \
-                        '\n         Number of images: ' + str(n_files) + '</p>\n'                
-                if breadcrumb:
-                    subheader = '    <h2>' + breadcrumb + '</h2>            ' + infos + \
-                                '      ' + link_to_back + '\n'
-                else:
-                    subheader = '    <h2>Root Dir</h2>            ' + infos
-                indexfile.write(subheader)
-                if sorted_dirs:
-                    indexfile.write('    <h3>Subdirs</h3>\n    <ul>\n')
-                    for actdir in sorted_dirs:
-                        dir_link = urllib.request.pathname2url(os.path.join(actdir, html_file_name))
-                        indexfile.write('      <li><a href="' + dir_link + '">' + actdir + '</a></li>\n')
-                    indexfile.write('    </ul>')
-                
-                if filtered_sorted_files:
-                    nfiles = len(filtered_sorted_files)
-                    table_list = [filtered_sorted_files[i:i + ncols] for i in range(0, nfiles, ncols)]
-                    tr_start = '        <tr>\n          <td>'
-                    td_elem = '</td>\n          <td>'
-                    tr_end = '</td>\n        </tr>\n'
-                    indexfile.write(body)
-                    for row in table_list:
-                        links = ['<img alt="' + elem + '" title="' + elem + \
-                                 thumb_width_str + \
-                                 '" src="' + urllib.request.pathname2url(elem) + '">' for elem in row]
-                        indexfile.write(tr_start)
-                        indexfile.write(td_elem.join(links))
-                        indexfile.write(tr_end)
-                    indexfile.write('      </tbody>\n    </table>\n')
-                
-                indexfile.write(footer)
+                # html file is declared as UTF-8 in its header, so it must be
+                # written as UTF-8 (Windows default encoding is different).
+                # 'with' makes sure the file is closed when the block ends
+                with open(os.path.join(rootpath, html_file_name), mode='w', encoding='utf-8') as indexfile:
+                    indexfile.write(header)
+                    infos = '\n      <p>Number of subdirs: ' + str(n_dirs) + '<br>' + \
+                            '\n         Number of images: ' + str(n_files) + '</p>\n'                
+                    if breadcrumb:
+                        subheader = '    <h2>' + html.escape(breadcrumb) + '</h2>            ' + infos + \
+                                    '      ' + link_to_back + '\n'
+                    else:
+                        subheader = '    <h2>Root Dir</h2>            ' + infos
+                    indexfile.write(subheader)
+                    if sorted_dirs:
+                        indexfile.write('    <h3>Subdirs</h3>\n    <ul>\n')
+                        for actdir in sorted_dirs:
+                            dir_link = urllib.request.pathname2url(os.path.join(actdir, html_file_name))
+                            indexfile.write('      <li><a href="' + dir_link + '">' + html.escape(actdir) + '</a></li>\n')
+                        indexfile.write('    </ul>')
+
+                    if filtered_sorted_files:
+                        nfiles = len(filtered_sorted_files)
+                        table_list = [filtered_sorted_files[i:i + ncols] for i in range(0, nfiles, ncols)]
+                        tr_start = '        <tr>\n          <td>'
+                        td_elem = '</td>\n          <td>'
+                        tr_end = '</td>\n        </tr>\n'
+                        indexfile.write(body)
+                        for row in table_list:
+                            # html.escape: a name with chars like '&' or '"' must not break the html
+                            links = ['<img alt="' + html.escape(elem) + '" title="' + html.escape(elem) + \
+                                     thumb_width_str + \
+                                     '" src="' + urllib.request.pathname2url(elem) + '">' for elem in row]
+                            indexfile.write(tr_start)
+                            indexfile.write(td_elem.join(links))
+                            indexfile.write(tr_end)
+                        indexfile.write('      </tbody>\n    </table>\n')
+
+                    indexfile.write(footer)
             
-                indexfile.close
         # useful messages
         header = 'Generating HtmlReport\n====================='
         print('\n' + header)

@@ -16,6 +16,26 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+draw_chords: draw a complete chord diagram and save it as an svg file.
+
+Call chain (top to bottom):
+
+    chord_to_file()     draw the chord with draw_chord() and save it to disk
+    draw_chord()        fill in default formats and fonts, compute the image
+                        size, create the svgwrite Drawing and draw the main
+                        chord name label (above or below the fretboard)
+    draw_chord_box()    draw everything else: fretboard grid (draw_fretbrd),
+                        note dots (draw_dots), upper labels ('x' and '0'),
+                        footer labels, fret number on the side, barres
+                        (draw_barre)
+
+Coordinates: svg origin (0, 0) is the top left corner, x grows to the right
+and y grows downwards. x_or / y_or is the top left corner of the fretboard
+box (the margin between image border and drawing).
+"""
+
+
 # third party imports
 import svgwrite
 
@@ -26,6 +46,37 @@ from libs import draw_fretbrd
 from libs import mylabels
 from libs import mymultilabels
 from libs import draw_barre
+
+
+def fill_format_fonts(fretx_format, font_weight, font_family):
+    """
+    return a copy of a fretx_format dict where every format tuple without
+    dot_labelfont_weight (index 9) or dot_labelfont_family (index 10)
+    gets the global font_weight / font_family.
+    
+    A copy is returned (instead of changing fretx_format in place) because
+    the dict received may be shared, ie it may be the default dict defined in
+    fancychords.py: changing it would leak values into the following chords.
+    All the keys are processed, so a format like 'b3' or 'rh' coming from the
+    json config file gets the global fonts too, and a dict without 'r' is fine.
+    
+    ie: fill_format_fonts({'*': (1.0, ..., '', '', False, False)}, 'bold', 'Ubuntu Mono')
+            -> {'*': (1.0, ..., 'bold', 'Ubuntu Mono', False, False)}
+    
+    fretx_format: Dict, {interval: format tuple}, see draw_chord() docs
+    font_weight: String, global font weight
+    font_family: String, global font family
+    
+    return: Dict, new fretx_format dict
+    """
+    new_format = {}
+    for interval, fmt in fretx_format.items():
+        # json config files give lists, not tuples: mytuplechange()
+        # handles both and always returns a tuple
+        if not fmt[9]: fmt = global_utilities.mytuplechange(fmt, 9, font_weight)
+        if not fmt[10]: fmt = global_utilities.mytuplechange(fmt, 10, font_family)
+        new_format[interval] = fmt
+    return new_format
 
 
 def draw_chord_box(
@@ -146,6 +197,9 @@ def draw_chord_box(
         # put '3' on third fret as side labels
         side_labels = [None, None, '3']
     
+    # header = labels drawn above the nut, one for every string:
+    # 'x' for a muted string, '0' for an open string (only when open
+    # strings are not drawn as dots above the nut, see fret0)
     # if header is present
     if enable_header:
         # if you draw dots above nut upper labels should be only of 'x'
@@ -206,7 +260,7 @@ def draw_chord_box(
                              side_labels_font_weight, side_labels_font_family,
                              label_len_is_h=label_len_is_h)
     
-    # draw barres
+    # draw barres (last, so the arcs are drawn over the dots)
     draw_barre.draw_barre(enable_barre, frets_int, fingers_int, first_fret,
                           centers_matrix, nf, horiz, dwg, radius, fd, barre_strk_wdth)
 
@@ -321,15 +375,9 @@ def draw_chord(
                 False, False)
         }
     
-    # fretb_format default to global font_weight and font_family if not set
-    if not fretb_format['*'][9]: 
-        fretb_format['*'] = global_utilities.mytuplechange(fretb_format['*'], 9, font_weight)
-    if not fretb_format['r'][9]: 
-        fretb_format['r'] = global_utilities.mytuplechange(fretb_format['r'], 9, font_weight)
-    if not fretb_format['*'][10]: 
-        fretb_format['*'] = global_utilities.mytuplechange(fretb_format['*'], 10, font_family)
-    if not fretb_format['r'][10]:
-        fretb_format['r'] = global_utilities.mytuplechange(fretb_format['r'], 10, font_family)
+    # fretb_format: every format (not only '*' and 'r') default to global
+    # font_weight and font_family if not set (see fill_format_fonts() above)
+    fretb_format = fill_format_fonts(fretb_format, font_weight, font_family)
 
     # fret0_format default
     if not fret0_format: fret0_format = {
@@ -343,15 +391,8 @@ def draw_chord(
                 False, False)
         }
     
-    # fret0_format default to global font_weight and font_family if not set
-    if not fret0_format['*'][9]: 
-        fret0_format['*'] = global_utilities.mytuplechange(fret0_format['*'], 9, font_weight)
-    if not fret0_format['r'][9]: 
-        fret0_format['r'] = global_utilities.mytuplechange(fret0_format['r'], 9, font_weight)
-    if not fret0_format['*'][10]: 
-        fret0_format['*'] = global_utilities.mytuplechange(fret0_format['*'], 10, font_family)
-    if not fret0_format['r'][10]: 
-        fret0_format['r'] = global_utilities.mytuplechange(fret0_format['r'], 10, font_family)
+    # fret0_format: every format default to global font_weight and font_family if not set
+    fret0_format = fill_format_fonts(fret0_format, font_weight, font_family)
 
     # other font variables
     if not chord_label_font_weight: chord_label_font_weight = font_weight
@@ -368,6 +409,7 @@ def draw_chord(
     if not side_labels_font_factor: side_labels_font_factor = 0.90
 
     # check if fretboard number of frets are enough considering input frets list
+    # ie: frets 1..5 need 5 frets, so a 4 frets box is enlarged to 5
     
     (max_fret, min_fret) = global_utilities.max_min_fret_slst(frets)
     
@@ -384,6 +426,7 @@ def draw_chord(
     fbox_w, fbox_h = basic_params[2]
     
     # empiric adjustments for label_offest
+    # (vertical space between main chord label and fretboard)
     label_offest = (radius * 0.9)
     
     # if chord is horizontal invert fbox_w, fbox_h
@@ -401,14 +444,16 @@ def draw_chord(
         label_h = fd * chord_label_font_factor
     
     
-    # from label_h get label_w
-    _, label_w = mymultilabels.get_multilabel_w_given_hght(chord_name, label_h, font_family) 
+    # from label_h get label_w.
+    # note: the label is measured with the same font used to draw it
+    # (chord_label_font_family), as every font has different char widths
+    _, label_w = mymultilabels.get_multilabel_w_given_hght(chord_name, label_h, chord_label_font_family) 
 
     # but if label_w does exceed fbox_w then set label_w to max (fbox_w)
     # and get label_h from label_w. Bool Flag label_from_h then is False
     if label_w > fbox_w:
         label_w = fbox_w
-        _, label_h = mymultilabels.get_multilabel_h_given_wdth(chord_name, label_w, font_family)
+        _, label_h = mymultilabels.get_multilabel_h_given_wdth(chord_name, label_w, chord_label_font_family)
         label_from_h = False
     
    
@@ -418,6 +463,8 @@ def draw_chord(
     right_side_offset = (1.0 * x_or)
     
     # set image_w and image_h
+    # width:  left margin + fretboard box + right margin
+    # height: top margin + chord label + space + fretboard box + bottom margin
     image_w = x_or + fbox_w + right_side_offset
     image_h = y_or + label_h + label_offest + fbox_h + bottom_offset
 
@@ -634,6 +681,7 @@ def chord_to_file(
     chord_filename = global_utilities.sanitize_str(chord_filename)
     
     # write svg file to disk
+    # note: dir_output always ends with '/', see chords2files.chord_list_to_files()
     chord_filename_path = dir_output + chord_filename + '.svg'
     dwg.saveas(filename=chord_filename_path)
   

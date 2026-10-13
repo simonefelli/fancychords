@@ -15,6 +15,15 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+
+"""
+convert_svg2png: convert svg chord images to png images.
+
+convert_svg2png() uses the cairosvg python library (default, used by
+fancychords -c). convert_external_svg2png() can call an external program
+instead (ie Inkscape or ImageMagick), it is kept for manual use.
+"""
+
 # standard library imports
 import os
 import urllib.parse

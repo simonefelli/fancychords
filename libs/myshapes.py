@@ -16,6 +16,14 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+myshapes: basic svg shapes (circle, square, arrows) used by the other libs.
+
+square2font() and circle2font() give the font size that fits a given number
+of chars inside a square or a circle, so dot labels always fit their dot.
+"""
+
+
 def square2font(square, nchars):
     """
     Given dot square get font size

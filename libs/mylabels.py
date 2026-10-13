@@ -16,6 +16,18 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+mylabels: single line text labels.
+
+svgwrite does not measure text, so label sizes are estimated: for a
+monospace font every char has the same width, and width/height are
+proportional to the font size with a factor that depends on the font
+(see get_labelparams). From one known value (font size, label width or
+label height) the other ones are computed, so a label can be fitted in a
+given width (mylabel_given_wdth) or a given height (mylabel_given_hght).
+"""
+
+
 # local application imports
 from libs import myshapes
 
@@ -40,6 +52,12 @@ def get_labelparams(mystr, labelfont_family, myfont_size=None, label_w=None, lab
     return a tuple of (font size, label width, label height) 
     '''
     nchar = len(mystr)
+    # empiric factors for every supported monospace font:
+    #   label_w = (font_size * nchar) / label_w_factor
+    #   label_h = font_size / label_h_factor
+    # ie with label_w_factor = 2.00 every char is half font size wide.
+    # Any other font (ie 'Ubuntu Mono', 'Ubuntu Mono Legacy') uses the
+    # last (else) factors
     if labelfont_family.lower() == 'courier new':
         label_w_factor = 1.67
         label_h_factor = 1.60

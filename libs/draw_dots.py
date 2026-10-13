@@ -16,6 +16,17 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+draw_dots: draw the note dots (circles or squares with a label inside).
+
+draw_dots() walks the 6 strings of a chord and, for every fretted string,
+calls mynote(). mynote() picks the format tuple for the dot interval from
+fretb_format (fret >= 1) or fret0_format (fret 0, above the nut), falling
+back to the '*' format, and then draws the dot with mydots.mydot().
+draw_scale_dots() reuses the same code for scale diagrams (fancyscales).
+"""
+
+
 # local application imports
 from libs import myshapes
 from libs import mylabels

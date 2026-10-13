@@ -16,6 +16,15 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+mydots: draw one dot (circle or square, optionally with a label inside).
+
+Lowest level helper used by draw_dots: it only knows how to
+put a shape and its text on the svg Drawing, all decisions about formats
+are taken by the callers.
+"""
+
+
 # local application imports
 from libs import myshapes
 from libs import mylabels

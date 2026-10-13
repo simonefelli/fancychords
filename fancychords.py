@@ -16,56 +16,132 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+fancychords: command line program that draws guitar chord diagrams as svg
+(and optionally png) images, plus an optional html gallery report.
+
+Quick examples
+--------------
+    one chord from the command line (only name and frets are mandatory):
+        python3 fancychords.py --cli_in="C Major|x,3,2,0,1,0"
+
+    many chords from the command line, separated by ';':
+        python3 fancychords.py --cli_in="C|x,3,2,0,1,0;G|3,2,0,0,0,3"
+
+    many chords from a tab separated text file, with png and html report:
+        python3 fancychords.py --file_in=./chords.txt -o ./out -c -r enable
+
+Single chord fields (in this order, '|' separated on cli, tab separated in files)
+-----------------------------------------------------------------------------------
+    chord_name | frets | fingers | intervals | dlabels | footer | subfolder
+    Use '%' to skip an optional field and still give the following ones.
+
+How a run works
+---------------
+    1. argparse reads the command line options (this file)
+    2. if -cf is given, the json config file is loaded (this file)
+    3. every parameter gets its final value with this precedence:
+           command line  >  json config file  >  default_params (below)
+       (see global_utilities.param_check)
+    4. libs/chords2files.process_chords() does the real work:
+           chord_parser    -> read and validate chords
+           draw_chords     -> draw one svg file per chord (svgwrite)
+           convert_svg2png -> optional png conversion (cairosvg)
+    5. libs/htmlreport.generate_htmlreport() builds the optional html gallery
+
+Exit status is 0 on success and 1 on error (message printed on stderr).
+"""
+
 # standard library imports
-import argparse
+import argparse     # command line options parsing
+import sys          # stderr and exit status
 
 # local application imports
+# note: other libs (chords2files, htmlreport, json) are imported later,
+# only when they are really needed, so that '--help' and '--version'
+# work even if third party libs (svgwrite, cairosvg) are not installed
 from libs import global_utilities
 
 
+# =============================================================================
 # defaults
+# =============================================================================
+# All sizes are in svg user units (pixels when the svg is shown at 100%).
+# Image size grows with sd (string distance), as a rule of thumb:
+#     image_w = (6.30 * sd) + 43.0
+#     image_h = (9.79 * sd) + 43.0
+
+# --- factors used to derive some parameters from others ---
+# they are also used by global_utilities.fill_jdump() to calculate the
+# same parameters when they are missing in a json config file, so the
+# image proportions are the same whichever way the values are given
+FD_FACTOR = 1.30                # fd = sd * FD_FACTOR
+RADIUS_FACTOR_K = 20.00         # radius_factor = RADIUS_FACTOR_K / sd
+BARRE_FACTOR = 1.10             # barre_strk_wdth = lntk * BARRE_FACTOR
 
 # --- internal parameters ---
 sd = 50.00                      # string distance, optimal ratio is fd/sd = 1.30
 lntk = 3.00                     # default grid line tickness
 #  --- derived internal parameters ---
-fd = sd * 1.30                  # fret distance
-radius_factor = 20.00 / sd      # sd factor to get global dot radius, optimal value 0.38 or 0.41
+fd = sd * FD_FACTOR             # fret distance
+radius_factor = RADIUS_FACTOR_K / sd  # sd factor to get global dot radius, optimal value 0.38 or 0.41
                                 # as a guideline: radius_factor = (20.00/sd)
                                 # general formula for radius is: radius = sd * radius_factor
                                 # single dot adjustments can be achieved through dot_radius_scale
                                 # in fretx_format tuples   
-barre_strk_wdth = 1.10 * lntk   # barre arc tickness
+barre_strk_wdth = BARRE_FACTOR * lntk  # barre arc tickness
 
 # calculate fretx_format dot_stroke_width from lntk
-slim_stroke_str = str(lntk * 1.00)
-fat_stroke_str =  str(lntk * 1.66)
+# (svg wants strings for these attributes, so they are stored as str)
+slim_stroke_str = str(lntk * 1.00)      # normal dot border
+fat_stroke_str =  str(lntk * 1.66)      # thicker border, used for root dots
 
 # draw_dots tuples default formats
 # --------------------------------
-    # (
-    #   dot_radius_scale, dot_fill, dot_fill_opacity, 
-    #   dot_stroke, dot_stroke_opacity, dot_stroke_dasharray, dot_stroke_width, 
-    #   label_fill, label_fill_opacity, dot_labelfont_weight, dot_labelfont_family, 
-    #   dot_isquare, dot_rotate
-    #  )
-
+# Every dot drawn on the fretboard gets its look from a 13 elements tuple.
+# Index and meaning of every element:
+#
+#    0  dot_radius_scale      Number, 1.0 = normal size, 0.9 = 10% smaller
+#    1  dot_fill              String, color inside the dot ('black', '#ff0000', ...)
+#    2  dot_fill_opacity      String, '0.0' (transparent) .. '1.0' (opaque)
+#    3  dot_stroke            String, color of the dot border
+#    4  dot_stroke_opacity    String, '0.0' .. '1.0'
+#    5  dot_stroke_dasharray  String, 'none' for a solid border,
+#                             'dashes' for an automatic dashed border
+#    6  dot_stroke_width      String, border width
+#    7  label_fill            String, color of the text inside the dot
+#    8  label_fill_opacity    String, '0.0' .. '1.0'
+#    9  dot_labelfont_weight  String, 'normal' or 'bold' ('' = global font weight)
+#   10  dot_labelfont_family  String, font name ('' = global font family)
+#   11  dot_isquare           Boolean, True draws a square instead of a circle
+#   12  dot_rotate            Boolean, True rotates the dot shape by 90 degrees
+#
+# Formats are grouped in dicts {interval: tuple}. The key is an interval in
+# lower case ('r' is the root, 'b3', '5', 'rh', ...) and '*' is the format used
+# for every interval without a format of its own. There are two dicts:
+#    fretb_format -> dots on the fretboard (fret >= 1)
+#    fret0_format -> dots above the nut (fret 0, only drawn with --nut)
+#
 # if not set, dot_labelfont_weight and dot_labelfont_family default to
 # global font weight and global font family
 
+# black dot with white label: any note on the fretboard
 tpl_generic_format = (1.0, 'black', '1.0', 
                       'black', '1.0', 'none', slim_stroke_str, 
                       'white', '1.0', '', '', 
                       False, False)
+# white dot with dashed border: open string (fret 0) above the nut
 tpl_fret0_format =   (1.0, 'white', '1.0', 
                       'black', '1.0', 'dashes',  slim_stroke_str, 
                       'black', '1.0', '', '', 
                       False, False)
 
+# grey dot with thick border: root note on the fretboard (only with --root-diff)
 tpl_generic_root_format = (1.0, 'lightgrey', '1.0', 
                            'black', '1.0', 'none', fat_stroke_str, 
                            'black', '1.0', '', '', 
                            False, False)
+# grey dot with dashed border: open string root note (only with --root-diff)
 tpl_fret0_root_format =   (1.0, 'lightgrey', '1.0', 
                            'black', '1.0', 'dashes', slim_stroke_str, 
                            'black', '1.0', '', '', 
@@ -74,6 +150,9 @@ tpl_fret0_root_format =   (1.0, 'lightgrey', '1.0',
 
 # default params dict
 #--------------------
+# Value used for every parameter that is set neither on the command line
+# nor in the json config file. Keys are the same names used in the json
+# config file (see tests/json_cfg_tests_files/default_chords_config.json)
 default_params = {
 
     # --- core internal parameters
@@ -127,17 +206,13 @@ default_params = {
     , 'side_labels_font_family': None           # side labels font family: default is global font family
     , 'side_labels_font_weight': None           # side labels font weight: default is global font weight
     , 'side_labels_font_factor': None           # side labels font factor: default is 0.90
-    # draw_dots tuples formats:
-    # (
-    #   dot_radius_scale, dot_fill, dot_stroke, dot_stroke_dasharray, dot_stroke_width, label_fill,
-    #   dot_labelfont_weight, dot_labelfont_family, dot_isquare, dot_rotate
-    #  )
-    # fretboard format
+    # draw_dots tuples formats: see the 13 elements tuple description above
+    # fretboard format (by default every dot, root included, looks the same)
     , 'fretb_format': {
           '*': tpl_generic_format
         , 'r': tpl_generic_format
         }
-    # fret0 format
+    # fret0 format (dots above the nut)
     , 'fret0_format': {
           '*': tpl_fret0_format
         , 'r': tpl_fret0_format
@@ -147,6 +222,11 @@ default_params = {
 
 
 
+# =============================================================================
+# main program
+# =============================================================================
+# this code runs only when the file is executed as a program
+# (python3 fancychords.py ...), not when it is imported by another module
 if __name__ == "__main__":
 
     program_version = '0.7'
@@ -188,6 +268,11 @@ if __name__ == "__main__":
         )
 
     # --- optional arguments ---
+    # note on boolean flags: they all use default=None (not False/True).
+    # None means "not given on the command line", so param_check() can
+    # fall back to the json config file value and then to default_params.
+    # 'store_true' flags turn something on, 'store_false' flags (the --no-xxx
+    # ones) turn off something that is on by default
 
     parser.add_argument(
         '-v', '--version'
@@ -288,8 +373,8 @@ if __name__ == "__main__":
         , action='store'
         , dest='font_family'
         , default=None
-        , choices=['Ubuntu Mono', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New']
-        , help='global font family: [\'Ubuntu Mono\'|\'Liberation Mono\'' \
+        , choices=['Ubuntu Mono Legacy', 'Ubuntu Mono', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New']
+        , help='global font family: [\'Ubuntu Mono Legacy\'|\'Ubuntu Mono\'|\'Liberation Mono\'' \
                '|\'DejaVu Sans Mono\'|\'Courier New\'], default is \'' 
                + str(default_params['font_family']) + '\''
         )    
@@ -317,15 +402,19 @@ if __name__ == "__main__":
         , default=None
         , choices=['only', 'enable', 'disable']
         , help='generate html report (\'enable\'/\'disable\') if \'only\' generate ' \
-               'report but don not draw chords, default is \'' 
+               'report but do not draw chords, default is \'' 
                 + str(default_params['report']) + '\''
         )
 
 
     # -- main call of the parser --
 
+    # everything below is inside a try block: any error ends the program
+    # with a clean message (see the 'except' at the end of the file)
     try:
 
+        # read the command line. argparse itself handles --help, --version
+        # and wrong options (printing usage and exiting with status 2)
         args = parser.parse_args()
         
         '''
@@ -345,8 +434,9 @@ if __name__ == "__main__":
 
         if args:
 
-            
+            # content of the json config file ({} if no config file is given)
             db_dict_jdump = {}
+            # 'file' or 'string', tells chords2files how to read input_crds
             input_way = ''
             
             # take note (using variable input_way)
@@ -362,16 +452,19 @@ if __name__ == "__main__":
             
             # if a json config file was passed as argument
             if args.json_file:
-                # load its content in db_dict_jdump
+                # load its content in db_dict_jdump. The json file has sections
+                # ('i/o', 'flags', 'generic_formats', 'parameters') and every
+                # section is a dict of parameters, ie:
+                # {"flags": {"horiz": false, ...}, "parameters": {"sd": 50.0, ...}}
                 import json
                 json_file = args.json_file
-                with open(json_file, 'r') as jsonfile:
+                with open(json_file, 'r', encoding='utf-8') as jsonfile:
                     db_dict_jdump = json.load(jsonfile)
                     # add missing parameters if any (see fill_jdump function: take the json config file 
                     # db_dict_jdump and check if there are missing parameters that can be calculated 
                     # from others with known formulas, if so db_dict_jdump is modified in place with 
                     # missing parameters added)
-                    global_utilities.fill_jdump(db_dict_jdump, 1.30, 20.00, 1.10)
+                    global_utilities.fill_jdump(db_dict_jdump, FD_FACTOR, RADIUS_FACTOR_K, BARRE_FACTOR)
         
         # Get all the variables using param_check() function
         # as this function applies precedence logic: check if a parameter of fancychords is set 
@@ -380,6 +473,9 @@ if __name__ == "__main__":
         # - param value (type varies) set by precedence logic
         # - boolean, param is as default or not
         
+        # note: param_check(db_dict_jdump, cli_value, name, json_section, defaults)
+        # returns (value, is_default). [0] keeps only the value
+
         # params that can be set by cli and/or config_file
         dir_output = global_utilities.param_check(
             db_dict_jdump, args.dir_output, 
@@ -443,6 +539,7 @@ if __name__ == "__main__":
             default_params)[0]
 
         # params that can be set by config_file only
+        # (None is passed as cli value, as there is no cli option for them)
         chord_label_font_weight = global_utilities.param_check(
             db_dict_jdump, None, 
             'chord_label_font_weight', 'generic_formats', 
@@ -495,6 +592,8 @@ if __name__ == "__main__":
             db_dict_jdump, None, 
             'side_labels_font_factor', 'generic_formats', 
             default_params)[0]
+        # for the two dot formats we also keep the "is default" flag: it is
+        # needed below to decide if --root-diff can change them
         fretb_format, fretb_asdefault = global_utilities.param_check(
             db_dict_jdump, None, 
             'fretb_format', 'generic_formats', 
@@ -555,6 +654,8 @@ if __name__ == "__main__":
 
         # --- actual main work
         
+        # app_msg_str collects every message of the run (it is also printed
+        # step by step by the called functions)
         app_msg_str = '\nGlobal Options\n=============='
         
         # {":" format_spec} Padding and aligning strings
@@ -572,6 +673,11 @@ if __name__ == "__main__":
         
         
         # main functions call
+        # report can be:
+        #   'disable' -> draw chords, no html report (default)
+        #   'enable'  -> draw chords, then build the html report
+        #   'only'    -> do not draw anything, just (re)build the html report
+        #                from the images already in dir_output
         
         if report != 'only':
             
@@ -591,6 +697,7 @@ if __name__ == "__main__":
             
             
             # import function to draw/output chords
+            # (imported here: it needs svgwrite and cairosvg)
             from libs import chords2files
             
             (  process_chords_msg_str
@@ -618,9 +725,16 @@ if __name__ == "__main__":
             # local libraries imports
             from libs import htmlreport 
 
+            # the report shows every image with these extensions found in
+            # dir_output and in its subdirs (one fcreport.html for every dir)
             file_exts = (".svg", ".png")
             app_msg_str += htmlreport.generate_htmlreport(dir_output, file_exts, ncols, thumb_width)
 
 
+    # any error (ie a missing input file or a broken json config file) ends
+    # the program with a short message on stderr and exit status 1, so that
+    # scripts calling fancychords can tell a failed run from a good one
+    # (before, the error was printed on stdout and the exit status was 0)
     except Exception as e:
-        print(e)
+        print('fancychords error: ' + str(e), file=sys.stderr)
+        sys.exit(1)

@@ -16,6 +16,19 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+draw_fretbrd: fretboard geometry and fretboard grid drawing.
+
+get_basic_params() computes dot radius and fretboard sizes from a few
+parameters (sd string distance, fd fret distance, ns strings, nf frets, ...).
+get_crd_params() turns them into lists of points: grid lines vertices, the
+centers_matrix with the center of every possible dot (centers_matrix[fret][string])
+and the centers of upper, side and bottom labels. For horizontal chords
+all points are rotated (rotate_shift_trasf) instead of computing a second
+geometry. draw_fretbrd() draws grid lines and nut using those points.
+"""
+
+
 def shift_down_trasf(pt, delta):
     """
     Trasformation function for a point (x,y) -> (x,y+delta)

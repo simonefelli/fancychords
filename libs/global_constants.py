@@ -16,6 +16,14 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+global_constants: constant values shared by the libs: note names (english
+and latin), chromatic scales, circle of fifths, the sets of allowed chars
+for fingers and intervals used to validate input chords, interval names,
+chord formulas, scales library and CAGED shapes.
+"""
+
+
 
 # major notes list
 notes_eng =   ['C',  'D',  'E',  'F',  'G',   'A',  'B' ]
