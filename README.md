@@ -18,6 +18,7 @@ Both write **SVG** images (and optionally **PNG**), can build an **HTML gallery*
 
 - [Features](#features)
 - [Installation](#installation)
+  - [Required font: Ubuntu Mono Legacy](#required-font-ubuntu-mono-legacy)
 - [FancyChords tutorial](#fancychords-tutorial)
 - [Chord notation reference](#chord-notation-reference)
 - [Chord list files](#chord-list-files)
@@ -66,7 +67,28 @@ python3 fancychords.py --help
 python3 fancyscales.py --help
 ```
 
-**Fonts.** Diagrams use monospace fonts: `Ubuntu Mono Legacy` (default), `Ubuntu Mono`, `Liberation Mono`, `DejaVu Sans Mono` or `Courier New`. An SVG only stores the font *name*, so the font must be installed on the computer that shows or converts the image; otherwise a similar font is used and labels may look slightly different. The [fonts](./fonts) folder has the original Ubuntu Mono font (Ubuntu Font Licence) and explains how to install it so that it is used for `Ubuntu Mono Legacy`.
+### Required font: Ubuntu Mono Legacy
+
+The diagrams are drawn by default with **`Ubuntu Mono Legacy`**: the Ubuntu Mono font of the
+ubuntu-font-family **0.83** release, under its own name. **Install it before using the programs**
+(Python scripts or executables). An SVG only stores the font *name*, so the font must be
+installed on the computer that shows or converts the image; without it another font is used and
+the labels look different.
+
+- It is the older Ubuntu Mono on purpose: the newer Ubuntu Mono shipped with recent systems
+  (Ubuntu 24.04 and later) draws bolder and larger characters. The separate name makes sure only
+  the 0.83 font is used, even where the newer one is installed.
+- The [fonts](./fonts) folder has the original ubuntu-font-family-0.83 (Ubuntu Font Licence) and the
+  install steps:
+  - **Linux**: install the four `UbuntuMono-*.ttf` files and the small fontconfig file
+    [60-ubuntu-mono-legacy.conf](./fonts/60-ubuntu-mono-legacy.conf), which makes the name
+    `Ubuntu Mono Legacy` use them.
+  - **Windows**: install the four `UbuntuMono-*.ttf` files and draw with `--font-family "Ubuntu Mono"`
+    (or `"font_family": "Ubuntu Mono"` in a config file), because the `Ubuntu Mono Legacy` name
+    cannot be mapped on Windows.
+
+Other available fonts: `Ubuntu Mono`, `Liberation Mono`, `DejaVu Sans Mono` and `Courier New`
+(option `-ff`).
 
 > In the examples below `fancychords` stands for `python3 fancychords.py` (or for the packaged executable, if you built one). The same goes for `fancyscales`.
 
@@ -368,6 +390,7 @@ packaging\build_binaries.bat           # Windows
 
 The executables (`fancychords`, `fancyscales`, or `.exe` on Windows) are written in the `dist` folder; use them exactly like the Python scripts, ie `./dist/fancychords --cli_in="C|x,3,2,0,1,0"`. The build settings are in [packaging/fancychords.spec](./packaging/fancychords.spec) and [packaging/fancyscales.spec](./packaging/fancyscales.spec), the same files for both systems.
 
+- The font is not included in the executables: install it as described in [Required font](#required-font-ubuntu-mono-legacy).
 - PyInstaller cannot cross compile: build the Windows executables on Windows and the Linux ones on Linux.
 - Or let GitHub build them: the [Build executables](./.github/workflows/build-binaries.yml) workflow runs the tests and builds and tests the Linux and Windows executables at every push. Download them from the **Actions** tab (open a run, then **Artifacts**). When you push a version tag (ie `git tag v0.8 && git push origin v0.8`) they are also attached to a GitHub release. The Linux ones are built on Ubuntu 22.04, so they also run on Debian 12.
 - The Cairo library must be installed on the build machine (on Windows, `libcairo-2.dll` must be in the `PATH`, see the [CairoSVG documentation](https://cairosvg.org/documentation/)).
