@@ -48,37 +48,6 @@ from libs import mymultilabels
 from libs import draw_barre
 
 
-def fill_format_fonts(fretx_format, font_weight, font_family):
-    """
-    return a copy of a fretx_format dict where every format tuple without
-    dot_labelfont_weight (index 9) or dot_labelfont_family (index 10)
-    gets the global font_weight / font_family.
-    
-    A copy is returned (instead of changing fretx_format in place) because
-    the dict received may be shared, ie it may be the default dict defined in
-    fancychords.py: changing it would leak values into the following chords.
-    All the keys are processed, so a format like 'b3' or 'rh' coming from the
-    json config file gets the global fonts too, and a dict without 'r' is fine.
-    
-    ie: fill_format_fonts({'*': (1.0, ..., '', '', False, False)}, 'bold', 'Ubuntu Mono')
-            -> {'*': (1.0, ..., 'bold', 'Ubuntu Mono', False, False)}
-    
-    fretx_format: Dict, {interval: format tuple}, see draw_chord() docs
-    font_weight: String, global font weight
-    font_family: String, global font family
-    
-    return: Dict, new fretx_format dict
-    """
-    new_format = {}
-    for interval, fmt in fretx_format.items():
-        # json config files give lists, not tuples: mytuplechange()
-        # handles both and always returns a tuple
-        if not fmt[9]: fmt = global_utilities.mytuplechange(fmt, 9, font_weight)
-        if not fmt[10]: fmt = global_utilities.mytuplechange(fmt, 10, font_family)
-        new_format[interval] = fmt
-    return new_format
-
-
 def draw_chord_box(
         frets, fingers, intervals, dlabels, footer, 
         radius, centers_matrix,
@@ -376,8 +345,8 @@ def draw_chord(
         }
     
     # fretb_format: every format (not only '*' and 'r') default to global
-    # font_weight and font_family if not set (see fill_format_fonts() above)
-    fretb_format = fill_format_fonts(fretb_format, font_weight, font_family)
+    # font_weight and font_family if not set (see global_utilities.fill_format_fonts())
+    fretb_format = global_utilities.fill_format_fonts(fretb_format, font_weight, font_family)
 
     # fret0_format default
     if not fret0_format: fret0_format = {
@@ -392,7 +361,7 @@ def draw_chord(
         }
     
     # fret0_format: every format default to global font_weight and font_family if not set
-    fret0_format = fill_format_fonts(fret0_format, font_weight, font_family)
+    fret0_format = global_utilities.fill_format_fonts(fret0_format, font_weight, font_family)
 
     # other font variables
     if not chord_label_font_weight: chord_label_font_weight = font_weight

@@ -16,6 +16,23 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+scales2files: main engine of fancyscales, from a scale file to image files.
+
+process_scales_file() is called by fancyscales.py and runs the whole job:
+
+    1. prints an options summary (nice_scalesprint_options)
+    2. reads and validates the scales with scale_parser
+    3. scale_list_to_files():
+       - for every scale creates its output dir (dir_output + subfolder),
+         optionally pads the scale to a fixed fret range (padding) and calls
+         draw_scales.scale_to_file() to write the svg file
+       - if convert_flag is True converts the svg files just drawn to png,
+         in a 'png' subdir next to them (convert_svg2png)
+
+It mirrors chords2files, which does the same job for chords.
+"""
+
 # standard library imports
 import os
 
@@ -176,7 +193,9 @@ def scale_list_to_files(
     header = 'Drawing SVG Scales\n=================='
     print('\n' + header)
     svg_msg_str = header
-    scale_filenames_list = []
+    # scales drawn in every output dir, used for png conversion:
+    # {'./dirout/Blues_Scale/': ['Am Blues', ...], ...}
+    scale_filenames_by_dir = {}
     svg_file_path_list = []
     png_file_path_list = []
 
@@ -202,7 +221,6 @@ def scale_list_to_files(
         footer = scale[8]
         arrows = scale[9]
 
-        scale_filenames_list.append(scale_filename)
         # check if subfolder exist
         if subfolder:
             path_output = os.path.join(dir_output, subfolder)
@@ -220,6 +238,8 @@ def scale_list_to_files(
         print(body)
         svg_msg_str += '\n' + body
         
+        # padding = (lower_fret, higher_fret): draw the scale on that fixed
+        # fret range (ie to have all the positions of a scale on the same neck)
         if padding and len(padding)==2:
             lower_fret, higher_fret = padding
             strgs_frets_list, strgs_intervals_list, strgs_dlabels_list = helper_functions.pad_scales(
@@ -239,7 +259,9 @@ def scale_list_to_files(
             side_labels_font_weight, side_labels_font_family, side_labels_font_factor,
             lntk, x_or, y_or, ns, nf, fd, sd, radius_factor, debug
             )
+        # remember what was written, for the return value and png conversion
         svg_file_path_list.append(svg_file_path)
+        scale_filenames_by_dir.setdefault(path_output, []).append(scale_filename)
 
     svg_info_str = '>>> ' + str(len(svg_file_path_list))  + ' svg files processed <<<'
     print(svg_info_str)
@@ -248,28 +270,21 @@ def scale_list_to_files(
     
     # converting to png part
     if convert_flag:
-        # convert_list = [('./dirout/Seventh/', './dirout/Seventh/png/'), ...]
-        convert_list = []
-        # os.walk returns a generator, that creates a tuple of values 
-        # (current_path, directories in current_path, files in current_path).
-        for oswalk_triplet in os.walk(dir_output):
-            root_path = oswalk_triplet[0]
-            # basename = last dir in root_path: ./dirout/Nine/png/ -> png
-            root_dir = os.path.basename(root_path)
-            # filter only svg files
-            files = [elem for elem in oswalk_triplet[2] if elem.endswith('svg')]
-            # avoid png dir scanning
-            if files and (root_dir != 'png'):
-                curr_dir_out = root_path + '/'
-                png_path = os.path.join(root_path, 'png/')
-                convert_list.append((curr_dir_out, png_path))
+        # convert only the svg files drawn in this run, each one into a 'png'
+        # subdir of its own dir. Other svg files that may already be in
+        # dir_output (ie from a previous run) are left untouched
+        # convert_list = [('./dirout/Blues/', './dirout/Blues/png/', ['Am Blues', ...]), ...]
+        convert_list = [
+            (curr_dir_out, os.path.join(curr_dir_out, 'png/'), filenames)
+            for curr_dir_out, filenames in scale_filenames_by_dir.items()
+            ]
         convert_msg_str = ''
         header = "\nConverting SVG Scales to PNG\n============================"
         print(header)
         convert_msg_str += header
-        for curr_dir_out, curr_png_path in convert_list:
+        for curr_dir_out, curr_png_path, filenames in convert_list:
             cmsg_str, png_fp_list = convert_svg2png.convert_svg2png(
-                curr_dir_out, curr_png_path, scale_filenames_list
+                curr_dir_out, curr_png_path, filenames
                 )
             convert_msg_str += cmsg_str
             png_file_path_list += png_fp_list

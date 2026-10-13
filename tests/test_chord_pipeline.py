@@ -17,7 +17,7 @@
 
 
 """
-Automatic tests for the fancychords chord pipeline.
+Automatic tests for the fancychords and fancyscales pipelines.
 
 Run them from the repository root with:
 
@@ -38,23 +38,48 @@ import unittest
 
 # local application imports
 from libs import chord_parser
+from libs import draw_scales
 from libs import global_utilities
+from libs import scale_parser
 
 
 # repository root dir and fancychords.py path, to run the program as a user would
 REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FANCYCHORDS = os.path.join(REPO_DIR, 'fancychords.py')
+FANCYSCALES = os.path.join(REPO_DIR, 'fancyscales.py')
+
+
+def run_program(program, *args):
+    '''
+    run a program (fancychords.py or fancyscales.py) with the given command
+    line args and return the CompletedProcess (returncode, stdout, stderr)
+    '''
+    return subprocess.run(
+        [sys.executable, program, *args],
+        cwd=REPO_DIR, capture_output=True, text=True
+        )
 
 
 def run_fancychords(*args):
+    return run_program(FANCYCHORDS, *args)
+
+
+def run_fancyscales(*args):
+    return run_program(FANCYSCALES, *args)
+
+
+def scale_block(name, frets, filename='%', intervals=None, dlabels=None):
     '''
-    run fancychords.py with the given command line args and
-    return the CompletedProcess (returncode, stdout, stderr)
+    return the text of one scale block for a scale file, with the same
+    frets (and optional intervals/dlabels) on all 6 strings
     '''
-    return subprocess.run(
-        [sys.executable, FANCYCHORDS, *args],
-        cwd=REPO_DIR, capture_output=True, text=True
-        )
+    string_line = frets
+    if intervals: string_line += '\t' + intervals
+    if dlabels: string_line += '\t' + (dlabels if intervals else '%\t' + dlabels)
+    lines = ['NAME\t' + name, 'FOLDER\t%', 'FILENAME\t' + filename]
+    lines += ['STRING0' + str(n) + '\t' + string_line for n in range(1, 7)]
+    lines += ['FOOTER\t%', 'ARROWS\t%']
+    return '\n'.join(lines) + '\n'
 
 
 class TestParseChordName(unittest.TestCase):
@@ -196,6 +221,82 @@ class TestFancychordsEndToEnd(unittest.TestCase):
         result = run_fancychords('--cli_in=C|x,3,2,0,1,0', '-cf', config_file, '-o', self.out)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(self.svg_files(), ['C.svg'])
+
+
+class TestScalesSideLabels(unittest.TestCase):
+    '''fret numbers on the side of scale diagrams'''
+
+    def test_open_position(self):
+        self.assertEqual(draw_scales.scales_side_labels(0, 5), [None, None, '3', None, '5'])
+
+    def test_scale_on_a_single_fret(self):
+        # first_fret == max_fret used to raise IndexError
+        self.assertEqual(draw_scales.scales_side_labels(5, 5), ['5'])
+
+    def test_frets_above_21(self):
+        # the label table stopped at fret 21, frets 22..24 raised IndexError
+        self.assertEqual(draw_scales.scales_side_labels(22, 24), ['22', None, '24'])
+
+
+class TestCheckScaleParams(unittest.TestCase):
+    '''validation of a single scale'''
+
+    @staticmethod
+    def check(frets, intervals='', dlabels='', filename='', name='Test'):
+        strings = [[frets, intervals, dlabels]] * 6
+        return scale_parser.check_scl_params(name, '', filename, *strings, '', '')
+
+    def test_good_scale(self):
+        self.assertFalse(self.check('5,x,7', 'R,x,2', '1,x,3')[0])
+
+    def test_dlabels_length_checked_without_intervals(self):
+        # dlabels with a different number of columns than frets must be an
+        # error even when intervals are not given
+        result = self.check('5,x,7', '', '1,x')
+        self.assertTrue(result[0])
+        self.assertIn('dlabels', result[1])
+
+    def test_percent_filename_means_use_scale_name(self):
+        # element 3 is scale_filename, it used to be '' (saved as '.svg')
+        self.assertEqual(self.check('5,x,7', filename='%', name='Am Blues')[3], 'Am Blues')
+
+
+class TestFancyscalesEndToEnd(unittest.TestCase):
+    '''run the real fancyscales program'''
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.out = self.tmp.name
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def write_scales(self, *blocks):
+        scales_file = os.path.join(self.out, 'scales.txt')
+        with open(scales_file, 'w', encoding='utf-8') as f:
+            f.write(''.join(blocks))
+        return scales_file
+
+    def svg_files(self):
+        return sorted(f for f in os.listdir(self.out) if f.endswith('.svg'))
+
+    def test_duplicate_scale_names_get_version_postfix(self):
+        scales_file = self.write_scales(scale_block('Am', '5,x,7'), scale_block('Am', '7,x,9'))
+        result = run_fancyscales(scales_file, '-o', self.out)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.svg_files(), ['Am.svg', 'Am.v02.svg'])
+
+    def test_dots_above_nut(self):
+        # -n (dots above the nut) used to fail: fret0 dots got '' as font weight
+        scales_file = self.write_scales(scale_block('Open', '0,2,3', intervals='R,2,b3'))
+        result = run_fancyscales(scales_file, '-n', '-o', self.out)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.svg_files(), ['Open.svg'])
+
+    def test_missing_input_file_fails_with_exit_status_1(self):
+        result = run_fancyscales(os.path.join(self.out, 'nope.txt'), '-o', self.out)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('fancyscales error', result.stderr)
 
 
 if __name__ == '__main__':

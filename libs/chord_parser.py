@@ -444,28 +444,9 @@ def fix_duplicate_chordnames(crd_list):
     
     return modified crd_list
     '''
-    # set of all filenames already taken, compared in lower case (casefold).
-    # It is filled with every name given in input, so that a generated
-    # '.vXX' name can never clash with a name chosen by the user
-    used_names = {crd[2].casefold() for crd in crd_list}
-    # set of names already assigned to a chord while scanning the list
-    assigned_names = set()
-    for crd in crd_list:
-        chordfilename = crd[2]
-        # first time we meet this name: the chord keeps it
-        if chordfilename.casefold() not in assigned_names:
-            assigned_names.add(chordfilename.casefold())
-            continue
-        # name already assigned to a previous chord: look for the first
-        # free version number, starting from 2 (the original is version 1)
-        vers = 2
-        while (chordfilename + '.v' + str(vers).zfill(2)).casefold() in used_names:
-            vers += 1
-        newchordfilename = chordfilename + '.v' + str(vers).zfill(2)
-        # modify original crd_list and remember the new name as taken
-        crd[2] = newchordfilename
-        used_names.add(newchordfilename.casefold())
-        assigned_names.add(newchordfilename.casefold())
+    # the work is done by a generic helper shared with scale_parser
+    # (chord_filename is element 2 of every chord list)
+    global_utilities.fix_duplicate_filenames(crd_list, 2)
     return crd_list
 
 

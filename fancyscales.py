@@ -18,6 +18,7 @@
 
 # standard library imports
 import argparse
+import sys
 
 # local application imports
 from libs import global_utilities
@@ -272,8 +273,8 @@ if __name__ == "__main__":
         , action='store'
         , dest='font_family'
         , default=None
-        , choices=['Ubuntu Mono', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New']
-        , help='global font family: [\'Ubuntu Mono\'|\'Liberation Mono\'' \
+        , choices=['Ubuntu Mono Legacy', 'Ubuntu Mono', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New']
+        , help='global font family: [\'Ubuntu Mono Legacy\'|\'Ubuntu Mono\'|\'Liberation Mono\'' \
                '|\'DejaVu Sans Mono\'|\'Courier New\'], default is \'' 
                + str(default_params['font_family']) + '\''
         )    
@@ -301,7 +302,7 @@ if __name__ == "__main__":
         , default=None
         , choices=['only', 'enable', 'disable']
         , help='generate html report (\'enable\'/\'disable\') if \'only\' generate ' \
-               'report but don not draw scales, default is \'' 
+               'report but do not draw scales, default is \'' 
                 + str(default_params['report']) + '\''
         )
 
@@ -342,7 +343,7 @@ if __name__ == "__main__":
                 # load its content in db_dict_jdump
                 import json
                 json_file = args.json_file
-                with open(json_file, 'r') as jsonfile:
+                with open(json_file, 'r', encoding='utf-8') as jsonfile:
                     db_dict_jdump = json.load(jsonfile)
                     # add missing parameters if any (see fill_jdump function: take the json config file 
                     # db_dict_jdump and check if there are missing parameters that can be calculated 
@@ -598,5 +599,9 @@ if __name__ == "__main__":
             app_msg_str += htmlreport.generate_htmlreport(dir_output, file_exts, ncols, thumb_width)
 
 
+    # any error ends the program with a short message on stderr and exit
+    # status 1, so that scripts calling fancyscales can tell a failed run
+    # from a good one (before, the error was printed on stdout with status 0)
     except Exception as e:
-        print(e)
+        print('fancyscales error: ' + str(e), file=sys.stderr)
+        sys.exit(1)

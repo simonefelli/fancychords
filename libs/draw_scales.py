@@ -16,6 +16,22 @@
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+"""
+draw_scales: draw a complete scale diagram and save it as an svg file.
+
+It reuses the chord drawing blocks (draw_fretbrd, draw_dots, mylabels) with
+two differences from chords: a scale can span many frets (the fretboard is
+as long as the scale) and its notes are given per string, as a matrix
+strgs_frets_list[string][column]. Call chain:
+
+    scale_to_file()     draw the scale with draw_scale() and save it to disk
+    draw_scale()        fill in default formats and fonts, compute the image
+                        size, create the svgwrite Drawing, draw the main label
+    draw_scale_box()    fretboard, dots (draw_dots.draw_scale_dots), arrows,
+                        upper/bottom labels and side fret numbers
+                        (scales_side_labels)
+"""
+
 # third party imports
 import svgwrite
 
@@ -67,12 +83,23 @@ def scales_side_labels(first_fret, max_fret, legacy=False):
             '15', None, 
             '17', None, 
             '19', None, 
-            '21'
+            '21', None,
+            None, '24'
         ]
+    # complete_side_labels[i] is the label of fret i+1, it covers every fret
+    # allowed in a scale file (1..24). Before, the list stopped at fret 21 and
+    # scales above it crashed with IndexError
+    if legacy: complete_side_labels += [None, None, None]
     final_side_labels = complete_side_labels[:max_fret]
     if first_fret > 0:
+        # first fret always shows its own number...
         final_side_labels[first_fret-1] = str(first_fret)
-        final_side_labels[first_fret] = None
+        # ...and the next fret is left empty, so two numbers are never side by side.
+        # The check is needed when the scale uses just one fret
+        # (first_fret == max_fret): there is no next fret and it used to crash
+        if first_fret < len(final_side_labels):
+            final_side_labels[first_fret] = None
+        # drop the frets before first_fret (they are not drawn)
         final_side_labels = final_side_labels[first_fret-1:]  
     return final_side_labels
 
@@ -354,10 +381,12 @@ def draw_scale(
     # if specific element (dot_label, scale_label, upper_labels) font_weight or font_family
     # are not set then default to global font_weight and font_family
     
-    # xxx_format tuples formats:
+    # xxx_format tuples formats (13 elements, see fancychords.py for details):
     # (
-    #   dot_radius_scale, dot_fill, dot_stroke, dot_stroke_dasharray, dot_stroke_width, label_fill,
-    #   dot_labelfont_weight, dot_labelfont_family, dot_isquare, dot_rotate
+    #   dot_radius_scale, dot_fill, dot_fill_opacity, 
+    #   dot_stroke, dot_stroke_opacity, dot_stroke_dasharray, dot_stroke_width, 
+    #   label_fill, label_fill_opacity, dot_labelfont_weight, dot_labelfont_family, 
+    #   dot_isquare, dot_rotate
     #  )
 
     # calculate fretx_format dot_stroke_width from lntk
@@ -376,15 +405,9 @@ def draw_scale(
                 False, False)
         }
     
-    # fretb_format default to global font_weight and font_family if not set
-    if not fretb_format['*'][9]: 
-        fretb_format['*'] = global_utilities.mytuplechange(fretb_format['*'], 9, font_weight)
-    if not fretb_format['r'][9]: 
-        fretb_format['r'] = global_utilities.mytuplechange(fretb_format['r'], 9, font_weight)
-    if not fretb_format['*'][10]: 
-        fretb_format['*'] = global_utilities.mytuplechange(fretb_format['*'], 10, font_family)
-    if not fretb_format['r'][10]:
-        fretb_format['r'] = global_utilities.mytuplechange(fretb_format['r'], 10, font_family)
+    # fretb_format: every format default to global font_weight and font_family
+    # if not set (see global_utilities.fill_format_fonts())
+    fretb_format = global_utilities.fill_format_fonts(fretb_format, font_weight, font_family)
 
     # fret0_format default
     if not fret0_format: fret0_format = {
@@ -398,15 +421,11 @@ def draw_scale(
                 False, False)
         }
     
-    # fret0_format default to global font_weight and font_family if not set
-    if not fret0_format['*'][6]: 
-        fret0_format['*'] = global_utilities.mytuplechange(fret0_format['*'], 6, font_weight)
-    if not fret0_format['r'][6]: 
-        fret0_format['r'] = global_utilities.mytuplechange(fret0_format['r'], 6, font_weight)
-    if not fret0_format['*'][7]: 
-        fret0_format['*'] = global_utilities.mytuplechange(fret0_format['*'], 7, font_family)
-    if not fret0_format['r'][7]: 
-        fret0_format['r'] = global_utilities.mytuplechange(fret0_format['r'], 7, font_family)
+    # fret0_format: every format default to global font_weight and font_family
+    # if not set. Note: fonts are elements 9 and 10 of the 13 elements tuple
+    # (this code used 6 and 7, left over from an older 10 elements tuple, so
+    # fret0 dot labels never got the global font)
+    fret0_format = global_utilities.fill_format_fonts(fret0_format, font_weight, font_family)
 
 
     # arrows_format default
@@ -482,13 +501,14 @@ def draw_scale(
             label_h = fd * scale_label_font_factor * 0.40
     
     # from label_h get label_w
-    _, label_w = mymultilabels.get_multilabel_w_given_hght(scale_name, label_h, font_family)
+    # note: label is measured with the same font used to draw it
+    _, label_w = mymultilabels.get_multilabel_w_given_hght(scale_name, label_h, scale_label_font_family)
     
     # but if label_w does exceed fbox_w then set label_w to max (fbox_w)
     # and get label_h from label_w. Bool Flag label_from_h then is False
     if label_w > fbox_w:
         label_w = fbox_w
-        _, label_h = mymultilabels.get_multilabel_h_given_wdth(scale_name, label_w, font_family)
+        _, label_h = mymultilabels.get_multilabel_h_given_wdth(scale_name, label_w, scale_label_font_family)
         label_from_h = False
 
     # offset from bottom drawing and bottom image border

@@ -105,6 +105,81 @@ def mytuplechange(mytuple, myindex, myvalue):
     return tuple(myvalue if idx==myindex else elem for idx, elem in enumerate(mytuple))
 
 
+def fill_format_fonts(fretx_format, font_weight, font_family):
+    """
+    return a copy of a fretx_format dict where every format tuple without
+    dot_labelfont_weight (index 9) or dot_labelfont_family (index 10)
+    gets the global font_weight / font_family.
+    
+    A copy is returned (instead of changing fretx_format in place) because
+    the dict received may be shared, ie it may be the default dict defined in
+    fancychords.py: changing it would leak values into the following chords.
+    All the keys are processed, so a format like 'b3' or 'rh' coming from the
+    json config file gets the global fonts too, and a dict without 'r' is fine.
+    
+    ie: fill_format_fonts({'*': (1.0, ..., '', '', False, False)}, 'bold', 'Ubuntu Mono')
+            -> {'*': (1.0, ..., 'bold', 'Ubuntu Mono', False, False)}
+    
+    fretx_format: Dict, {interval: format tuple}, see draw_chord() docs
+    font_weight: String, global font weight
+    font_family: String, global font family
+    
+    return: Dict, new fretx_format dict
+    """
+    new_format = {}
+    for interval, fmt in fretx_format.items():
+        # json config files give lists, not tuples: mytuplechange()
+        # handles both and always returns a tuple
+        if not fmt[9]: fmt = mytuplechange(fmt, 9, font_weight)
+        if not fmt[10]: fmt = mytuplechange(fmt, 10, font_family)
+        new_format[interval] = fmt
+    return new_format
+
+
+def fix_duplicate_filenames(items, name_index):
+    '''
+    make every output file name unique, in place. Used for chords
+    (chord_parser) and scales (scale_parser).
+    items is a list of lists and items[i][name_index] is a file name
+    (without extension). The first item keeps its name, the following
+    ones with the same name get a '.vXX' postfix (starting from .v02):
+        Cm, Cm, Cm -> Cm, Cm.v02, Cm.v03
+    - names are compared ignoring upper/lower case, because on Windows and
+      macOS 'Cm7.svg' and 'CM7.svg' are the same file and one image would
+      silently overwrite the other
+    - a generated name is never one already used by another item, ie:
+      Cm, Cm.v02 (given by the user), Cm -> Cm, Cm.v02, Cm.v03
+    
+    items: List of lists
+    name_index: Integer, index of the file name in every inner list
+    
+    return: items (same list, modified in place)
+    '''
+    # set of all filenames already taken, compared in lower case (casefold).
+    # It is filled with every name given in input, so that a generated
+    # '.vXX' name can never clash with a name chosen by the user
+    used_names = {item[name_index].casefold() for item in items}
+    # set of names already assigned to an item while scanning the list
+    assigned_names = set()
+    for item in items:
+        filename = item[name_index]
+        # first time we meet this name: the item keeps it
+        if filename.casefold() not in assigned_names:
+            assigned_names.add(filename.casefold())
+            continue
+        # name already assigned to a previous item: look for the first
+        # free version number, starting from 2 (the original is version 1)
+        vers = 2
+        while (filename + '.v' + str(vers).zfill(2)).casefold() in used_names:
+            vers += 1
+        new_filename = filename + '.v' + str(vers).zfill(2)
+        # modify original items and remember the new name as taken
+        item[name_index] = new_filename
+        used_names.add(new_filename.casefold())
+        assigned_names.add(new_filename.casefold())
+    return items
+
+
 def chain(my_elem, prefix = '', postfix = '', nullvalue = ''):
     '''
     format an element for chaining into a string
