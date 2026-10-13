@@ -1,0 +1,7 @@
+// reference chords for the CI font check: drawn by fancychords with
+// default options and the Ubuntu Mono font, they must match the png
+// files in this folder (made by Simone with the same options)
+NAME	FRETS	FINGERS	INTERVALS	LABELS	FOOTER	SUBFOLDER
+LAm	x,0,2,2,1,0	x,x,2,3,1,x	%	%	%	%
+DO7	x,3,2,3,1,0	x,3,2,4,1,x	%	%	%	%
+SOL	3,2,0,0,0,3	3,2,x,x,x,4	%	%	%	%

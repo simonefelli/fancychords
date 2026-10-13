@@ -66,7 +66,7 @@ python3 fancychords.py --help
 python3 fancyscales.py --help
 ```
 
-**Fonts.** Diagrams use monospace fonts: `Ubuntu Mono Legacy` (default), `Ubuntu Mono`, `Liberation Mono`, `DejaVu Sans Mono` or `Courier New`. An SVG only stores the font *name*, so the font must be installed on the computer that shows or converts the image; otherwise a similar font is used and labels may look slightly different.
+**Fonts.** Diagrams use monospace fonts: `Ubuntu Mono Legacy` (default), `Ubuntu Mono`, `Liberation Mono`, `DejaVu Sans Mono` or `Courier New`. An SVG only stores the font *name*, so the font must be installed on the computer that shows or converts the image; otherwise a similar font is used and labels may look slightly different. The [fonts](./fonts) folder has the original Ubuntu Mono font (Ubuntu Font Licence) and explains how to install it so that it is used for `Ubuntu Mono Legacy`.
 
 > In the examples below `fancychords` stands for `python3 fancychords.py` (or for the packaged executable, if you built one). The same goes for `fancyscales`.
 
