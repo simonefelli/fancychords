@@ -27,6 +27,7 @@ Both write **SVG** images (and optionally **PNG**), can build an **HTML gallery*
 - [FancyScales](#fancyscales)
   - [Example: the A minor blues scale in CAGED forms](#example-the-a-minor-blues-scale-in-caged-forms)
 - [Errors and exit status](#errors-and-exit-status)
+- [Building standalone executables](#building-standalone-executables)
 - [Project layout](#project-layout)
 - [Running the tests](#running-the-tests)
 - [License](#license)
@@ -355,6 +356,23 @@ The same folder has the G major scale ([major_scale](./tests/test_caged/major_sc
 
 Both programs exit with status `0` on success. On errors (ie a missing input file or a broken config file) they print `fancychords error: ...` (or `fancyscales error: ...`) on stderr and exit with status `1`, so they are easy to use from scripts. A chord or a scale with a syntax error is only reported and skipped: the others are still drawn.
 
+## Building standalone executables
+
+FancyChords and FancyScales can be packaged with [PyInstaller](https://pyinstaller.org/) as single file executables, that run on computers without Python (the Cairo library for the PNG conversion is included too):
+
+```bash
+pip install svgwrite cairosvg pyinstaller
+./packaging/build_binaries.sh          # Linux
+packaging\build_binaries.bat           # Windows
+```
+
+The executables (`fancychords`, `fancyscales`, or `.exe` on Windows) are written in the `dist` folder; use them exactly like the Python scripts, ie `./dist/fancychords --cli_in="C|x,3,2,0,1,0"`. The build settings are in [packaging/fancychords.spec](./packaging/fancychords.spec) and [packaging/fancyscales.spec](./packaging/fancyscales.spec), the same files for both systems.
+
+- PyInstaller cannot cross compile: build the Windows executables on Windows and the Linux ones on Linux.
+- The Cairo library must be installed on the build machine (on Windows, `libcairo-2.dll` must be in the `PATH`, see the [CairoSVG documentation](https://cairosvg.org/documentation/)).
+- A Linux executable runs on distributions with the same or a newer C library (glibc) than the build machine: build on the oldest distribution you want to support.
+- The `tests/test_fancychords/test_fancychords_bin.*` scripts run the executable from the repository root (`../../fancychords`): copy it there from `dist` to use them.
+
 ## Project layout
 
 ```text
@@ -374,6 +392,7 @@ libs/                   the libraries used by both programs
                                                          moving chord shapes
   helper_functions.py     use the libraries from your own Python scripts
 assets/                 images, config files and scale file of this README
+packaging/              PyInstaller spec files and build scripts for standalone executables
 docs/                   more documentation (chord_geometry.md: how a chord image is built)
 tests/                  automatic tests, test data and developer scripts
 ```

@@ -1,3 +1,7 @@
 # python bytecode cache, regenerated automatically on every run
 __pycache__/
 *.pyc
+
+# PyInstaller output (see packaging/)
+build/
+dist/
