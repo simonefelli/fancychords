@@ -11,7 +11,7 @@ Both write **SVG** images (and optionally **PNG**), can build an **HTML gallery*
 <img src="./assets/C%20Major.v02.svg" alt="C Major chord" width="150">
 <img src="./assets/C7.v02.svg" alt="C7 barre chord" width="150">
 <img src="./assets/G7.svg" alt="G7 chord" width="150">
-<img src="./assets/Am%20Blues%20Scale.svg" alt="A minor blues scale" width="260">
+<img src="./assets/D%20Form.svg" alt="A minor blues scale, D form of the CAGED system" width="300">
 </p>
 
 ## Contents
