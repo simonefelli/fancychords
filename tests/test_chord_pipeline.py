@@ -31,6 +31,7 @@ the end. The end to end tests need svgwrite installed (as fancychords does).
 # standard library imports
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -240,6 +241,44 @@ class TestFancychordsEndToEnd(unittest.TestCase):
         result = run_fancychords('--cli_in=C|x,3,2,0,1,0', '-cf', config_file, '-o', self.out)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(self.svg_files(), ['C.svg'])
+
+    def dot_labels(self, svg_name):
+        # the texts drawn in the svg, ie ['Bm', 'x', '3', '1', ...]
+        with open(os.path.join(self.out, svg_name), encoding='utf-8') as f:
+            return re.findall(r'>([^<>]+)</text>', f.read())
+
+    def test_auto_fingers_off_by_default(self):
+        result = run_fancychords('--cli_in=Bm|x,2,4,4,3,2', '-o', self.out)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn('Auto Fingers', result.stdout)
+        # no fingers: the dots show nothing but the chord has 5 dots
+        self.assertNotIn('4', self.dot_labels('Bm.svg'))
+
+    def test_auto_fingers_fills_only_missing_fingers(self):
+        result = run_fancychords(
+            '--cli_in=Bm|x,2,4,4,3,2;C7|x,3,2,3,1,0|x,3,2,4,1,x', '-af', '-o', self.out)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('x,2,4,4,3,2          -> x,1,3,4,2,1', result.stdout)
+        self.assertIn('1 chords got automatic fingers', result.stdout)
+        # the fingers are drawn inside the dots (barre on the 1st finger)
+        labels = self.dot_labels('Bm.svg')
+        for finger in ('1', '2', '3', '4'):
+            self.assertIn(finger, labels)
+        # C7 keeps its own fingers
+        self.assertNotIn('C7 ', result.stdout.split('Auto Fingers')[1].split('>>>')[0])
+
+    def test_auto_fingers_from_config_file(self):
+        config_file = os.path.join(self.out, 'config.json')
+        with open(config_file, 'w', encoding='utf-8') as f:
+            json.dump({'flags': {'auto_fingers': True}}, f)
+        result = run_fancychords('--cli_in=Bm|x,2,4,4,3,2', '-cf', config_file, '-o', self.out)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('-> x,1,3,4,2,1', result.stdout)
+
+    def test_auto_fingers_too_many_notes(self):
+        result = run_fancychords('--cli_in=Six|1,2,3,4,5,6', '-af', '-o', self.out)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('-> 1,2,3,4,x,x  (not enough fingers for every note)', result.stdout)
 
 
 class TestScalesSideLabels(unittest.TestCase):

@@ -16,7 +16,8 @@
     "convert_flag": false,
     "report": "disable",
     "debug": false,
-    "root_is_different": false
+    "root_is_different": false,
+    "auto_fingers": false
   },
   "generic_formats": {
     "font_weight": "normal",

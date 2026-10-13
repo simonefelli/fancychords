@@ -42,6 +42,7 @@ import os
 from libs import chord_parser
 from libs import draw_chords
 from libs import convert_svg2png
+from libs import autofingers
 
 
 def nice_print_options(tabslen, fretb_format, fret0_format, **kwargs):
@@ -286,6 +287,49 @@ def chord_list_to_files(
     return msg_str, svg_file_path_list, png_file_path_list
 
 
+def fill_auto_fingers(crd_list):
+    """
+    --auto-fingers: give fingers to the chords that have none, using
+    autofingers.chord_autofingers() (the guess is based only on the frets).
+    Chords with fingers are left untouched. crd_list is changed in place.
+
+    The guess uses at most 4 fingers plus barres: a string that cannot get
+    a finger gets 'x' (ie frets 1,2,3,4,5,6), and a message says so.
+
+    crd_list: List, chords as returned by chord_parser (fingers is crd[4],
+              an empty list when the chord has no fingers)
+
+    return msg_str: String, one line for every chord that got fingers
+    """
+    header = "\nAuto Fingers\n============"
+    print(header)
+    msg_str = header
+    n_filled = 0
+    for crd in crd_list:
+        chord_name, frets, fingers = crd[0], crd[3], crd[4]
+        if fingers:
+            continue
+        try:
+            guess = autofingers.chord_autofingers(frets)
+        except Exception as e:      # a guess must never stop the drawing
+            line = '* {:<20} no fingers found ({})'.format(chord_name, e)
+        else:
+            crd[4] = guess
+            n_filled += 1
+            line = '* {:<20} {:20} -> {}'.format(chord_name, ','.join(frets), ','.join(guess))
+            # a pressed string (fret > 0) that got no finger: too many notes
+            unplayed = [i for i, (fr, fg) in enumerate(zip(frets, guess))
+                        if fr not in ('x', 'X', '0') and fg in ('x', 'X')]
+            if unplayed:
+                line += '  (not enough fingers for every note)'
+        print(line)
+        msg_str += '\n' + line
+    info = '>>> ' + str(n_filled) + ' chords got automatic fingers <<<'
+    print(info)
+    msg_str += '\n' + info
+    return msg_str
+
+
 def process_chords(
         input_crds, input_way,
         dir_output, horiz, enable_header, enable_dotlabels, 
@@ -299,7 +343,8 @@ def process_chords(
         bottom_labels_font_weight, bottom_labels_font_family, bottom_labels_font_factor, 
         side_labels_font_weight, side_labels_font_family, side_labels_font_factor,
         lntk, x_or, y_or, ns, nf, fd, sd, radius_factor, 
-        convert_flag, debug
+        convert_flag, debug,
+        auto_fingers=False
        ):
     """
     Draw chords (output svg/png) defined in either a chords string or a chords file
@@ -376,6 +421,8 @@ def process_chords(
     radius_factor: Number, sd factor to get global dot radius, optimal value 0.38 or 0.41
     convert_flag: Boolean, if true output also png file
     debug: Boolean, if true draw debug borders and debug dots
+    auto_fingers: Boolean, if true chords without fingers get them from
+        autofingers.chord_autofingers() (see fill_auto_fingers)
 
     return Tuple: explicative message, svg_file_path_list, png_file_path_list
     """
@@ -408,6 +455,7 @@ def process_chords(
         , font_weight=font_weight
         , font_family=font_family
         , convert_flag=convert_flag
+        , auto_fingers=auto_fingers
         , chord_label_font_weight=shortenop(chord_label_font_weight)
         , chord_label_font_family=shortenop(chord_label_font_family)
         , chord_label_font_factor=shortenop(chord_label_font_factor)
@@ -478,6 +526,10 @@ def process_chords(
         
         # get_crd_list_from_file -> (crd_list, msg_str)
         (crd_list, crd_list_msg_str) = chord_parser.get_crd_list_from_file(input_crdf)    
+
+    # --auto-fingers: chords without fingers get a fingering guess
+    if auto_fingers:
+        crd_list_msg_str += fill_auto_fingers(crd_list)
 
     # print some info
     info_msg_str = '\nChords to draw (' + str(len(crd_list)) + \
