@@ -20,6 +20,7 @@
 #   removed in PyInstaller 6 and are not used here
 
 import os
+import sys
 
 # SPECPATH (set by PyInstaller) is the dir of this file: the repo root is its parent
 repo_root = os.path.dirname(SPECPATH)
@@ -51,7 +52,11 @@ exe = EXE(
     name='fancychords',
     debug=False,
     bootloader_ignore_signals=False,
-    strip=False,
+    # strip debug symbols from the bundled libraries on Linux: some Python
+    # builds (ie the one of GitHub Actions) ship libpython with debug
+    # symbols, which makes the executable much bigger. Not used on Windows,
+    # where PyInstaller does not recommend it
+    strip=(sys.platform != 'win32'),
     # upx compression is off: it saves little and some antivirus programs
     # flag upx compressed executables
     upx=False,
