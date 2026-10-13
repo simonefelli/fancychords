@@ -121,12 +121,24 @@ jobs:
           sudo fc-cache -f
           fc-match "Ubuntu Mono Legacy" | grep -q "Ubuntu Mono"
 
+      # font check: the same chords drawn with font 'Ubuntu Mono Legacy' (the
+      # default) and 'Ubuntu Mono' must be identical (the alias works), and
+      # different from chords drawn with a font that does not exist (Ubuntu
+      # Mono is really used); on Linux they must also look like Simone's
+      # reference images (see tests/reference_png/compare_png.py)
       - name: Font check (Linux)
         if: runner.os == 'Linux'
         run: |
           mkdir fontcheck && cd fontcheck
-          env -i PATH=/usr/bin:/bin ../dist/fancychords --file_in=../tests/reference_png/reference_chords.txt -c -o out
-          "${{ steps.python.outputs.python-path }}" ../tests/reference_png/compare_png.py out/png
+          ref=../tests/reference_png
+          draw() { env -i PATH=/usr/bin:/bin ../dist/fancychords --file_in=$ref/reference_chords.txt -c "$@" > /dev/null; }
+          draw -o legacy
+          draw -o real -ff "Ubuntu Mono"
+          draw -o missing -cf $ref/missing_font.json
+          py="${{ steps.python.outputs.python-path }}"
+          "$py" $ref/compare_png.py --same legacy/png real/png
+          "$py" $ref/compare_png.py --differ real/png missing/png
+          "$py" $ref/compare_png.py legacy/png
 
       - name: Install the Ubuntu Mono font (Windows)
         if: runner.os == 'Windows'
@@ -145,17 +157,24 @@ jobs:
       - name: Font check (Windows)
         if: runner.os == 'Windows'
         # informational for now: Cairo on Windows uses the Windows font system,
-        # where the name substitution may not apply
+        # where the 'Ubuntu Mono Legacy' name substitution may not apply
         continue-on-error: true
         shell: pwsh
         run: |
+          $py = "${{ steps.python.outputs.python-path }}"
+          $ref = "..\tests\reference_png"
           $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
           New-Item -ItemType Directory fontcheck | Out-Null
           Set-Location fontcheck
-          ..\dist\fancychords.exe --file_in=..\tests\reference_png\reference_chords.txt -c -o out
-          if ($LASTEXITCODE -ne 0) { exit 1 }
-          & "${{ steps.python.outputs.python-path }}" ..\tests\reference_png\compare_png.py out\png
-          if ($LASTEXITCODE -ne 0) { exit 1 }
+          ..\dist\fancychords.exe --file_in=$ref\reference_chords.txt -c -o legacy | Out-Null
+          ..\dist\fancychords.exe --file_in=$ref\reference_chords.txt -c -o real -ff "Ubuntu Mono" | Out-Null
+          ..\dist\fancychords.exe --file_in=$ref\reference_chords.txt -c -o missing -cf $ref\missing_font.json | Out-Null
+          $failed = $false
+          & $py $ref\compare_png.py --same legacy\png real\png
+          if ($LASTEXITCODE -ne 0) { $failed = $true }
+          & $py $ref\compare_png.py --differ real\png missing\png
+          if ($LASTEXITCODE -ne 0) { $failed = $true }
+          if ($failed) { exit 1 }
 
       - name: Smoke test (Windows)
         if: runner.os == 'Windows'
