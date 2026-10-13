@@ -1,0 +1,15 @@
+// FancyScales example file: one scale block = 11 lines, fields separated by tabs
+// STRING01 is the high e string, STRING06 the low E string
+// every STRING line: frets <tab> intervals <tab> dot labels (one column per fret)
+
+NAME	D Form
+FOLDER	%
+FILENAME	%
+STRING01	x,8,x,10,11	x,b3,x,4,b5	%
+STRING02	x,8,x,10,x	x,b7,x,R,x	%
+STRING03	7,8,9,x,x	4,b5,5,x,x	%
+STRING04	7,x,x,10,x	R,x,x,b3,x	%
+STRING05	7,x,x,10,x	5,x,x,b7,x	%
+STRING06	x,8,x,10,11	x,b3,x,4,b5	%
+FOOTER	E,A,D,G,B,e
+ARROWS	%

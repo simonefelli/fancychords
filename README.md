@@ -300,38 +300,38 @@ With `--root-diff` and no dot formats in the config file, the root gets a grey d
 
 FancyScales draws scale diagrams over any range of frets. It reads the scales from a text file:
 
-`fancyscales am_blues.txt --config_file=./config_scales.json`
+`fancyscales d_form.txt --config_file=./config_scales.json`
 
-<img src="./assets/Am%20Blues%20Scale.svg" alt="A minor blues scale" width="320">
+<img src="./assets/D%20Form.svg" alt="A minor blues scale, D form of the CAGED system" width="360">
 
-([am_blues.txt](./assets/am_blues.txt), [config_scales.json](./assets/config_scales.json))
+([d_form.txt](./assets/d_form.txt), [config_scales.json](./assets/config_scales.json)): the A minor blues scale in the D form of the CAGED system, from frets 7 to 11 (see the [CAGED example](#example-the-a-minor-blues-scale-in-caged-forms) below for all the five forms).
 
 ### Scale files
 
 A scale file is a list of blocks, one per scale. Every block has these 11 lines, always in this order, with the fields separated by tabs (lines starting with `//` are comments):
 
 ```text
-NAME        Am Blues Scale\nPosition 1
+NAME        D Form
 FOLDER      %
-FILENAME    Am Blues Scale
-STRING01    5,x,x,8     R,x,x,b3     1,x,x,4
-STRING02    5,x,x,8     5,x,x,b7     1,x,x,4
-STRING03    5,x,7,8     b3,x,4,b5    1,x,3,4
-STRING04    5,x,7,x     b7,x,R,x     1,x,3,x
-STRING05    5,6,7,x     4,b5,5,x     1,2,3,x
-STRING06    5,x,x,8     R,x,x,b3     1,x,x,4
+FILENAME    %
+STRING01    x,8,x,10,11    x,b3,x,4,b5    %
+STRING02    x,8,x,10,x     x,b7,x,R,x     %
+STRING03    7,8,9,x,x      4,b5,5,x,x     %
+STRING04    7,x,x,10,x     R,x,x,b3,x     %
+STRING05    7,x,x,10,x     5,x,x,b7,x     %
+STRING06    x,8,x,10,11    x,b3,x,4,b5    %
 FOOTER      E,A,D,G,B,e
-ARROWS      ( ((5,2), (8,2)), ((5,4), (7,4)), ((6,5), (7,5)) )
+ARROWS      %
 ```
 
 | Line | Content |
 |---|---|
-| `NAME` | Scale name drawn on the diagram; `\n` splits it on two lines |
+| `NAME` | Scale name drawn on the diagram; `\n` splits it on two lines (ie `Am Blues Scale\nD Form`) |
 | `FOLDER` | Output subfolder, `%` for none |
 | `FILENAME` | File name, `%` (or empty) to use the name. If the name has dots, the text after the **first** dot goes only in the file name |
-| `STRING01`..`STRING06` | For each string, from the 1st (high e) to the 6th (low E): frets, then optional intervals, then optional dot labels. One column per fret, `x` where there is no note; all strings must have the same number of columns |
+| `STRING01`..`STRING06` | For each string, from the 1st (high e) to the 6th (low E): frets, then optional intervals, then optional dot labels (ie fingers `1,x,3,4`; `%` for none: the dots show the intervals). One column per fret, `x` where there is no note; all strings must have the same number of columns |
 | `FOOTER` | Up to 6 labels (max 3 characters each) drawn under the fretboard, `%` for none |
-| `ARROWS` | Arrows between notes, as a tuple of `((fret, string), (fret, string))`, string 1 being the high e; `%` for none. An arrow outside the drawn frets is skipped with a warning |
+| `ARROWS` | Arrows between notes, as a tuple of `((fret, string), (fret, string))`, string 1 being the high e, ie `( ((7,4), (10,4)), ((7,3), (9,3)) )`; `%` for none. An arrow outside the drawn frets is skipped with a warning |
 
 Scales with the same file name get `.v02`, `.v03`... like chords. More examples are in [tests/scls_tests_files](./tests/scls_tests_files).
 

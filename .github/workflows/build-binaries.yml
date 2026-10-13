@@ -102,10 +102,10 @@ jobs:
         run: |
           mkdir smoke && cd smoke
           env -i PATH=/usr/bin:/bin ../dist/fancychords --cli_in="C Major|x,3,2,0,1,0|x,3,2,x,1,x|x,R,3,5,R,3" --root-diff -c -r enable -o out
-          env -i PATH=/usr/bin:/bin ../dist/fancyscales ../assets/am_blues.txt --config_file=../assets/config_scales.json -c -o out
+          env -i PATH=/usr/bin:/bin ../dist/fancyscales ../assets/d_form.txt --config_file=../assets/config_scales.json -c -o out
           ../dist/fancychords --version
           test -f "out/C Major.svg" && test -f "out/png/C Major.png"
-          test -f "out/Am Blues Scale.svg" && test -f "out/png/Am Blues Scale.png"
+          test -f "out/D Form.svg" && test -f "out/png/D Form.png"
           test -f out/fcreport.html
 
       # ---- font check: chords drawn with the default font 'Ubuntu Mono
@@ -209,10 +209,10 @@ jobs:
           Set-Location smoke
           ..\dist\fancychords.exe --cli_in="C Major|x,3,2,0,1,0|x,3,2,x,1,x|x,R,3,5,R,3" --root-diff -c -r enable -o out
           if ($LASTEXITCODE -ne 0) { exit 1 }
-          ..\dist\fancyscales.exe ..\assets\am_blues.txt --config_file=..\assets\config_scales.json -c -o out
+          ..\dist\fancyscales.exe ..\assets\d_form.txt --config_file=..\assets\config_scales.json -c -o out
           if ($LASTEXITCODE -ne 0) { exit 1 }
           ..\dist\fancychords.exe --version
-          foreach ($f in 'out\C Major.svg', 'out\png\C Major.png', 'out\Am Blues Scale.svg', 'out\png\Am Blues Scale.png', 'out\fcreport.html') {
+          foreach ($f in 'out\C Major.svg', 'out\png\C Major.png', 'out\D Form.svg', 'out\png\D Form.png', 'out\fcreport.html') {
             if (-not (Test-Path $f)) { Write-Error "missing $f"; exit 1 }
           }
 
