@@ -1,49 +1,53 @@
 import os
 
-dir_output = '../dirout'
+dir_output = './dirout'
 
 images_file_path_list = [
-    '../dirout/aa/SI11.svg', 
-    '../dirout/aa/DOX.svg', 
-    '../dirout/aa/DOY.svg', 
-    '../dirout/aa/DOW.svg', 
-    '../dirout/aa/ZAP.svg', 
-    '../dirout/bb/XXX.svg', 
-    '../dirout/bb/YYY.svg', 
-    '../dirout/bb/ZZZ.svg', 
-    '../dirout/aa/cc/DO.svg', 
-    '../dirout/aa/dd/DO.v02.svg', 
-    '../dirout/aa/ee/DO_RE.svg', 
-    '../dirout/bb/ff/DO7.svg', 
-    '../dirout/bb/gg/DO7+.svg', 
-    '../dirout/bb/hh/DO9.svg', 
-    '../dirout/bb/ii/RE#m.svg', 
-    '../dirout/bb/ll/RE#dib7.svg', 
-    '../dirout/bb/ii/qq/SOL.svg', 
-    '../dirout/bb/ii/ww/SOL7.svg', 
-    '../dirout/bb/ll/kk/SOL#dib7(no5)_FA#.svg', 
-    '../dirout/bb/ll/kk/LA.svg',
-    '../dirout/bb/png/ZZZ.png', 
-    '../dirout/bb/png/XXX.png', 
-    '../dirout/bb/png/YYY.png', 
-    '../dirout/bb/ii/png/RE#m.png', 
-    '../dirout/bb/ii/ww/png/SOL7.png', 
-    '../dirout/bb/ii/qq/png/SOL.png', 
-    '../dirout/bb/hh/png/DO9.png', 
-    '../dirout/bb/ll/png/RE#dib7.png', 
-    '../dirout/bb/ll/kk/png/LA.png', 
-    '../dirout/bb/ll/kk/png/SOL#dib7(no5)_FA#.png', 
-    '../dirout/bb/gg/png/DO7+.png', 
-    '../dirout/bb/ff/png/DO7.png', 
-    '../dirout/aa/png/ZAP.png', 
-    '../dirout/aa/png/SI11.png', 
-    '../dirout/aa/png/DOW.png', 
-    '../dirout/aa/png/DOY.png', 
-    '../dirout/aa/png/DOX.png', 
-    '../dirout/aa/dd/png/DO.v02.png', 
-    '../dirout/aa/cc/png/DO.png', 
-    '../dirout/aa/ee/png/DO_RE.png'
+    './dirout/aa/SI11.svg', 
+    './dirout/aa/DOX.svg', 
+    './dirout/aa/DOY.svg', 
+    './dirout/aa/DOW.svg', 
+    './dirout/aa/ZAP.svg', 
+    './dirout/bb/XXX.svg', 
+    './dirout/bb/YYY.svg', 
+    './dirout/bb/ZZZ.svg', 
+    './dirout/aa/cc/DO.svg', 
+    './dirout/aa/dd/DO.v02.svg', 
+    './dirout/aa/ee/DO_RE.svg', 
+    './dirout/bb/ff/DO7.svg', 
+    './dirout/bb/gg/DO7+.svg', 
+    './dirout/bb/hh/DO9.svg', 
+    './dirout/bb/ii/RE#m.svg', 
+    './dirout/bb/ll/RE#dib7.svg', 
+    './dirout/bb/ii/qq/SOL.svg', 
+    './dirout/bb/ii/ww/SOL7.svg', 
+    './dirout/bb/ll/kk/oo/SOL#dib7(no5)_FA#.svg', 
+    './dirout/bb/ll/kk/pp/LA.svg',
+    './dirout/bb/png/ZZZ.png', 
+    './dirout/bb/png/XXX.png', 
+    './dirout/bb/png/YYY.png', 
+    './dirout/bb/ii/png/RE#m.png', 
+    './dirout/bb/ii/ww/png/SOL7.png', 
+    './dirout/bb/ii/qq/png/SOL.png', 
+    './dirout/bb/hh/png/DO9.png', 
+    './dirout/bb/ll/png/RE#dib7.png', 
+    './dirout/bb/ll/kk/pp/png/LA.png', 
+    './dirout/bb/ll/kk/oo/png/SOL#dib7(no5)_FA#.png', 
+    './dirout/bb/gg/png/DO7+.png', 
+    './dirout/bb/ff/png/DO7.png', 
+    './dirout/aa/png/ZAP.png', 
+    './dirout/aa/png/SI11.png', 
+    './dirout/aa/png/DOW.png', 
+    './dirout/aa/png/DOY.png', 
+    './dirout/aa/png/DOX.png', 
+    './dirout/aa/dd/png/DO.v02.png', 
+    './dirout/aa/cc/png/DO.png', 
+    './dirout/aa/ee/png/DO_RE.png'
     ]
+
+# normalize paths ('./dirout/aa' -> 'dirout/aa') so that they match the
+# paths produced by os.walk(os.path.normpath(dir_output)) below
+images_file_path_list = [os.path.normpath(p) for p in images_file_path_list]
 
 images_dir_list = []
 images_dir_files_dict = {}
@@ -125,4 +129,5 @@ def smart_htmlreport(dir_output):
             
 
 
-smart_htmlreport(dir_output, 4, '200.0px')
+# smart_htmlreport() takes only dir_output (ncols and thumb_width are not used yet)
+smart_htmlreport(dir_output)

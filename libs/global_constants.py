@@ -279,7 +279,8 @@ caged_dict = {
             )
         }
     , 'A': {
-            'blues_scale': (
+            # key must match a scales_library key (it was renamed from 'blues_scale')
+            'minor_blues_scale': (
               ('G Form', 2,  6)
             , ('E Form', 5,  8)
             , ('D Form', 7,  11)

@@ -1,4 +1,4 @@
-NAME	FRETS	FINGERS	LABELS	FOOTER	SUBFOLDER
-C#	x,4,6,6,6,4	x,1,2,3,4,1	%	%	C#/Major
-Db	x,4,6,6,6,4	x,1,4,4,4,1	%	%	Db/Major
-C#	x,4,6,6,6,4	x,1,2,3,4,1	%	%	C#/Major
+NAME	FRETS	FINGERS	INTERVALS	LABELS	FOOTER	SUBFOLDER
+C#	x,4,6,6,6,4	x,1,2,3,4,1	%	%	%	C#/Major
+Db	x,4,6,6,6,4	x,1,4,4,4,1	%	%	%	Db/Major
+C#	x,4,6,6,6,4	x,1,2,3,4,1	%	%	%	C#/Major

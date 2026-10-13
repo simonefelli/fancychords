@@ -215,7 +215,7 @@ def generate_scale(root_note, scale_type, up_to_fret, print_output=True):
         'sharp': guitar_neck_sharp_notes
         }
     
-    # scale_type= 'blues_scale' -> ('R','b3','4','b5','5','b7'), 'minor', 'Blues Scale'
+    # scale_type= 'minor_blues_scale' -> ('R','b3','4','b5','5','b7'), 'minor', 'Minor Blues Scale'
     intervals, majmin, scale_name = global_constants.scales_library[scale_type]
     flsh = music_utilities.music_circle_flsh(root_note, majmin)
     # neck notes in correct flat or sharp based on music circle

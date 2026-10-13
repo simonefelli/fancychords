@@ -30,7 +30,7 @@ if __name__ == "__main__":
     
     # -------------------------
     
-    my_scale = helper_functions.generate_scale('G', 'blues_scale', 16)
+    my_scale = helper_functions.generate_scale('G', 'minor_blues_scale', 16)
     (
         root_note, scale_name, neck_frets_fltrd,
         neck_intervls_fltrd, neck_notes_fltrd

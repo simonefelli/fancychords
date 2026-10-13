@@ -1,5 +1,10 @@
 @echo off
 
+REM run from this script dir, so relative paths work wherever the script is called from
+cd /d "%~dp0"
+REM absolute path of the tests dir, used by the "absolute path" test cases
+set "TESTS_DIR=%~dp0.."
+
 
 REM ========= S&R =========
 REM ..\..\fancychords.exe -> ..\..\fancychords.exe
@@ -8,9 +13,9 @@ REM =======================
 
 REM --file_in and check absolute/relative paths
 
-..\..\fancychords.exe --file_in=../crds_test_files/chord-list_fancycrds1.txt -c -rd -r="enable" -o="C:\\Users\\sfelli\\simo\\dev\\python\\py3\\pychords\\app\\tests\\test_fancychords\\output"
+..\..\fancychords.exe --file_in=../crds_test_files/chord-list_fancycrds1.txt -c -rd -r="enable" -o="%TESTS_DIR%\\test_fancychords\\output"
 
-..\..\fancychords.exe --file_in="C:\\Users\\sfelli\\simo\\dev\\python\\py3\\pychords\\app\\tests\\crds_test_files\\chord-list_fancycrds2.txt" -c -rd -r="enable"  -cf="C:\\Users\\sfelli\\simo\\dev\\python\\py3\\pychords\\app\\tests\\json_cfg_tests_files\\config_fancycrds1_win.json"
+..\..\fancychords.exe --file_in="%TESTS_DIR%\\crds_test_files\\chord-list_fancycrds2.txt" -c -rd -r="enable"  -cf="%TESTS_DIR%\\json_cfg_tests_files\\config_fancycrds1_win.json"
 
 
 REM --cli_in & duplicate chord name & -cf=./config.json

@@ -1,6 +1,6 @@
 {
   "i/o": {
-    "dir_output": "C:\\Users\\sfelli\\simo\\dev\\python\\py3\\pychords\\app\\tests\\test_fancychords\\output"
+    "dir_output": ".\\output"
   },  
   "flags": {
     "horiz": false,
