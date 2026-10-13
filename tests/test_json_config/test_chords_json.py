@@ -21,7 +21,6 @@ import json
 
 
 json_file_path = '../json_cfg_tests_files/config.json'
-# json_file_path = 'C:\\Users\\sfelli\\simo\\dev\\python\\py3\\pychords\\app\\tests\\json_cfg_tests_files\\config.json'
 
 
 with open(json_file_path, 'r') as jsonfile:

@@ -221,7 +221,7 @@ jobs:
       - name: Upload the executables
         uses: actions/upload-artifact@v6
         with:
-          name: pychords-${{ matrix.platform }}
+          name: fancychords-${{ matrix.platform }}
           path: |
             dist/fancychords${{ matrix.exe }}
             dist/fancyscales${{ matrix.exe }}
@@ -242,9 +242,9 @@ jobs:
       - name: Make one archive per platform
         run: |
           cd artifacts
-          for dir in pychords-*; do
+          for dir in fancychords-*; do
             chmod +x "$dir"/fancy* || true
-            if [ "$dir" = "pychords-windows-amd64" ]; then
+            if [ "$dir" = "fancychords-windows-amd64" ]; then
               (cd "$dir" && zip -9 "../$dir-${GITHUB_REF_NAME}.zip" fancy*)
             else
               tar -C "$dir" -cJf "$dir-${GITHUB_REF_NAME}.tar.xz" fancychords fancyscales

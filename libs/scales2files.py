@@ -563,7 +563,6 @@ if __name__ == "__main__":
 
     # --- main parameters
     dir_output = '../dirout/small'                # output dir for images
-    # dir_output = 'C:\\Users\\sfelli\\simo\\dev\\python\\py3\\pychords\\app\\dirout'
     horiz = False                           # if true chord is horizontal otherwise vertical
     scale_label_isbottom = False            # if true scale main label goes at the bottom
     scale_label_isleft = False              # if true scale main label is left aligned otherwise is centered
@@ -601,7 +600,6 @@ if __name__ == "__main__":
                 False, False)
     }
     
-    # input_scalesfile = 'C:/Users/sfelli/simo/dev/python/py3/pychords/app/tests/misc_tests_files/scale-list.txt'        # full path for chord list txt
     input_scalesfile = '../tests/scls_tests_files/scale-list.txt'
     
     # check if report has to be done
@@ -638,7 +636,6 @@ if __name__ == "__main__":
 
     # --- main parameters
     dir_output = '../dirout/large'                # output dir for images
-    # dir_output = 'C:\\Users\\sfelli\\simo\\dev\\python\\py3\\pychords\\app\\dirout'
     horiz = True                            # if true chord is horizontal otherwise vertical
     scale_label_isbottom = False            # if true scale main label goes at the bottom
     scale_label_isleft = False              # if true scale main label is left aligned otherwise is centered

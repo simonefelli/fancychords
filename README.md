@@ -49,7 +49,7 @@ Both write **SVG** images (and optionally **PNG**), can build an **HTML gallery*
 
 ## Installation
 
-> **No Python?** Ready-to-run executables for Linux and Windows are available too: see [Building standalone executables](#building-standalone-executables) below, or download them from the [Releases](https://github.com/simonefelli/pychords/releases) page. You still need to install the [required font](#required-font-ubuntu-mono-derivative-fchords).
+> **No Python?** Ready-to-run executables for Linux and Windows are available too: see [Building standalone executables](#building-standalone-executables) below, or download them from the [Releases](https://github.com/simonefelli/fancychords/releases) page. You still need to install the [required font](#required-font-ubuntu-mono-derivative-fchords).
 
 You need **Python 3** and two Python libraries:
 
@@ -63,8 +63,8 @@ pip install svgwrite cairosvg
 Then get the code:
 
 ```bash
-git clone https://github.com/simonefelli/pychords.git
-cd pychords
+git clone https://github.com/simonefelli/fancychords.git
+cd fancychords
 python3 fancychords.py --help
 python3 fancyscales.py --help
 ```

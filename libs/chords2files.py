@@ -554,7 +554,6 @@ if __name__ == "__main__":
 
     # --- main parameters
     dir_output = '../dirout'                # output dir for images
-    # dir_output = 'C:\\Users\\sfelli\\simo\\dev\\python\\py3\\pychords\\app\\dirout'
     horiz = False                           # if true chord is horizontal otherwise vertical
     chord_label_isbottom = False            # if true chord main label goes at the bottom
     chord_label_isleft = False              # if true chord main label is left aligned otherwise is centered
@@ -626,7 +625,6 @@ if __name__ == "__main__":
 
     
     input_crds = '../tests/crds_test_files/chords2files_chord-list.txt'        # full path for chord list txt
-    # input_crds = 'C:\\Users\sfelli\\simo\dev\\python\\py3\\pychords\\app\\tests\\crds_test_files\\chords2files_chord-list.txt'
     
     input_way = 'file'
 

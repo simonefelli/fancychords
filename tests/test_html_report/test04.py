@@ -1,7 +1,6 @@
 import os
 
 dir_output = './dirout'
-#dir_output = '/home/simone/Documents/dev/python/py3/pychords/app/tests/test_html_report/dirout'
 abs_dir_output = os.path.abspath(dir_output)
 print(abs_dir_output)
 
