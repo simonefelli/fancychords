@@ -392,6 +392,6 @@ The `tests` folder also has developer scripts and shell/batch scripts that draw 
 
 ## License
 
-FancyChords and FancyScales are free software, released under the [GNU General Public License](https://www.gnu.org/licenses/) version 3 or (at your option) any later version. Copyright (C) 2025 Simone Felli.
+FancyChords and FancyScales are free software, released under the [GNU General Public License](https://www.gnu.org/licenses/) version 3 or (at your option) any later version. Copyright (C) 2026 Simone Felli.
 
 Have fun playing guitar!
