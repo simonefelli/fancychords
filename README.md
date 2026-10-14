@@ -432,11 +432,13 @@ libs/                   the libraries used by both programs
   autofingers.py, transportables.py                      chord recognition, fingering,
                                                          moving chord shapes
   helper_functions.py     use the libraries from your own Python scripts
-assets/                 images, config files and scale file of this README
-packaging/              PyInstaller spec files and build scripts for standalone executables
+assets/                 images, config files and scale file of this README,
+                        and the social preview image (make_social_preview.py)
+packaging/              PyInstaller spec files, build scripts and release archives for the executables
 fonts/                  the default font (Ubuntu Mono derivative FChords) and the original it comes from
 docs/                   more documentation (chord_geometry.md: how a chord image is built)
 tests/                  automatic tests, test data and developer scripts
+LICENSE                 GNU General Public License version 3
 ```
 
 Every module starts with a description of what it does and how.
